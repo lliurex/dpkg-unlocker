@@ -1,3 +1,9 @@
+dpkg-unlocker (0.2.0) bionic; urgency=medium
+
+  * Initial release for bionic
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 02 Oct 2018 13:28:37 +0200
+
 dpkg-unlocker (0.1.8) xenial; urgency=medium
 
   * Added thread to open help
