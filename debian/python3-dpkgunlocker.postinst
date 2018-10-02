@@ -6,9 +6,17 @@ case $1 in
 
      configure)
      	systemctl restart rsyslog.service || true
-		systemctl restart syslog.service || true
+	systemctl restart syslog.service || true
 
      ;;
+     
+    abort-upgrade|abort-remove|abort-deconfigure)
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
 esac
 
 #DEBHELPER#
