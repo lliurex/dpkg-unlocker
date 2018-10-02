@@ -1,0 +1,56 @@
+dpkg-unlocker (0.1.8) xenial; urgency=medium
+
+  * Added thread to open help
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 10 Aug 2018 10:10:51 +0200
+
+dpkg-unlocker (0.1.7) xenial; urgency=medium
+
+  * New icon
+  * Fixed desktop file
+  * Ready to use polkit
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 09 Aug 2018 10:46:00 +0200
+
+dpkg-unlocker (0.1.6) xenial; urgency=medium
+
+  * Improved vterminal
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 19 Jul 2018 08:56:25 +0200
+
+dpkg-unlocker (0.1.5) xenial; urgency=medium
+
+  * Fixed vterminal management
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 18 Jul 2018 12:38:32 +0200
+
+dpkg-unlocker (0.1.4) xenial; urgency=medium
+
+  * Added the continuous update of the state of the processes
+  * Added access to the LliureX wiki article
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 18 Jul 2018 09:45:18 +0200
+
+dpkg-unlocker (0.1.3) xenial; urgency=medium
+
+  * Avoid unlocking when blockages are detected but there is some process running
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 03 Jul 2018 13:00:47 +0200
+
+dpkg-unlocker (0.1.2) xenial; urgency=medium
+
+  * Fixed dpkg-unlocker lock token name
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 03 Jul 2018 08:52:35 +0200
+
+dpkg-unlocker (0.1.1) xenial; urgency=medium
+
+  * Fixed python3-dpkgunlocker postinst file
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 14 Jun 2018 13:47:47 +0200
+
+dpkg-unlocker (0.1) xenial; urgency=medium
+
+  * Initial release
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 14 Jun 2018 11:50:18 +0200
