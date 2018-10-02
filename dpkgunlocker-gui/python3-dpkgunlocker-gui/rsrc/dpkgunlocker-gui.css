@@ -1,6 +1,6 @@
 
 	GtkLabel {
-		font: Roboto;
+		font: 11pt Roboto;
 	}
 	
 	
@@ -18,38 +18,38 @@
 	
 	#PROCESS_NAME{
 		color: #000000;
-		font: Roboto Bold 14;
+		font: 14pt Roboto Bold;
 
 	}
 
 	#PROCESS_STATUS{
 		color:#3366cc;
-		font: Roboto Bold Italic 11;
+		font: 11pt Roboto Bold Italic;
 
 	}
 
 	#PROCESS_STATUS_ERROR{
 		color:#CC0000;
-		font: Roboto Bold Italic 11;
+		font: 11pt Roboto Bold Italic;
 
 	}
 
 	#MSG_ERROR_LABEL {
 
 		color: #CC0000;
-		font: Roboto 11; 
+		font: 11pt Roboto; 
 	}
 
 	
 		
 	#ROBOTO_MEDIUM_GRAY{
 			color: #A0A0A0;
-			font: Roboto 14;
-		}
+			font: 14pt Roboto;
+	}
 		
 	#SHORT_DESCRIPTION{
 			color: #3366cc;
-			font: Roboto Light 12;
-		}
+			font: 12pt Roboto Light;
+	}
 
 	
