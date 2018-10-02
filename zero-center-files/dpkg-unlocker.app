@@ -1,0 +1,15 @@
+Name=dpkg-unlocker
+Name[en]=Dpkg-Unlocker
+Name[es]=Dpkg-Unlocker
+Name[ca_ES.UTF-8@valencia]=Dpkg-Unlocker
+Name[ca_ES@valencia]=Dpkg-Unlocker
+Comment=Program to unlock Lliurex-Up, Dpkg or Apt 
+Comment[es]=Programa para desbloquear Lliurex-Up, Dpkg o Apt
+Comment[ca_ES@valencia]=Programa per a desbloquejar Lliurex-Up, Dpkg o Apt
+Comment[ca_ES.UTF-8@valencia]=Programa per a desbloquejar Lliurex-Up, Dpkg o Apt
+Icon=dpkg-unlocker
+Category=System
+ScriptPath=dpkg-unlocker.zmd
+Service=False
+Using=pe
+Groups=adm;admins

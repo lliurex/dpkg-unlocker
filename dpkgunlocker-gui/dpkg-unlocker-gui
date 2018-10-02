@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import sys
+from dpkgunlockergui.Core import Core
+
+c=Core.get_core()
+

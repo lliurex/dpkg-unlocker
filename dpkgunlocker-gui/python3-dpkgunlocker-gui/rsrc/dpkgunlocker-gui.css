@@ -1,0 +1,55 @@
+
+	GtkLabel {
+		font: Roboto;
+	}
+	
+	
+    #WINDOW{
+		
+		background-color: #ffffff;
+		
+	}
+
+	#IMAGE_BOX{
+
+		background-color: #000000;
+			
+	}
+	
+	#PROCESS_NAME{
+		color: #000000;
+		font: Roboto Bold 14;
+
+	}
+
+	#PROCESS_STATUS{
+		color:#3366cc;
+		font: Roboto Bold Italic 11;
+
+	}
+
+	#PROCESS_STATUS_ERROR{
+		color:#CC0000;
+		font: Roboto Bold Italic 11;
+
+	}
+
+	#MSG_ERROR_LABEL {
+
+		color: #CC0000;
+		font: Roboto 11; 
+	}
+
+	
+		
+	#ROBOTO_MEDIUM_GRAY{
+			color: #A0A0A0;
+			font: Roboto 14;
+		}
+		
+	#SHORT_DESCRIPTION{
+			color: #3366cc;
+			font: Roboto Light 12;
+		}
+
+	

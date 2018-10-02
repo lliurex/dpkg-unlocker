@@ -1,0 +1,98 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-18 09:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:66
+msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:80
+msgid "You need administration privileges to run this application."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:436
+msgid "All processes seem correct. Nothing to do"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:438
+msgid "Removing Lliurex-Up lock file..."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:440
+msgid "Removing Dpkg lock file..."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:442
+msgid "Removing Apt lock file..."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:444
+msgid "Fixing the system..."
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:446
+msgid "Unlocking process finished successfully"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:448
+msgid "Error fixing the system"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:450
+msgid "Error removing Apt lock file"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:452
+msgid "Error removing Dpg lock file"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:454
+msgid "Error removing Lliurex-Up lock file"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:456
+msgid "Do you want to execute the unlocking process?"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:458
+msgid "Some process are running. Wait a moment"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:460
+msgid "Detected some blocked process"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:138
+msgid "Unlocked"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:140
+msgid "Locked: Currently executing"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:142
+msgid "Locked: Not process found"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:144
+msgid "Locked: Apt currently executing"
+msgstr ""
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/dpkgunlocker.ui:101
+msgid "Unlock"
+msgstr ""

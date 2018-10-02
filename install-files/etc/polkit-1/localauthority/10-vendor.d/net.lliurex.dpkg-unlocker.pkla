@@ -1,0 +1,7 @@
+[net.lliurex.dpkg-unlocker]
+Identity=unix-group:adm;unix-groups:admins
+Action=net.lliurex.dpkg-unlocker.gui.pkexec.dpkgunlocker
+ResultAny=auth_self_keep
+ResultInactive=auth_self_keep
+ResultActive=auth_self_keep
+

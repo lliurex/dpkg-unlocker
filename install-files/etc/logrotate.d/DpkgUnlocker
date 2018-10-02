@@ -1,0 +1,9 @@
+/var/log/DpkgUnlocked.log{
+	monthly
+	missingok
+	rotate 7
+	compress
+	maxsize 10M
+	notifempty
+}
+
