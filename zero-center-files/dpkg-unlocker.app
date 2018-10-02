@@ -11,5 +11,5 @@ Icon=dpkg-unlocker
 Category=System
 ScriptPath=dpkg-unlocker.zmd
 Service=False
-Using=pe
+Using=pkexec
 Groups=adm;admins
