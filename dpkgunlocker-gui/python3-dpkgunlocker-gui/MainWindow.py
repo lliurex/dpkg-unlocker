@@ -532,7 +532,7 @@ class MainWindow:
 			self.fcmd="su -c '%s' $USER" %cmd
 		else:
 			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
-			self.fcmd=fcmd="su -c '" +cmd+ "' "+ user
+			self.fcmd="su -c '" +cmd+ "' "+ user
 			
 		self.init_threads()
 		self.open_help_t.start()
