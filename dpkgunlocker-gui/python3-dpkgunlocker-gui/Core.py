@@ -42,10 +42,10 @@ class Core:
 
 		self.rsrc_dir= settings.RSRC_DIR + "/"
 		self.ui_path= settings.RSRC_DIR + "/dpkgunlocker.ui"
+		self.unlockerManager=DpkgUnlockerManager.DpkgUnlockerManager()
 		self.isDpkgUnlocker_running()
 		self.check_root()
 		
-		self.unlockerManager=DpkgUnlockerManager.DpkgUnlockerManager()
 		self.processBox=ProcessBox.ProcessBox()
 			
 			
@@ -66,6 +66,8 @@ class Core:
 			dialog.format_secondary_text(_("Dpkg-Unlocker is now running. Wait a moment and try again."))
 			dialog.run()
 			sys.exit(1)
+		else:
+			self.unlockerManager.createLockToken()		
 
 	def check_root(self):
 		

@@ -126,8 +126,8 @@ class MainWindow:
 	def manage_unlock_button(self,info):
 
 		cont=0
-		ok_status=[0,1,3]
-		running_status=[1,3]
+		ok_status=[0,1,3,4]
+		running_status=[1,3,4]
 		liveProcess=0
 
 		for item in info:

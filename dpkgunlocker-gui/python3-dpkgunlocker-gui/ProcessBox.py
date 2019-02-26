@@ -142,8 +142,12 @@ class ProcessBox(Gtk.VBox):
 			msg=_("Locked: Not process found")
 		elif code==3:
 			msg=_("Locked: Apt currently executing")
+		elif code==4:
+			msg=_("Locked: Apt daemon currently executing")
+	
 
 		return msg	
+
 
 	#def get_status_msg	
 
@@ -216,6 +220,13 @@ class ProcessBox(Gtk.VBox):
 
 		elif code==3:
 			msg="Dpkg: Locked. Apt currently executing "
+			
+		elif code==4:
+			if process=="Dpkg":
+				msg="Dpkg: Locked. Apt daemon executing"
+			elif process=="Apt":
+				msg="Apt: Locked. Apt daemon executing"
+		
 
 		self.core.mainWindow.write_log(msg)
 

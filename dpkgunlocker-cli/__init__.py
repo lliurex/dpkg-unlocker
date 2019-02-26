@@ -15,6 +15,7 @@ class DpkgUnlockerCli(object):
 
 		self.dpkgUnlockerCore=DpkgUnlockerManager.DpkgUnlockerManager()
 		self.dpkgUnlockerCore.checkingLocks()
+		self.dpkgUnlockerCore.createLockToken()
 		signal.signal(signal.SIGINT,self.handler_signal)
 
 
@@ -60,6 +61,8 @@ class DpkgUnlockerCli(object):
 			msg="Locked. Not process found"	
 		elif code==3:
 			msg="Locked. Apt Currently executing"	
+		elif code==4:
+			msg="Locked: Apt daemon currently executing"	
 
 		return msg	
 	#def get_msg_status		
