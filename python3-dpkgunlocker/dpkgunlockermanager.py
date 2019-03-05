@@ -75,18 +75,38 @@ class DpkgUnlockerManager(object):
 		 0: Apt is not running
 		 1: Apt is running
 		 2: Apt is locked for previous failed process
+		 4: Apt Daemon is locked
 		 ''' 
+		check_lock=False
+		lsof_data=self.check_aptd_lock(self.aptLockTokenPath)
 
-		f= open(self.aptLockTokenPath, 'w')
-		try:
-			fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
-			code=0
-		except IOError:
-			self.apt_run=self.find_process("apt-get")
-			if self.apt_run!=None:
-				code =1
+		if len(lsof_data)>0:
+			self.apt_apd_run=self.find_process("aptd")
+			if self.apt_apd_run!=None:
+				for item in lsof_data:
+					if item==self.apt_apd_run[0]["pid"]:
+						code=4
+						break
+					else:
+						check_lock=True	
+
 			else:
-				code=2
+				check_lock=True
+		else:
+			check_lock=True
+
+		if check_lock:
+			f= open(self.aptLockTokenPath, 'w')
+			try:
+				fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
+				code=0
+					
+			except IOError:
+				self.apt_run=self.find_process("apt-get")
+				if self.apt_run!=None:
+					code =1
+				else:
+					code=2
 
 		return code	
 
@@ -100,23 +120,43 @@ class DpkgUnlockerManager(object):
 		 1: Dpkg is running
 		 2: Dpkg is locked for previous failed process
 		 3: Apt is running
+		 4: Apt Daemon is running
 
 		 ''' 
+		check_lock=False
+		lsof_data=self.check_aptd_lock(self.dpkgLockTokenPath)
 
-		f= open(self.dpkgLockTokenPath, 'w')
-		try:
-			fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
-			code=0
-		except IOError:
-			self.dpkg_run=self.find_process("dpkg")
-			if self.dpkg_run!=None:
-				code =1
+		if len(lsof_data)>0:
+			self.dpkg_apd_run=self.find_process("aptd")
+			if self.dpkg_apd_run!=None:
+				for item in lsof_data:
+					if item==self.dpkg_apd_run[0]["pid"]:
+						code=4
+						break
+					else:
+						check_lock=True
+			
 			else:
-				self.apt_run=self.find_process("apt-get")
-				if self.apt_run!=None:
-					code=3
+				check_lock=True
+		else:
+			check_lock=True
+
+		if check_lock:
+			f= open(self.dpkgLockTokenPath, 'w')
+			try:
+				fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
+				code=0
+				
+			except IOError:
+				self.dpkg_run=self.find_process("dpkg")
+				if self.dpkg_run!=None:
+					code =1
 				else:
-					code=2	
+					self.apt_run=self.find_process("apt-get")
+					if self.apt_run!=None:
+						code=3
+					else:
+						code=2	
 
 		return code		
 			
@@ -124,7 +164,7 @@ class DpkgUnlockerManager(object):
 	#def isAptLocked			
 
 
-	def get_process_list(self):
+	def get_process_list(self,arg=None):
 		
 		self.process_list=[]
 		
@@ -162,21 +202,26 @@ class DpkgUnlockerManager(object):
 					if cmd!="":
 						cmd+=" "
 					cmd+=line
-					
-				process["command"]=cmd.split(" ")[0]
+				
+				if arg=="aptd":
+					if arg in cmd:
+						process["command"]=cmd.split(" ")[1]
+					else:		
+						process["command"]=cmd.split(" ")[0]
+				else:
+					process["command"]=cmd.split(" ")[0]
 				self.process_list.append(process)
 
 	#def get_process_list			
 
 	def find_process(self,filter):
 		
-		self.get_process_list()
+		self.get_process_list(filter)
 		ret_list=[]
 		for process in self.process_list:
 			if filter in process["command"]:
 				ret_list.append(process)
-				
-				
+					
 		if len(ret_list)>0:
 			return ret_list
 		else:
@@ -184,10 +229,26 @@ class DpkgUnlockerManager(object):
 
 	#def find_process	
 
+	def check_aptd_lock(self,lockfile):
+
+		cmd="lsof -t "+lockfile
+		p=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+		output=p.communicate()[0]
+
+		if type(output) is bytes:
+			output=output.decode()
+
+		lsof_data=output.split("\n")
+		del lsof_data[-1]
+
+		return lsof_data
+
+	#def check_aptd_lock	
+
 
 	def checkingLocks(self):
 
-		self.createLockToken()
+		#self.createLockToken()
 		self.lockeds["Lliurex-Up"]=self.isLliurexUpLocked()
 		self.lockeds["Dpkg"]=self.isDpkgLocked()
 		self.lockeds["Apt"]=self.isAptLocked()
@@ -287,6 +348,7 @@ class DpkgUnlockerManager(object):
 		return killerCommands
 
 	#def getKillerCommand
+
 	
 		
 
