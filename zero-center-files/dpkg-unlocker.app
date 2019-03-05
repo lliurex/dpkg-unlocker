@@ -12,4 +12,4 @@ Category=System
 ScriptPath=dpkg-unlocker.zmd
 Service=False
 Using=pkexec
-Groups=adm;admins
+Groups=sudo;admins
