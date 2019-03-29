@@ -1,3 +1,9 @@
+dpkg-unlocker (0.2.2) bionic; urgency=medium
+
+  * Added apt-daemon lock detection
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 29 Mar 2019 12:48:01 +0100
+
 dpkg-unlocker (0.2.1) bionic; urgency=medium
 
   * Fixed help command
