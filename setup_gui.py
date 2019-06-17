@@ -45,8 +45,7 @@ if __name__ == '__main__':
 		packages = ['dpkgunlockergui'],
 		package_dir = {'dpkgunlockergui':'dpkgunlocker-gui/python3-dpkgunlocker-gui'},
 		package_data = {'dpkgunlockergui':['rsrc/*']},
-		data_files = [('share/applications',['dpkgunlocker-gui/data_files/dpkg-unlocker-gui.desktop']),
-			     ('sbin',['dpkgunlocker-gui/dpkg-unlocker-gui'])
+		data_files = [('sbin',['dpkgunlocker-gui/dpkg-unlocker-gui'])
 			     ] + polist ,
 		classifiers=[
 			'Development Status :: 4 - Beta',
