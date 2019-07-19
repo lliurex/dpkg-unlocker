@@ -1,7 +1,0 @@
-[net.lliurex.dpkg-unlocker-cli]
-Identity=unix-group:sudo;unix-groups:admins
-Action=net.lliurex.dpkg-unlocker.cli.pkexec.dpkgunlocker-cli
-ResultAny=auth_self_keep
-ResultInactive=auth_self_keep
-ResultActive=auth_self_keep
-
