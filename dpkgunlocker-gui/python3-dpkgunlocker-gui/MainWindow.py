@@ -403,8 +403,12 @@ class MainWindow:
 		if length>0:
 			command=self.create_result_token(command,action)
 			command=self.create_process_token(command,action)
+			'''
 			length=len(command)
 			self.process_box.vterminal.feed_child(command,length)
+			'''
+			self.process_box.vterminal.feed_child_binary(bytes(command,'utf8'))
+
 		else:
 			if action=="Lliurex-Up":
 				self.remove_llxup_lock_done=True
