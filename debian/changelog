@@ -1,3 +1,9 @@
+dpkg-unlocker (0.2.7) bionic; urgency=medium
+
+  * Updated link to help
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 17 Nov 2020 18:19:04 +0100
+
 dpkg-unlocker (0.2.6) bionic; urgency=medium
 
   * Added ca@valencia po file
