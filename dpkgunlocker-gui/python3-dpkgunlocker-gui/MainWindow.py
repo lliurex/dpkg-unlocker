@@ -524,9 +524,9 @@ class MainWindow:
 			run_pkexec=True
 		
 		if 'ca_ES' in lang:
-			cmd='xdg-open http://wiki.lliurex.net/tiki-index.php?page=Dpkg-Unlocker_va'
+			cmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
 		else:
-			cmd='xdg-open http://wiki.lliurex.net/tiki-index.php?page=Dpkg-Unlocker'
+			cmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
 
 		if not run_pkexec:
 			self.fcmd="su -c '%s' $USER" %cmd
