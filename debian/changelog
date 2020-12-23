@@ -1,3 +1,9 @@
+dpkg-unlocker (0.2.8) bionic; urgency=medium
+
+  * Fixed language in link to the wiki
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 23 Dec 2020 14:14:08 +0100
+
 dpkg-unlocker (0.2.7) bionic; urgency=medium
 
   * Updated link to help
