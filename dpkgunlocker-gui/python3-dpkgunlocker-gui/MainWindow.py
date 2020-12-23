@@ -537,6 +537,7 @@ class MainWindow:
 			exec_lang="LANG=ca_ES.UTF-8@valencia"
 			cmd=exec_lang +' xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
 		else:
+			exec_lang="LANG=es_ES.UTF-8"
 			cmd=exec_lang +' xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
 
 		if not run_pkexec:
