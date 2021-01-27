@@ -1,0 +1,122 @@
+dpkg-unlocker (0.2.10) bionic; urgency=medium
+
+  * Clean dpkgunlocker lock file when cli receives a bad argument
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 27 Jan 2021 10:27:39 +0100
+
+dpkg-unlocker (0.2.9) bionic; urgency=medium
+
+  * Fixed help command
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 23 Dec 2020 15:46:17 +0100
+
+dpkg-unlocker (0.2.8) bionic; urgency=medium
+
+  * Fixed language in link to the wiki
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 23 Dec 2020 14:14:08 +0100
+
+dpkg-unlocker (0.2.7) bionic; urgency=medium
+
+  * Updated link to help
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 17 Nov 2020 18:19:04 +0100
+
+dpkg-unlocker (0.2.6) bionic; urgency=medium
+
+  * Added ca@valencia po file
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 26 Jul 2019 11:19:40 +0200
+
+dpkg-unlocker (0.2.5) bionic; urgency=medium
+
+  * Fixed polkit files
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 19 Jul 2019 12:53:25 +0200
+
+dpkg-unlocker (0.2.4) bionic; urgency=medium
+
+  * Fixed valencian translations
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 17 Jun 2019 13:02:35 +0200
+
+dpkg-unlocker (0.2.3) bionic; urgency=medium
+
+  * Updated app icon
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 13 Jun 2019 09:55:53 +0200
+
+dpkg-unlocker (0.2.2) bionic; urgency=medium
+
+  * Added apt-daemon lock detection
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 29 Mar 2019 12:48:01 +0100
+
+dpkg-unlocker (0.2.1) bionic; urgency=medium
+
+  * Fixed help command
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 15 Jan 2019 15:24:00 +0100
+
+dpkg-unlocker (0.2.0) bionic; urgency=medium
+
+  * Initial release for bionic
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 02 Oct 2018 13:28:37 +0200
+
+dpkg-unlocker (0.1.8) xenial; urgency=medium
+
+  * Added thread to open help
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 10 Aug 2018 10:10:51 +0200
+
+dpkg-unlocker (0.1.7) xenial; urgency=medium
+
+  * New icon
+  * Fixed desktop file
+  * Ready to use polkit
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 09 Aug 2018 10:46:00 +0200
+
+dpkg-unlocker (0.1.6) xenial; urgency=medium
+
+  * Improved vterminal
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 19 Jul 2018 08:56:25 +0200
+
+dpkg-unlocker (0.1.5) xenial; urgency=medium
+
+  * Fixed vterminal management
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 18 Jul 2018 12:38:32 +0200
+
+dpkg-unlocker (0.1.4) xenial; urgency=medium
+
+  * Added the continuous update of the state of the processes
+  * Added access to the LliureX wiki article
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 18 Jul 2018 09:45:18 +0200
+
+dpkg-unlocker (0.1.3) xenial; urgency=medium
+
+  * Avoid unlocking when blockages are detected but there is some process running
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 03 Jul 2018 13:00:47 +0200
+
+dpkg-unlocker (0.1.2) xenial; urgency=medium
+
+  * Fixed dpkg-unlocker lock token name
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 03 Jul 2018 08:52:35 +0200
+
+dpkg-unlocker (0.1.1) xenial; urgency=medium
+
+  * Fixed python3-dpkgunlocker postinst file
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 14 Jun 2018 13:47:47 +0200
+
+dpkg-unlocker (0.1) xenial; urgency=medium
+
+  * Initial release
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 14 Jun 2018 11:50:18 +0200
