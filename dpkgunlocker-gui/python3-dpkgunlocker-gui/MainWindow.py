@@ -521,16 +521,28 @@ class MainWindow:
 
 	def help_clicked(self,widget):
 
+		language=os.environ["LANGUAGE"]
 		lang=os.environ["LANG"]
 		run_pkexec=False
 		
 		if "PKEXEC_UID" in os.environ:
 			run_pkexec=True
 		
-		if 'ca_ES' in lang:
-			cmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
+		exec_lang=""
+		app_lang=""
+
+		if language=="":
+			app_lang=lang
 		else:
-			cmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
+			language=language.split(":")[0]
+			app_lang=language
+
+		if 'valencia' in app_lang:
+			exec_lang="LANG=ca_ES.UTF-8@valencia"
+			cmd=exec_lang +' xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
+		else:
+			exec_lang="LANG=es_ES.UTF-8"
+			cmd=exec_lang +' xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
 
 		if not run_pkexec:
 			self.fcmd="su -c '%s' $USER" %cmd
