@@ -1,3 +1,9 @@
+dpkg-unlocker (0.2.10) bionic; urgency=medium
+
+  * Clean dpkgunlocker lock file when cli receives a bad argument
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 27 Jan 2021 10:27:39 +0100
+
 dpkg-unlocker (0.2.9) bionic; urgency=medium
 
   * Fixed help command
