@@ -71,4 +71,5 @@ if __name__ == '__main__':
 	elif action=="unlock":
 		sys.exit(dpkgunlockercli.unlock(mode,kill))	
 	else:
+		dpkgunlockercli.dpkgUnlockerCore.cleanLockToken()
 		usage()		
