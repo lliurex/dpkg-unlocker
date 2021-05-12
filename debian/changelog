@@ -1,3 +1,9 @@
+dpkg-unlocker (0.3.12) focal; urgency=medium
+
+  * Fixed ui file
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 12 May 2021 18:35:18 +0200
+
 dpkg-unlocker (0.3.11) focal; urgency=medium
 
   * Changes in style of gui
