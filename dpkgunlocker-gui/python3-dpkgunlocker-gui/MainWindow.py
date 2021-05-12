@@ -49,7 +49,7 @@ class MainWindow:
 		self.main_window=builder.get_object("main_window")
 		self.main_window.set_title("Dpkg-Unlocker")
 		self.main_box=builder.get_object("main_box")
-		self.main_window.resize(640,620)
+		self.main_window.resize(640,650)
 		self.image_box=builder.get_object("image_box")
 		self.help_button=builder.get_object("help_button")
 		self.unlock_button=builder.get_object("unlock_button")
@@ -79,9 +79,9 @@ class MainWindow:
 		f=Gio.File.new_for_path(self.css_file)
 		self.style_provider.load_from_file(f)
 		Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),self.style_provider,Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-		self.main_window.set_name("WINDOW")
+		#self.main_window.set_name("WINDOW")
 		self.image_box.set_name("IMAGE_BOX")
-		self.process_box.terminal_label.set_name("MSG_LABEL")
+		#self.process_box.terminal_label.set_name("MSG_LABEL")
 		
 
 	#def set_css_info	
@@ -139,7 +139,6 @@ class MainWindow:
 		if cont==3:
 			self.unlock_button.set_sensitive(False)
 			self.process_box.terminal_label.set_text(self.get_msg_text(0))
-
 		else:
 			if cont==0:
 				self.unlock_button.set_sensitive(True)
@@ -150,6 +149,8 @@ class MainWindow:
 				else:
 					self.unlock_button.set_sensitive(True)
 					self.process_box.terminal_label.set_text(self.get_msg_text(12))	
+
+		self.process_box.manage_feedback_box(False,False,True)
 
 	#def manage_unlock_button
 	
@@ -228,14 +229,15 @@ class MainWindow:
 		dialog.destroy()
 		
 		if response==Gtk.ResponseType.YES:
-			self.core.processBox.manage_vterminal(True,False)
+			self.process_box.manage_vterminal(True,False)
 			self.unlock_button.set_sensitive(False)
 			self.process_box.terminal_viewport.show()
 			self.unlockInfo=self.core.unlockerManager.getUnlockerCommand()
 			self.unlock_command,self.fixing_command,liveProcess=self.core.unlockerManager.getUnlockerCommand()
 			#self.write_log("Dpkg-Unlocked-Gui")
 			self.init_unlocker_processes()
-
+			self.process_box.manage_feedback_box(True,False)
+			self.process_box.terminal_label.set_halign(Gtk.Align.CENTER)
 			GLib.timeout_add(100,self.pulsate_unlock_process)
 
 		else:
@@ -329,6 +331,7 @@ class MainWindow:
 										self.write_log(msg)
 										self.load_info(False)
 										self.process_box.terminal_label.set_text(msg)
+										self.process_box.manage_feedback_box(False,False)
 										return False
 									else:
 										error=True
@@ -347,11 +350,11 @@ class MainWindow:
 				error=True
 				code=9
 
-
 			if error:
 				self.core.processBox.manage_vterminal(False,True)
 				msg_error=self.get_msg_text(code)
-				self.process_box.terminal_label.set_name("MSG_ERROR_LABEL")
+				#self.process_box.terminal_label.set_name("MSG_ERROR_LABEL")
+				self.process_box.manage_feedback_box(False,True)
 				self.process_box.terminal_label.set_text(msg_error)
 				self.write_log(msg_error)
 				return False

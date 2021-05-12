@@ -39,7 +39,7 @@ class ProcessBox(Gtk.VBox):
 		
 
 		self.main_box=builder.get_object("process_data_box")
-		self.process_list_box=builder.get_object("process_list_box")
+		self.process_list_box=builder.get_object("process_box_list")
 		
 		self.llxup_padlock=builder.get_object("llxup_padlock")
 		self.llxup_name_label=builder.get_object("llxup_name_label")
@@ -64,6 +64,11 @@ class ProcessBox(Gtk.VBox):
 
 		self.terminal_box=builder.get_object("terminal_box")
 		self.terminal_config=self.core.rsrc_dir+"terminal.conf"
+		self.feedback_msg_box=builder.get_object("feedback_msg_box")
+		self.feedback_ok_img=builder.get_object("feedback_ok_img")
+		self.feedback_error_img=builder.get_object("feedback_error_img")
+		self.feedback_information_img=builder.get_object("feedback_information_img")
+
 		self.terminal_label=builder.get_object("terminal_label")
 		self.terminal_viewport=builder.get_object("viewport")
 		self.terminal_scrolled=builder.get_object("terminalScrolledWindow")
@@ -102,7 +107,7 @@ class ProcessBox(Gtk.VBox):
 		self.llxup_name_label.set_name("PROCESS_NAME")
 		self.dpkg_name_label.set_name("PROCESS_NAME")
 		self.apt_name_label.set_name("PROCESS_NAME")
-
+		self.process_list_box.set_name("WINDOW")
 
 	#def set_css_info			
 			
@@ -239,6 +244,37 @@ class ProcessBox(Gtk.VBox):
 		self.vterminal.set_sensitive(sensitive)	
 
 	#def manage_vterminal
+
+	def manage_feedback_box(self,hide,error,info=False):
+
+		if hide:
+			self.feedback_msg_box.set_name("HIDE_BOX")
+			self.feedback_ok_img.hide()
+			self.feedback_error_img.hide()
+			self.feedback_information_img.hide()
+		else:
+			self.terminal_label.set_name("FEEDBACK_LABEL")
+			self.terminal_label.set_halign(Gtk.Align.START)
+
+			if error:
+				self.feedback_msg_box.set_name("ERROR_BOX")
+				self.feedback_ok_img.hide()
+				self.feedback_error_img.show()
+				self.feedback_information_img.hide()
+			else:
+				if not info:
+					self.feedback_msg_box.set_name("SUCCESS_BOX")
+					self.feedback_ok_img.show()
+					self.feedback_error_img.hide()
+					self.feedback_information_img.hide()
+				else:
+					self.feedback_msg_box.set_name("INFORMATION_BOX")
+					self.feedback_ok_img.hide()
+					self.feedback_error_img.hide()
+					self.feedback_information_img.show()
+
+	#def manage_feedback_box
+
 
 #class ProcessBox
 
