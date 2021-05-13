@@ -49,7 +49,7 @@ class MainWindow:
 		self.main_window=builder.get_object("main_window")
 		self.main_window.set_title("Dpkg-Unlocker")
 		self.main_box=builder.get_object("main_box")
-		self.main_window.resize(640,650)
+		self.main_window.resize(640,670)
 		self.image_box=builder.get_object("image_box")
 		self.help_button=builder.get_object("help_button")
 		self.unlock_button=builder.get_object("unlock_button")
