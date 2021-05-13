@@ -1,3 +1,9 @@
+dpkg-unlocker (0.3.13) focal; urgency=medium
+
+  * Fixed window size
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 13 May 2021 07:56:07 +0200
+
 dpkg-unlocker (0.3.12) focal; urgency=medium
 
   * Fixed ui file
