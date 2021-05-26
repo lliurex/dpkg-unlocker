@@ -1,3 +1,9 @@
+dpkg-unlocker (0.3.14) focal; urgency=medium
+
+  * Fixed zero app file
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 26 May 2021 16:57:57 +0200
+
 dpkg-unlocker (0.3.13) focal; urgency=medium
 
   * Fixed window size
