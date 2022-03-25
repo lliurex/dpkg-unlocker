@@ -1,6 +1,9 @@
 #!/bin/bash
 
-xgettext --join-existing ./dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py -o ./translations/dpkg-unlocker.pot
-xgettext --join-existing ./dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py -o ./translations/dpkg-unlocker.pot
-xgettext --join-existing ./dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py -o ./translations/dpkg-unlocker.pot
-xgettext --join-existing ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/dpkgunlocker.ui -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -L python ./dpkgunlocker-gui/dpkg-unlocker-gui -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/Loading.qml -o ./translations/dpkg-unlocker.pot
+xgettext --join-existing -kde -ki18nd:2 ./dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml -o ./translations/dpkg-unlocker.pot
