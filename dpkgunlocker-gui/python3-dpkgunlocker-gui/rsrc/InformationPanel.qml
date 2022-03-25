@@ -103,15 +103,4 @@ Rectangle{
 
     } 
 
-    function applyChanges(){
-        synchronizePopup.open()
-        synchronizePopup.popupMessage=i18nd("dpkg-unlocker", "Apply changes. Wait a moment...")
-        delay(500, function() {
-            if (dpkgUnlockerBridge.closePopUp){
-                synchronizePopup.close(),
-                timer.stop()
-            }
-          })
-    } 
-
 } 
