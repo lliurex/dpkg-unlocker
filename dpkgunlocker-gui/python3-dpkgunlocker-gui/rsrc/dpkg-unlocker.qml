@@ -45,8 +45,8 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-        Layout.minimumWidth:690
-        Layout.maximumWidth:690
+        Layout.minimumWidth:750
+        Layout.maximumWidth:750
         Layout.minimumHeight:550
         Layout.maximumHeight:550
 
@@ -65,7 +65,7 @@ ApplicationWindow {
         StackLayout {
             id: stackLayout
             currentIndex:dpkgUnlockerBridge.currentStack
-            implicitWidth: 690
+            implicitWidth: 750
             Layout.alignment:Qt.AlignHCenter
             Layout.leftMargin:0
             Layout.fillWidth:true

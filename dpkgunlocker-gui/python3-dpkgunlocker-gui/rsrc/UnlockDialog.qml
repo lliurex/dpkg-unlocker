@@ -76,7 +76,6 @@ Dialog {
 
             onApplied:{
                 dialogApplyClicked()
-                dpkgUnlockerBridge.launchUnlockProcess()
 
             }
 

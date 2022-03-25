@@ -10,7 +10,7 @@ Rectangle {
 
     id:servicesTable
     visible: true
-    width: 510; height: 250
+    width: 570; height: 250
     color:"white"
     border.color: "#d3d3d3"
 

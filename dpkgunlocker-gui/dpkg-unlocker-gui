@@ -6,6 +6,34 @@ from PySide2.QtGui import QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 
 import sys
+import os
+import gettext
+gettext.textdomain("dpkg-unlocker")
+_ = gettext.gettext
+
+
+if os.path.exists('/var/run/dpkgUnlocker.lock'):
+	print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
+	msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
+	cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+	os.system(cmd)
+	sys.exit(1)
+
+else:
+	try:
+		print("  [Dpkg-Unlocker-Gui]: Checking root")
+		f=open("/var/run/DpkgUnlocker.token","w")
+		f.close()
+		os.remove("/var/run/DpkgUnlocker.token")
+
+	except:
+		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
+		msg=_("You need administration privileges to run this application.")
+		cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+		os.system(cmd)
+		sys.exit(1)
+
+
 import DpkgUnlocker
 
 app = QApplication()

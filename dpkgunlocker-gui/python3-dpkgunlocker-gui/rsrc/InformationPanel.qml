@@ -26,8 +26,8 @@ Rectangle{
             visible:dpkgUnlockerBridge.showServiceStatusMesage[0]
             text:getMessageText(dpkgUnlockerBridge.showServiceStatusMesage[1])
             type:getMessageType(dpkgUnlockerBridge.showServiceStatusMesage[2])
-            Layout.minimumWidth:510
-            Layout.maximumWidth:510
+            Layout.minimumWidth:570
+            Layout.maximumWidth:570
             Layout.topMargin: 40
         }
 
@@ -41,10 +41,6 @@ Rectangle{
             }
         }
     }
-
-    CustomPopup{
-        id:synchronizePopup
-     }
 
     Timer{
         id:timer

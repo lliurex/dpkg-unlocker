@@ -32,7 +32,7 @@ Components.ListItem{
 
         Column{
             id: serviceText
-            width:400
+            width:455
             anchors.left:serviceLockedIcon.right
             anchors.leftMargin:5
             anchors.verticalCenter:parent.verticalCenter
@@ -42,13 +42,13 @@ Components.ListItem{
                 id:serviceName
                 text:serviceId
                 font.family: "Quattrocento Sans Bold"
-                font.pointSize: 12
+                font.pointSize: 11
             }
             Text{
                 id:serviceDescription
                 text:getText(statusCode)
                 font.family: "Quattrocento Sans Bold"
-                font.pointSize: 11
+                font.pointSize: 10
             }
         }
         Image {
