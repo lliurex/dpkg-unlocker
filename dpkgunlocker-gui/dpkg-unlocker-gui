@@ -34,7 +34,7 @@ else:
 		sys.exit(1)
 
 
-import DpkgUnlocker
+import dpkgunlockergui.DpkgUnlocker as DpkgUnlocker
 
 app = QApplication()
 engine = QQmlApplicationEngine()

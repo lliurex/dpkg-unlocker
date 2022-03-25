@@ -6,8 +6,8 @@ import threading
 import signal
 import copy
 import time
-import UnlockerManager
-import ServicesModel
+from . import UnlockerManager
+from . import ServicesModel
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class GatherInfo(QThread):
