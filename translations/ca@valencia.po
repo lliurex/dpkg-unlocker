@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 10:33+0100\n"
-"PO-Revision-Date: 2019-02-26 10:36+0100\n"
+"POT-Creation-Date: 2022-03-28 11:29+0200\n"
+"PO-Revision-Date: 2022-03-28 12:09+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: LliureX\n"
 "Language: ca\n"
@@ -17,88 +17,121 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:66
+#: dpkgunlocker-gui/dpkg-unlocker-gui:17
 msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
 msgstr "Dpkg-Unlocker està en execució. Espereu un moment i torneu-ho a provar."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:82
+#: dpkgunlocker-gui/dpkg-unlocker-gui:31
 msgid "You need administration privileges to run this application."
 msgstr "Necessiteu privilegis d'administració per a executar aquesta aplicació."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:450
-msgid "All processes seem correct. Nothing to do"
-msgstr "Tots els processos semblen correctes. No hi ha res a fer."
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:25
+msgid "Information"
+msgstr "Informació"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:452
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:36
+msgid "Unlock process"
+msgstr "Procés de desbloqueig"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:48
+msgid "Help"
+msgstr "Ajuda"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:109
+msgid "Unlock"
+msgstr "Desbloqueja"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:123
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:11
+msgid "Services Information"
+msgstr "Informació dels serveis"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:124
+msgid "Do you want to run the unlock process?"
+msgstr "Voleu executar el procés de desbloqueig?"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:177
 msgid "Removing Lliurex-Up lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Lliurex-Up..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:454
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:180
 msgid "Removing Dpkg lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Dkpg..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:456
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:183
 msgid "Removing Apt lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig d'Apt..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:458
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:186
 msgid "Fixing the system..."
 msgstr "S'està estabilitzant el sistema..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:460
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:62
+msgid "All processes seem correct. Nothing to do"
+msgstr "Tots els processos semblen correctes. No hi ha res a fer"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:65
 msgid "Unlocking process finished successfully"
-msgstr "El procés de desbloqueig ha finalitzat correctament."
+msgstr "El procés de desbloqueig ha finalitzat correctament"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:462
-msgid "Error fixing the system"
-msgstr "S'ha produït un error en estabilitzar el sistema."
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:464
-msgid "Error removing Apt lock file"
-msgstr "S'ha produït un error en eliminar el fitxer de bloqueig d'Apt."
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:466
-msgid "Error removing Dpg lock file"
-msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Dkpg."
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:468
-msgid "Error removing Lliurex-Up lock file"
-msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Lliurex-Up."
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:470
-msgid "Do you want to execute the unlocking process?"
-msgstr "Voleu executar el procés de desbloqueig?"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:472
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:68
 msgid "Some process are running. Wait a moment"
-msgstr "Algun procés està en execució. Espereu un moment."
+msgstr "Algun procés està en execució. Espereu un moment"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:474
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:71
 msgid "Detected some blocked process"
 msgstr "Detectat algun procés bloquejat"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:138
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:74
+msgid "Error fixing the system"
+msgstr "S'ha produït un error en estabilitzar el sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:77
+msgid "Error removing Apt lock file"
+msgstr "S'ha produït un error en eliminar el fitxer de bloqueig d'Apt"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:80
+msgid "Error removing Dpg lock file"
+msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Dkpg"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/InformationPanel.qml:83
+msgid "Error removing Lliurex-Up lock file"
+msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Lliurex-Up"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
+msgid "Unlock process details"
+msgstr "Details del procés de desbloqueig"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:78
 msgid "Unlocked"
 msgstr "Desbloquejat"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:140
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:81
 msgid "Locked: Currently executing"
 msgstr "Bloquejat: ara mateix està en execució"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:142
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:84
 msgid "Locked: Not process found"
 msgstr "Bloquejat: no s'ha trobat cap procés"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:144
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:87
 msgid "Locked: Apt currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:146
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:90
 msgid "Locked: Apt daemon currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt Daemon"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/dpkgunlocker.ui:101
-msgid "Unlock"
-msgstr "Desbloqueja"
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/Loading.qml:39
+msgid "Loading. Wait a moment..."
+msgstr "S'està carregant. Espereu un moment..."
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:53
+msgid "Apply"
+msgstr "Aplica"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:67
+msgid "Cancel"
+msgstr "Cancel·la"
