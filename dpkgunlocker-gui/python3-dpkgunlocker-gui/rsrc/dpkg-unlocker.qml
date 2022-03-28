@@ -45,8 +45,8 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-        Layout.minimumWidth:750
-        Layout.maximumWidth:750
+        Layout.minimumWidth:770
+        Layout.maximumWidth:770
         Layout.minimumHeight:550
         Layout.maximumHeight:550
 
@@ -58,14 +58,14 @@ ApplicationWindow {
 
             Image{
                 id:banner
-                source: "/home/lliurex/Desarrollo/dpkg-unlocker-qml/ui/rsrc/banner.png"
+                source: "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/banner.png"
             }
         }
 
         StackLayout {
             id: stackLayout
             currentIndex:dpkgUnlockerBridge.currentStack
-            implicitWidth: 750
+            implicitWidth: 770
             Layout.alignment:Qt.AlignHCenter
             Layout.leftMargin:0
             Layout.fillWidth:true

@@ -50,7 +50,7 @@ Dialog {
                 id:dialogApplyBtn
                 display:AbstractButton.TextBesideIcon
                 icon.name:"dialog-ok.svg"
-                text: i18nd("dpkg-unlocer","Apply")
+                text: i18nd("dpkg-unlocker","Apply")
                 focus:true
                 font.family: "Quattrocento Sans Bold"
                 font.pointSize: 10

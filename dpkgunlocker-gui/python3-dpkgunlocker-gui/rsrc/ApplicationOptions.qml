@@ -10,7 +10,7 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:160
+        width:180
         height:430
         border.color: "#d3d3d3"
 
@@ -33,7 +33,7 @@ GridLayout{
 
             MenuOptionBtn {
                 id:detailsItem
-                optionText:i18nd("dpkg-unlocker","Process details")
+                optionText:i18nd("dpkg-unlocker","Unlock process")
                 optionIcon:"/usr/share/icons/breeze/apps/16/utilities-terminal.svg"
                 enabled:false
                 Connections{
@@ -159,14 +159,10 @@ GridLayout{
                 feedBackText.visible=false
                 feedBackBar.visible=false
                 
-                var history=konsolePanel.getHistory()
-                dpkgUnlockerBridge.getKonsoleHistory(history)
-                
             }else{
                 if (dpkgUnlockerBridge.endCurrentCommand){
                     dpkgUnlockerBridge.getNewCommand()
                     var newCommand=dpkgUnlockerBridge.currentCommand
-                    console.log(newCommand)
                     konsolePanel.runCommand(newCommand)
                 }
             }

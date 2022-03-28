@@ -19,7 +19,9 @@ class UnlockerManager:
 		self.servicesData=[]
 		self.sessionLang=""
 		self.isThereALock=False
+		self.KonsoleLog="/tmp/DpkgUnlocker_KonsoleLog.txt"
 		self.getSessionLang()
+		self.cleanEnvirontment()
 
 	#def __init__
 
@@ -75,6 +77,13 @@ class UnlockerManager:
 
 	#def getSessionLang
 
+	def cleanEnvirontment(self):
+
+		if os.path.exists(self.KonsoleLog):
+			os.remove(self.KonsoleLog)
+
+	#def cleanEnvirontment
+
 	def initUnlockerProcesses(self):
 
 		self.removeLlxupLockLaunched=False
@@ -119,21 +128,21 @@ class UnlockerManager:
 
 		if action=="Lliurex-Up":
 			self.tokenLlxupResult=tempfile.mkstemp('_LlxUp')
-			result_tmp=' echo $? >' + self.tokenLlxupResult[1]+ ';'
+			result_tmp=' echo $? >' + self.tokenLlxupResult[1]+ ')'
 			
 		elif action=="Dpkg":
 			self.tokenDpkgResult=tempfile.mkstemp('_Dpkg')
-			result_tmp=' echo $? > ' + self.tokenDpkgResult[1] + ';'
+			result_tmp=' echo $? > ' + self.tokenDpkgResult[1] + ')'
 
 		elif action=="Apt":
 			self.tokenAptResult=tempfile.mkstemp('_Apt')	
-			result_tmp=' echo $? > ' + self.tokenAptResult[1] + ';'
+			result_tmp=' echo $? > ' + self.tokenAptResult[1] + ')'
 			
 		elif action=="Fixing":
 			self.tokenFixingResult=tempfile.mkstemp('_Fixing')	
-			result_tmp=' echo $? > ' + self.tokenFixingResult[1] + ';'
+			result_tmp=' echo $? > ' + self.tokenFixingResult[1] + ')'
 
-		cmd=command+';'+result_tmp
+		cmd='(('+command+');'+result_tmp+'2>&1 | tee -a %s;'%self.KonsoleLog
 		
 		return cmd	
 
@@ -220,17 +229,24 @@ class UnlockerManager:
 
 	#def writeProcessLog
 
-	def writeLogTerminal(self,history):
-
-		logText=history.split("\n")
+	def writeLogTerminal(self):
 
 		syslog.openlog("DpkgUnlocker")
 		syslog.syslog("Unlocked process: Fixing the system details")
-			
-		for item in logText:
-			if item!="":
-				self.writeLog(item)
 
+		if os.path.exists(self.KonsoleLog):
+			with open(self.KonsoleLog,'r') as fd:
+				content=fd.readlines()
+
+		if len(content)>0:
+			for line in content:
+				self.writeLog(line)
+
+		else:
+			self.writeLog("KonsoleLog is empty")
+
+		os.remove(self.KonsoleLog)
+		
 	#def writeLogTerminal
 
 	def writeLog(self,msg):

@@ -6,6 +6,7 @@ import threading
 import signal
 import copy
 import time
+import pwd
 from . import UnlockerManager
 from . import ServicesModel
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -82,7 +83,7 @@ class DpkgUnlocker(QObject):
 		
 		self._updateServicesModel()
 		DpkgUnlocker.unlockerManager.writeLog("Dpkg-Unlocker-Gui")
-		DpkgUnlocker.unlockerManager.writeLog("Services Status: %s"%(str(DpkgUnlocker.unlockerManager.servicesData)))
+		DpkgUnlocker.unlockerManager.writeLog("Initial Services Status: %s"%(str(DpkgUnlocker.unlockerManager.servicesData)))
 		self.currentStack=1
 
 	#def _loadConfig
@@ -117,6 +118,13 @@ class DpkgUnlocker(QObject):
 			for i in range(len(updatedInfo)):
 				index=self._servicesModel.index(i)
 				self._servicesModel.setData(index,'statusCode',updatedInfo[i]["statusCode"])
+
+			if not self.endProcess:
+				self.endProcess=True
+				self.endCurrentCommand=True
+				DpkgUnlocker.unlockerManager.writeLogTerminal()
+				DpkgUnlocker.unlockerManager.writeLog("Final Services Status: %s"%(str(updatedInfo)))
+	
 
 		self.isWorked=False
 
@@ -289,6 +297,7 @@ class DpkgUnlocker(QObject):
 		self.showServiceStatusMesage=[False,"","Success"]
 		DpkgUnlocker.unlockerManager.initUnlockerProcesses()
 		DpkgUnlocker.unlockerManager.getUnlockerCommand()
+		DpkgUnlocker.unlockerManager.writeLog("Services Status Error: %s"%(str(DpkgUnlocker.unlockerManager.servicesData)))
 		self.unlockerProcessRunningTimer=QTimer(None)
 		self.unlockerProcessRunningTimer.timeout.connect(self._updateUnlockerProcessStatus)
 		self.unlockerProcessRunningTimer.start(100)
@@ -303,9 +312,9 @@ class DpkgUnlocker(QObject):
 			if "Lliurex-Up" in DpkgUnlocker.unlockerManager.unlockInfo["unlockCmd"]:
 				self.feedBackCode=DpkgUnlocker.LLXUP_UNLOCK_COMMAND_RUNNING
 				DpkgUnlocker.unlockerManager.removeLlxupLockLaunched=True
+				self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Lliurex-Up","remove")
 				self.endCurrentCommand=True
 				self.llxupLockCheck=True
-				self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Lliurex-Up","remove")
 				DpkgUnlocker.unlockerManager.writeProcessLog(self.feedBackCode)
 
 			else:
@@ -322,9 +331,9 @@ class DpkgUnlocker(QObject):
 					if "Dpkg" in DpkgUnlocker.unlockerManager.unlockInfo["unlockCmd"]:
 						self.feedBackCode=DpkgUnlocker.DPKG_UNLOCK_COMMAND_RUNNING
 						DpkgUnlocker.unlockerManager.removeDpkgLockLaunched=True
+						self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Dpkg","remove")
 						self.endCurrentCommand=True
 						self.dpkgLockCheck=True
-						self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Dpkg","remove")
 						DpkgUnlocker.unlockerManager.writeProcessLog(self.feedBackCode)
 					else:
 						DpkgUnlocker.unlockerManager.removeDpkgLockDone=True
@@ -340,9 +349,9 @@ class DpkgUnlocker(QObject):
 							if "Apt" in DpkgUnlocker.unlockerManager.unlockInfo["unlockCmd"]:
 								self.feedBackCode=DpkgUnlocker.DPKG_UNLOCK_COMMAND_RUNNING
 								DpkgUnlocker.unlockerManager.removeAptLockLaunched=True
+								self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Apt","remove")
 								self.endCurrentCommand=True
 								self.aptLockCheck=True
-								self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Apt","remove")
 								DpkgUnlocker.unlockerManager.writeProcessLog(self.feedBackCode)
 							else:
 								DpkgUnlocker.unlockerManager.removeAptLockDone=True
@@ -358,9 +367,9 @@ class DpkgUnlocker(QObject):
 									if DpkgUnlocker.unlockerManager.unlockInfo["commonCmd"]!="":
 										self.feedBackCode=DpkgUnlocker.FIXING_UNLOCK_COMMAND_RUNNING
 										DpkgUnlocker.unlockerManager.fixingSystemLaunched=True
+										self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Fixing","fixing")
 										self.endCurrentCommand=True
 										self.fixingLockCheck=True
-										self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Fixing","fixing")
 										DpkgUnlocker.unlockerManager.writeProcessLog(self.feedBackCode)
 									else:
 										DpkgUnlocker.unlockerManager.fixingSystemDone=True
@@ -374,8 +383,6 @@ class DpkgUnlocker(QObject):
 										self.unlockerProcessRunningTimer.stop()
 										self.runningUnlockCommand=False
 										self._gatherInfoThread()
-										self.endProcess=True
-										self.endCurrentCommand=True	
 
 									else:
 										error=True
@@ -392,12 +399,13 @@ class DpkgUnlocker(QObject):
 
 			if error:
 				self.runningUnlockCommand=False
-				self.endProcess=True
-				self.endCurrentCommand=True
+				#self.endProcess=True
+				#self.endCurrentCommand=True
 				self.showServiceStatusMesage=[True,code,"Error"]
 				self.unlockerProcessRunningTimer.stop()
-				self.isWorked=False
+				#self.isWorked=False
 				DpkgUnlocker.unlockerManager.writeProcessLog(code)
+				self._gatherInfoThread()
 
 		if DpkgUnlocker.unlockerManager.removeLlxupLockLaunched:
 			if not DpkgUnlocker.unlockerManager.removeLlxupLockDone:
@@ -426,20 +434,24 @@ class DpkgUnlocker(QObject):
 		
 	#def getNewCommand
 
-	@Slot(str)
-	def getKonsoleHistory(self,history):
-
-		DpkgUnlocker.unlockerManager.writeLogTerminal(history)
-
-	#def getKonsoleHistory
-
 	@Slot()
 	def openHelp(self):
 		
+		runPkexec=False
+		
+		if "PKEXEC_UID" in os.environ:
+			runPkexec=True
+
 		if 'valencia' in DpkgUnlocker.unlockerManager.sessionLang:
 			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
 		else:
 			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
+		
+		if not runPkexec:
+			self.helpCmd="su -c '%s' $USER"%self.helpCmd
+		else:
+			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
+			self.helpCmd="su -c '%s' %s"%(self.helpCmd,user)
 		
 		self.openHelpT=threading.Thread(target=self._openHelp)
 		self.openHelpT.daemon=True

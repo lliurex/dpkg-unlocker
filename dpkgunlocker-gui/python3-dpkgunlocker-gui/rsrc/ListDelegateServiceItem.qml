@@ -84,7 +84,7 @@ Components.ListItem{
                 msg=i18nd("dpkg-unlocker","Locked: Not process found")
                 break;
             case 3:
-                msg=i18nd("dpkg-unlocker","Apt currently executing")
+                msg=i18nd("dpkg-unlocker","Locked: Apt currently executing")
                 break;
             case 4:
                 msg=i18nd("dpkg-unlocker","Locked: Apt daemon currently executing")

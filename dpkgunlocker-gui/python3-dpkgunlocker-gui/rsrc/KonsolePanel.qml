@@ -9,7 +9,7 @@ import QMLTermWidget 1.0
 Rectangle{
     color:"transparent"
     Text{ 
-        text:i18nd("dpkg-unlocker","Process Details")
+        text:i18nd("dpkg-unlocker","Unlock process details")
         font.family: "Quattrocento Sans Bold"
         font.pointSize: 16
     }
@@ -58,10 +58,5 @@ Rectangle{
         mainsession.sendText(command)
 
     } 
-
-    function getHistory(){
-        return mainsession.history
-
-    }
 
 } 
