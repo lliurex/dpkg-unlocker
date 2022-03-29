@@ -468,9 +468,12 @@ class DpkgUnlocker(QObject):
 	@Slot()
 	def closeApplication(self):
 
-		if self.isWorked:
+		if self.runningUnlockCommand:
 			self.closeGui=False
 		else:
+			if self.isWorked:
+				self.statusServicesRunningTimer.stop()
+			
 			self.closeGui=True
 			DpkgUnlocker.unlockerManager.cleanLockToken()
 			DpkgUnlocker.unlockerManager.writeLog("Quit")
