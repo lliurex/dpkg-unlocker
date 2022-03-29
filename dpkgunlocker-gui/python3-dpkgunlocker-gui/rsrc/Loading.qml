@@ -24,7 +24,7 @@ Rectangle{
                 height:30
                 
                 AnimatedImage{
-                    source: "/usr/share/lliurex-access-control/rsrc/loading.gif"
+                    source: "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/loading.gif"
                     transform: Scale {xScale:0.15;yScale:0.15}
                 }
             }
