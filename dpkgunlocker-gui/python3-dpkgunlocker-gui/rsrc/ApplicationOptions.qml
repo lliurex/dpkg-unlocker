@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
+import org.kde.plasma.components 3.0 as PC3
 
 GridLayout{
     id: optionsGrid
@@ -82,7 +83,7 @@ GridLayout{
 
             ColumnLayout{
                 id:feedbackColumn
-                Layout.fillWidth:true
+                Layout.preferredWidth:455
                 spacing:5
                 Text{
                     id:feedBackText
@@ -91,6 +92,7 @@ GridLayout{
                     font.family: "Quattrocento Sans Bold"
                     font.pointSize: 10
                     Layout.alignment:Qt.AlignHCenter
+                    Layout.bottomMargin:7
                 }
                 ProgressBar{
                     id:feedBackBar
@@ -100,12 +102,12 @@ GridLayout{
                 }
             }
     
-            Button {
+            PC3.Button {
                 id:unlockBtn
                 visible:true
                 focus:true
                 display:AbstractButton.TextBesideIcon
-                icon.name:"dialog-ok.svg"
+                icon.name:"dialog-ok"
                 text:i18nd("dpkg-unlocker","Unlock")
                 Layout.preferredHeight:40
                 Layout.rightMargin:10

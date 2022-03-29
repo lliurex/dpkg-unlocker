@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
+import org.kde.plasma.components 3.0 as PC3
 
 
 Dialog {
@@ -40,49 +41,39 @@ Dialog {
         
         }
       
-        DialogButtonBox {
-            buttonLayout:DialogButtonBox.KdeLayout
+        PC3.Button {
+            id:dialogApplyBtn
+            display:AbstractButton.TextBesideIcon
+            icon.name:"dialog-ok.svg"
+            text: i18nd("dpkg-unlocker","Apply")
+            focus:true
+            font.family: "Quattrocento Sans Bold"
+            font.pointSize: 10
+            anchors.bottom:parent.bottom
+            anchors.right:dialogCancelBtn.left
+            anchors.rightMargin:10
+            anchors.bottomMargin:5
+            Keys.onReturnPressed: dialogApplyBtn.clicked()
+            Keys.onEnterPressed: dialogApplyBtn.clicked()
+            onClicked:dialogApplyClicked()
+        }
+
+        PC3.Button {
+            id:dialogCancelBtn
+            display:AbstractButton.TextBesideIcon
+            icon.name:"dialog-cancel"
+            text: i18nd("dpkg-unlocker","Cancel")
+            focus:true
+            font.family: "Quattrocento Sans Bold"
+            font.pointSize: 10
             anchors.bottom:parent.bottom
             anchors.right:parent.right
-            anchors.topMargin:15
-
-            Button {
-                id:dialogApplyBtn
-                display:AbstractButton.TextBesideIcon
-                icon.name:"dialog-ok.svg"
-                text: i18nd("dpkg-unlocker","Apply")
-                focus:true
-                font.family: "Quattrocento Sans Bold"
-                font.pointSize: 10
-                DialogButtonBox.buttonRole: DialogButtonBox.ApplyRole
-                Keys.onReturnPressed: dialogApplyBtn.clicked()
-                Keys.onEnterPressed: dialogApplyBtn.clicked()
-
-            }
-
-            Button {
-                id:dialogCancelBtn
-                display:AbstractButton.TextBesideIcon
-                icon.name:"dialog-cancel.svg"
-                text: i18nd("dpkg-unlocker","Cancel")
-                focus:true
-                font.family: "Quattrocento Sans Bold"
-                font.pointSize: 10
-                DialogButtonBox.buttonRole:DialogButtonBox.RejectRole
-                Keys.onReturnPressed: dialogCancelBtn.clicked()
-                Keys.onEnterPressed: dialogCancelBtn.clicked()
-        
-            }
-
-            onApplied:{
-                dialogApplyClicked()
-
-            }
-
-            onRejected:{
-                discardDialogClicked()
-
-            }
+            anchors.rightMargin:5
+            anchors.bottomMargin:5
+            Keys.onReturnPressed: dialogCancelBtn.clicked()
+            Keys.onEnterPressed: dialogCancelBtn.clicked()
+            onClicked:discardDialogClicked()
         }
+
     }
  }

@@ -12,6 +12,7 @@ ApplicationWindow {
     id:mainWindow
     visible: true
     title: "Dpkg Unlocker"
+    color:"#eff0f1"
     property int margin: 1
     width: mainLayout.implicitWidth + 2 * margin
     height: mainLayout.implicitHeight + 2 * margin
