@@ -44,7 +44,7 @@ Dialog {
         PC3.Button {
             id:dialogApplyBtn
             display:AbstractButton.TextBesideIcon
-            icon.name:"dialog-ok.svg"
+            icon.name:"dialog-ok"
             text: i18nd("dpkg-unlocker","Apply")
             focus:true
             font.family: "Quattrocento Sans Bold"
