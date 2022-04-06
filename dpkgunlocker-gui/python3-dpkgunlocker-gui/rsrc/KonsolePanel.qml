@@ -20,7 +20,7 @@ Rectangle{
         anchors.verticalCenter:parent.verticalCenter
 
         Rectangle {
-            width: 570
+            width: 555
             height: 300
 
             QMLTermWidget {

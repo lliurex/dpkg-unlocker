@@ -11,41 +11,53 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:180
+        width:205
         height:430
         border.color: "#d3d3d3"
 
         GridLayout{
             id: menuGrid
-            rows:3 
+            rows:4 
             flow: GridLayout.TopToBottom
             rowSpacing:0
 
             MenuOptionBtn {
-                id:infoPanel
-                optionText:i18nd("dpkg-unlocker","Information")
-                optionIcon:"/usr/share/icons/breeze/actions/16/go-home.svg"
+                id:servicesOption
+                optionText:i18nd("dpkg-unlocker","Services")
+                optionIcon:"/usr/share/icons/breeze/actions/16/run-build.svg"
                 Connections{
                     function onMenuOptionClicked(){
-                        optionsLayout.currentIndex=0;
+                        dpkgUnlockerBridge.manageTransitions(0)
                     }
                 }
             }
 
             MenuOptionBtn {
-                id:detailsItem
+                id:detailsOption
                 optionText:i18nd("dpkg-unlocker","Unlock process")
                 optionIcon:"/usr/share/icons/breeze/apps/16/utilities-terminal.svg"
                 enabled:false
                 Connections{
                     function onMenuOptionClicked(){
-                        optionsLayout.currentIndex=1;
+                        dpkgUnlockerBridge.manageTransitions(1)
                     }
                 }
             }
 
             MenuOptionBtn {
-                id:helpItem
+                id:protectionOption
+                optionText:i18nd("dpkg-unlocker","Metapackage protection")
+                optionIcon:"/usr/share/icons/breeze/status/16/security-high.svg"
+                Connections{
+                    function onMenuOptionClicked(){
+                        dpkgUnlockerBridge.manageTransitions(2)
+                    }
+                }
+            }
+          
+
+            MenuOptionBtn {
+                id:helpOption
                 optionText:i18nd("dpkg-unlocker","Help")
                 optionIcon:"/usr/share/icons/breeze/actions/16/help-contents.svg"
                 Connections{
@@ -58,7 +70,7 @@ GridLayout{
     }
     GridLayout{
         id: layoutGrid
-        rows:2 
+        rows:3 
         flow: GridLayout.TopToBottom
         rowSpacing:0
 
@@ -67,12 +79,17 @@ GridLayout{
             currentIndex:dpkgUnlockerBridge.currentOptionsStack
             implicitHeight: 300
             Layout.alignment:Qt.AlignHCenter
-            InformationPanel{
-                id:informationPanel
+            
+            ServicesPanel{
+                id:servicesPanel
             }
             KonsolePanel{
                 id:konsolePanel
             }
+            ProtectionPanel{
+                id:protectionPanel
+            }
+
         }
 
         RowLayout{
@@ -108,36 +125,83 @@ GridLayout{
                 focus:true
                 display:AbstractButton.TextBesideIcon
                 icon.name:"dialog-ok"
-                text:i18nd("dpkg-unlocker","Unlock")
+                text:{
+                    if (optionsLayout.currentIndex!=2){
+                        i18nd("dpkg-unlocker","Unlock")
+                    }else{
+                        i18nd("dpkg-unlocker","Apply")
+                    }
+                }
                 Layout.preferredHeight:40
                 Layout.rightMargin:10
-                enabled:dpkgUnlockerBridge.isThereALock
+                enabled:{
+                    if (optionsLayout.currentIndex!=2){
+                        dpkgUnlockerBridge.isThereALock
+                    }else{
+                        dpkgUnlockerBridge.isProtectionChange
+                    }
+                }
                 Keys.onReturnPressed: unlockBtn.clicked()
                 Keys.onEnterPressed: unlockBtn.clicked()
                 onClicked:{
-                    unlockDialog.open()
+                    dpkgUnlockerBridge.openDialog()
                 }
             }
         }
     }
     UnlockDialog{
         id:unlockDialog
-        dialogTitle:"Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
-        dialogMsg:i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+        dialogTitle:{
+            if (optionsLayout.currentIndex==2){
+                "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
+            }else{
+                "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
+            }
+        }
+        dialogMsg:{
+            if (optionsLayout.currentIndex==2){
+                if (!dpkgUnlockerBridge.metaProtectionEnabled){
+                    i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
+                }else{
+                    i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
+                }
+
+            }else{
+                i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+            }
+        }
+        dialogVisible:dpkgUnlockerBridge.showDialog
         Connections{
             target:unlockDialog
             function onDialogApplyClicked(){
-                unlockBtn.enabled=false
-                feedBackText.visible=true
-                feedBackBar.visible=true
-                detailsItem.enabled=true
-                applyChanges()
-                dpkgUnlockerBridge.launchUnlockProcess()
-                unlockDialog.close()
-                
+                if (optionsLayout.currentIndex==2){
+                    dpkgUnlockerBridge.changeProteccionStatus()
+                    unlockDialog.close()
+                }else{
+                    feedBackText.visible=true
+                    feedBackBar.visible=true
+                    detailsOption.enabled=true
+                    protectionOption.enabled=false
+                    applyChanges()
+                    dpkgUnlockerBridge.launchUnlockProcess()
+                    unlockDialog.close()
+                }
             }
+
             function onDiscardDialogClicked(){
-                unlockDialog.close()
+                dpkgUnlockerBridge.discardChangeProtectionStatus()
+            }
+
+            function onCancelDialogClicked(){
+                if (optionsLayout.currentIndex==2){
+                    if (dpkgUnlockerBridge.showPendingChangesDialog){
+                        dpkgUnlockerBridge.cancelAction()
+                    }else{
+                        dpkgUnlockerBridge.discardChangeProtectionStatus()
+                    }
+                }else{
+                    dpkgUnlockerBridge.cancelAction()
+                }
             }
 
         }
@@ -160,6 +224,7 @@ GridLayout{
                 timer.stop()
                 feedBackText.visible=false
                 feedBackBar.visible=false
+                protectionOption.enabled=true
                 
             }else{
                 if (dpkgUnlockerBridge.endCurrentCommand){

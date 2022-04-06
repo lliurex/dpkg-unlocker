@@ -32,7 +32,7 @@ Components.ListItem{
 
         Column{
             id: serviceText
-            width:455
+            width:440
             anchors.left:serviceLockedIcon.right
             anchors.leftMargin:5
             anchors.verticalCenter:parent.verticalCenter

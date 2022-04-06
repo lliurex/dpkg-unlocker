@@ -36,11 +36,16 @@ class DpkgUnlocker(QObject):
 	DPKG_UNLOCK_COMMAND_RUNNING=2
 	APT_UNLOCK_COMMAND_RUNNING=3
 	FIXING_UNLOCK_COMMAND_RUNNING=4
+	META_PROTECTION_ENABLED=6
+	META_PROTECTION_DISABLED=7
+	META_PROTECTION_CHANGE_SUCCESS=8
 	FIXING_UNLOCK_COMMAND_ERROR=-6
 	APT_UNLOCK_COMMAND_ERROR=-7
 	DPKG_UNLOCK_COMMAND_ERROR=-8
 	LLXUP_UNLOCK_COMMAND_ERROR=-9
-
+	META_PROTECTION_ENABLED_ERROR=-10
+	META_PROTECTION_DISABLED_ERROR=-11
+	
 	def __init__(self):
 
 		QObject.__init__(self)
@@ -58,15 +63,20 @@ class DpkgUnlocker(QObject):
 		self._currentOptionsStack=0
 		self._isThereALock=False
 		self._feedBackCode=0
-		self.moveToStack=""
+		self._metaProtectionEnabled=True
+		self._showProtectionStatusMessage=[False,"","Success"]
+		self._isProtectionChange=False
+		self._showDialog=False
+		self._showPendingChangesDialog=False
+		self._endProcess=True
+		self._endCurrentCommand=False
+		self._currentCommand=""
 		self.statusServicesRunningTimer=QTimer(None)
 		self.statusServicesRunningTimer.timeout.connect(self._updateServicesStatus)
 		self.statusServicesRunningTimer.start(5000)
 		self.isWorked=True
-		self._endProcess=True
-		self._endCurrentCommand=False
-		self._currentCommand=""
 		self.runningUnlockCommand=False
+		self.moveToStack=""
 		self.gatherInfo=GatherInfo()
 		self.gatherInfo.start()
 		self.gatherInfo.finished.connect(self._loadConfig)
@@ -75,14 +85,23 @@ class DpkgUnlocker(QObject):
 
 	def _loadConfig(self):		
 
+		self.metaProtectionEnabled=DpkgUnlocker.unlockerManager.metaProtectionEnabled
+	
 		self.isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 		if self._isThereALock:
 			self._updateServiceStatusMessage(12)
 		else:
 			self._updateServiceStatusMessage(0)
 		
+		if self.metaProtectionEnabled:
+			self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_ENABLED,"Success"]
+		else:
+			self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_DISABLED,"Warning"]
+
+		self._copyCurrentProtectionStatus()
 		self._updateServicesModel()
 		DpkgUnlocker.unlockerManager.writeLog("Dpkg-Unlocker-Gui")
+		DpkgUnlocker.unlockerManager.writeLog("Initial System Metapackage Protecion. Enabled: %s"%(str(self.metaProtectionEnabled)))
 		DpkgUnlocker.unlockerManager.writeLog("Initial Services Status: %s"%(str(DpkgUnlocker.unlockerManager.servicesData)))
 		self.currentStack=1
 
@@ -114,6 +133,15 @@ class DpkgUnlocker(QObject):
 			else:
 				self._updateServiceStatusMessage(0)
 			
+			if not self.isProtectionChange:
+				self.metaProtectionEnabled=DpkgUnlocker.unlockerManager.metaProtectionEnabled
+				if self.metaProtectionEnabled:
+					self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_ENABLED,"Success"]
+				else:
+					self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_DISABLED,"Warning"]
+
+				self._copyCurrentProtectionStatus()
+
 			updatedInfo=DpkgUnlocker.unlockerManager.servicesData
 			for i in range(len(updatedInfo)):
 				index=self._servicesModel.index(i)
@@ -124,7 +152,6 @@ class DpkgUnlocker(QObject):
 				self.endCurrentCommand=True
 				DpkgUnlocker.unlockerManager.writeLogTerminal()
 				DpkgUnlocker.unlockerManager.writeLog("Final Services Status: %s"%(str(updatedInfo)))
-	
 
 		self.isWorked=False
 
@@ -213,7 +240,77 @@ class DpkgUnlocker(QObject):
 			self._showServiceStatusMesage=showServiceStatusMesage
 			self.on_showServiceStatusMesage.emit()
 
-	#def _setShowServiceStatusMesage	
+	#def _setShowServiceStatusMesage
+
+	def _getMetaProtectionEnabled(self):
+
+		return self._metaProtectionEnabled
+
+	#def _getFeedBackCode
+
+	def _setMetaProtectionEnabled(self,metaProtectionEnabled):
+
+		if self._metaProtectionEnabled!=metaProtectionEnabled:
+			self._metaProtectionEnabled=metaProtectionEnabled
+			self.on_metaProtectionEnabled.emit()
+
+	#def _setMetaProtectionEnabled
+
+	def _getShowProtectionStatusMessage(self):
+
+		return self._showProtectionStatusMessage
+
+	#def _getShowServiceStatusMesage
+
+	def _setShowProtectionStatusMessage(self,showProtectionStatusMessage):
+
+		if self._showProtectionStatusMessage!=showProtectionStatusMessage:
+			self._showProtectionStatusMessage=showProtectionStatusMessage
+			self.on_showProtectionStatusMessage.emit()
+
+	#def _setShowProtectionStatusMessage
+
+	def _getIsProtectionChange(self):
+
+		return self._isProtectionChange
+
+	#def _getIsProtectionChange
+
+	def _setIsProtectionChange(self,isProtectionChange):
+
+		if self._isProtectionChange!=isProtectionChange:
+			self._isProtectionChange=isProtectionChange
+			self.on_isProtectionChange.emit()
+	
+	#def _setIsProtectionChange
+
+	def _getShowDialog(self):
+
+		return self._showDialog
+
+	#def _getShowDialog
+
+	def _setShowDialog(self,showDialog):
+
+		if self._showDialog!=showDialog:
+			self._showDialog=showDialog
+			self.on_showDialog.emit()
+	
+	#def _setShowDialog
+
+	def _getShowPendingChangesDialog(self):
+
+		return self._showPendingChangesDialog
+
+	#def _getShowPendingChangesDialog
+
+	def _setShowPendingChangesDialog(self,showPendingChangesDialog):
+
+		if self._showPendingChangesDialog!=showPendingChangesDialog:
+			self._showPendingChangesDialog=showPendingChangesDialog
+			self.on_showPendingChangesDialog.emit()
+	
+	#def _setShowPendingChangesDialog
 
 	def _getEndProcess(self):
 
@@ -287,13 +384,29 @@ class DpkgUnlocker(QObject):
 
 	#def _updateServicesModel
 
+	def _copyCurrentProtectionStatus(self):
+
+		self.currentMetaProtectionStatus=copy.deepcopy(self.metaProtectionEnabled)
+		self.currentMessage=copy.deepcopy(self.showProtectionStatusMessage)
+
+	#def _copyCurrentProtectionStatus
+
+	@Slot()
+	def openDialog(self):
+		
+		self.showDialog=True
+
+	#def openDialog
+
 	@Slot()
 	def launchUnlockProcess(self):
 
+		self.showDialog=False
 		self.runningUnlockCommand=True
 		self.statusServicesRunningTimer.stop()
 		self.endProcess=False
 		self.isWorked=True
+		self.isThereALock=False
 		self.showServiceStatusMesage=[False,"","Success"]
 		DpkgUnlocker.unlockerManager.initUnlockerProcesses()
 		DpkgUnlocker.unlockerManager.getUnlockerCommand()
@@ -399,11 +512,8 @@ class DpkgUnlocker(QObject):
 
 			if error:
 				self.runningUnlockCommand=False
-				#self.endProcess=True
-				#self.endCurrentCommand=True
 				self.showServiceStatusMesage=[True,code,"Error"]
 				self.unlockerProcessRunningTimer.stop()
-				#self.isWorked=False
 				DpkgUnlocker.unlockerManager.writeProcessLog(code)
 				self._gatherInfoThread()
 
@@ -433,6 +543,92 @@ class DpkgUnlocker(QObject):
 		self.endCurrentCommand=False
 		
 	#def getNewCommand
+
+	@Slot(bool)
+	def getProtectionChange(self,change):
+		
+		if self.currentMetaProtectionStatus!=change:
+			self.metaProtectionEnabled=change
+			self.showProtectionStatusMessage=[False,"","Success"]
+			self.isProtectionChange=True
+		else:
+			self.metaProtectionEnabled=self.currentMetaProtectionStatus
+			self.showProtectionStatusMessage=self.currentMessage
+			self.isProtectionChange=False
+
+	#def getProtectionChange
+
+	@Slot()
+	def changeProteccionStatus(self):
+
+		self.showDialog=False
+		self.isWorked=True
+		self.runningUnlockCommand=True
+		self.isProtectionChange=False
+		result=DpkgUnlocker.unlockerManager.changeMetaProtectionStatus(self.metaProtectionEnabled)
+		if result:
+			self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_CHANGE_SUCCESS,"Success"]
+			self.currentMessage=copy.deepcopy(self.showProtectionStatusMessage)
+			self.closeGui=True
+		else:
+			if self.metaProtectionEnabled:
+				self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_DISABLED_ERROR,"Error"]
+			else:
+				self.showProtectionStatusMessage=[True,DpkgUnlocker.META_PROTECTION_ENABLED_ERROR,"Error"]
+			self.closeGui=False
+			self.moveToStack=""
+
+		if self.moveToStack!="":
+			self.currentOptionsStack=self.moveToStack
+			self.moveToStack=""
+		
+		DpkgUnlocker.unlockerManager.getMetaProtectionStatus()	
+		self._copyCurrentProtectionStatus()
+		DpkgUnlocker.unlockerManager.writeLog("Final System Metapackage Protecion. Enabled: %s"%(str(self.metaProtectionEnabled)))
+		
+		self.isWorked=False	
+		self.runningUnlockCommand=False
+
+	#def changeProteccionStatus
+
+	@Slot()
+	def discardChangeProtectionStatus(self):
+
+		self.showDialog=False
+		self.showPendingChangesDialog=False
+		self.isProtectionChange=False
+		self.metaProtectionEnabled=self.currentMetaProtectionStatus
+		self.showProtectionStatusMessage=self.currentMessage
+		self.closeGui=True
+		if self.moveToStack!="":
+			self.currentOptionsStack=self.moveToStack
+			self.moveToStack=""
+
+	#def cancelChangeProtectionStatus
+
+	@Slot() 
+	def cancelAction(self):
+
+		self.showDialog=False
+		if self.showPendingChangesDialog:
+			self.showPendingChangesDialog=False
+			self.moveToStack=""
+
+	#def cancelAction
+
+	@Slot(int)
+	def manageTransitions(self,stack):
+
+		if self.currentOptionsStack!=stack:
+			self.moveToStack=stack
+			if self.isProtectionChange:
+				self.showDialog=True
+				self.showPendingChangesDialog=True
+			else:
+				self.currentOptionsStack=stack
+				self.moveToStack=""
+	
+	#def manageTransitions
 
 	@Slot()
 	def openHelp(self):
@@ -471,12 +667,16 @@ class DpkgUnlocker(QObject):
 		if self.runningUnlockCommand:
 			self.closeGui=False
 		else:
-			if self.isWorked:
-				self.statusServicesRunningTimer.stop()
-			
-			self.closeGui=True
-			DpkgUnlocker.unlockerManager.cleanLockToken()
-			DpkgUnlocker.unlockerManager.writeLog("Quit")
+			if not self.isProtectionChange:
+				if self.isWorked:
+					self.statusServicesRunningTimer.stop()
+				self.closeGui=True
+				DpkgUnlocker.unlockerManager.cleanLockToken()
+				DpkgUnlocker.unlockerManager.writeLog("Quit")
+			else:
+				self.showDialog=True
+				self.showPendingChangesDialog=True
+				self.closeGui=False
 
 	#def closeApplication
 	
@@ -494,6 +694,21 @@ class DpkgUnlocker(QObject):
 	
 	on_showServiceStatusMesage=Signal()
 	showServiceStatusMesage=Property('QVariantList',_getShowServiceStatusMesage,_setShowServiceStatusMesage,notify=on_showServiceStatusMesage)
+
+	on_metaProtectionEnabled=Signal()
+	metaProtectionEnabled=Property(int,_getMetaProtectionEnabled,_setMetaProtectionEnabled,notify=on_metaProtectionEnabled)
+	
+	on_showProtectionStatusMessage=Signal()
+	showProtectionStatusMessage=Property('QVariantList',_getShowProtectionStatusMessage,_setShowProtectionStatusMessage,notify=on_showProtectionStatusMessage)
+
+	on_isProtectionChange=Signal()
+	isProtectionChange=Property(bool,_getIsProtectionChange,_setIsProtectionChange,notify=on_isProtectionChange)
+
+	on_showDialog=Signal()
+	showDialog=Property(bool,_getShowDialog,_setShowDialog,notify=on_showDialog)
+	
+	on_showPendingChangesDialog=Signal()
+	showPendingChangesDialog=Property(bool,_getShowPendingChangesDialog,_setShowPendingChangesDialog,notify=on_showPendingChangesDialog)
 	
 	on_endProcess=Signal()
 	endProcess=Property(bool,_getEndProcess,_setEndProcess, notify=on_endProcess)

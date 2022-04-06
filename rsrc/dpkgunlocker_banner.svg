@@ -7,7 +7,7 @@
    sodipodi:version="0.32"
    id="svg2913"
    height="120"
-   width="770"
+   width="780"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/lliurex/Desarrollo/dpkg-unlocker/dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/banner.png"
@@ -7980,9 +7980,9 @@
      inkscape:grid-bbox="true"
      showgrid="false"
      inkscape:current-layer="g2945"
-     inkscape:cy="-28.489375"
-     inkscape:cx="464.82665"
-     inkscape:zoom="0.66691529"
+     inkscape:cy="-102.84568"
+     inkscape:cx="173.88342"
+     inkscape:zoom="0.94316065"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1"
@@ -8362,13 +8362,16 @@
           <ellipse
              style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.275958"
              id="path5926-3"
-             cx="169.05539"
+             cx="170.46288"
              cy="25.990999"
              rx="22.147228"
-             ry="22.147215" />
+             ry="22.147215"
+             inkscape:export-filename="/home/lliurex/Desarrollo/dpkg-unlocker/dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/banner.png"
+             inkscape:export-xdpi="96"
+             inkscape:export-ydpi="96" />
           <g
              id="g2722"
-             transform="translate(6.6972998,3.51812)">
+             transform="translate(7.8702054,3.51812)">
             <g
                id="g6061"
                transform="matrix(0.99065776,0,0,0.99065776,-61.270666,-97.889326)">

@@ -24,8 +24,6 @@ ApplicationWindow {
         x = Screen.width / 2 - width / 2
         y = Screen.height / 2 - height / 2
     }
-
-    
     onClosing: {
         close.accepted=closing;
         dpkgUnlockerBridge.closeApplication()
@@ -34,7 +32,6 @@ ApplicationWindow {
                 closing=true,
                 timer.stop(),           
                 mainWindow.close();
-
             }else{
                 closing=false;
             }
@@ -46,8 +43,8 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-        Layout.minimumWidth:770
-        Layout.maximumWidth:770
+        Layout.minimumWidth:780
+        Layout.maximumWidth:780
         Layout.minimumHeight:550
         Layout.maximumHeight:550
 
@@ -66,7 +63,7 @@ ApplicationWindow {
         StackLayout {
             id: stackLayout
             currentIndex:dpkgUnlockerBridge.currentStack
-            implicitWidth: 770
+            implicitWidth: 780
             Layout.alignment:Qt.AlignHCenter
             Layout.leftMargin:0
             Layout.fillWidth:true

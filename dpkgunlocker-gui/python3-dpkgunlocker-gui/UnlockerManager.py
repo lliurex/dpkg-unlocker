@@ -22,6 +22,7 @@ class UnlockerManager:
 		self.KonsoleLog="/tmp/DpkgUnlocker_KonsoleLog.txt"
 		self.getSessionLang()
 		self.cleanEnvirontment()
+		self.metaProtectionEnabled=True
 
 	#def __init__
 
@@ -29,8 +30,15 @@ class UnlockerManager:
 
 		info=self.unlockerCore.checkingLocks()
 		self.manageServiceInfo(info)
+		self.getMetaProtectionStatus()
 
-	#def loadConfig
+	#def loadInfo
+
+	def getMetaProtectionStatus(self):
+
+		self.metaProtectionEnabled=self.unlockerCore.checkMetaProtection()
+
+	#def getMetaProtectionStatus
 
 	def manageServiceInfo(self,info):
 
@@ -204,6 +212,19 @@ class UnlockerManager:
 		return result
 		
 	#def check_process
+
+	def changeMetaProtectionStatus(self,change):
+
+		if change:
+			self.writeLog("Try to enable metapackage protection")
+		else:
+			self.writeLog("Try to disable metapackage protection")
+
+		result=self.unlockerCore.changeMetaProtectionStatus(change)
+		self.writeLog("Change metapackage protection result: %s"%(str(result)))
+		return result[0]
+
+	#def changeMetaProtectionStatus
 
 	def writeProcessLog(self,code):
 

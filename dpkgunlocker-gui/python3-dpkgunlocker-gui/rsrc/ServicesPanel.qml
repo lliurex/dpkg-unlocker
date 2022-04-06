@@ -26,8 +26,8 @@ Rectangle{
             visible:dpkgUnlockerBridge.showServiceStatusMesage[0]
             text:getMessageText(dpkgUnlockerBridge.showServiceStatusMesage[1])
             type:getMessageType(dpkgUnlockerBridge.showServiceStatusMesage[2])
-            Layout.minimumWidth:570
-            Layout.maximumWidth:570
+            Layout.minimumWidth:555
+            Layout.maximumWidth:555
             Layout.topMargin: 40
         }
 
@@ -41,18 +41,6 @@ Rectangle{
             }
         }
     }
-
-    Timer{
-        id:timer
-    }
-
-    function delay(delayTime,cb){
-        timer.interval=delayTime;
-        timer.repeat=true;
-        timer.triggered.connect(cb);
-        timer.start()
-    }
-
 
     function getMessageText(code){
 

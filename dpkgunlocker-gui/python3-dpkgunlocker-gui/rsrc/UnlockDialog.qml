@@ -12,6 +12,7 @@ Dialog {
     property alias dialogMsg:dialogText.text
     signal dialogApplyClicked
     signal discardDialogClicked
+    signal cancelDialogClicked
 
     visible:dialogVisible
     title:dialogTitle
@@ -19,7 +20,7 @@ Dialog {
 
     contentItem: Rectangle {
         color: "#ebeced"
-        implicitWidth: 400
+        implicitWidth: 550
         implicitHeight: 105
         anchors.topMargin:5
         anchors.leftMargin:5
@@ -50,12 +51,42 @@ Dialog {
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
             anchors.bottom:parent.bottom
-            anchors.right:dialogCancelBtn.left
+            anchors.right:{
+                if (dpkgUnlockerBridge.showPendingChangesDialog){
+                    dialogDiscardBtn.left
+                }else{
+                    dialogCancelBtn.left
+                }
+            }
             anchors.rightMargin:10
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogApplyBtn.clicked()
             Keys.onEnterPressed: dialogApplyBtn.clicked()
             onClicked:dialogApplyClicked()
+        }
+
+        PC3.Button {
+            id:dialogDiscardBtn
+            display:AbstractButton.TextBesideIcon
+            icon.name:"delete"
+            text: i18nd("dpkg-unlocker","Discard")
+            focus:true
+            font.family: "Quattrocento Sans Bold"
+            font.pointSize: 10
+            anchors.bottom:parent.bottom
+            anchors.right:{
+                if (dpkgUnlockerBridge.showPendingChangesDialog){
+                    dialogCancelBtn.left
+                }else{
+                    dialogApplyBtn.left
+                }
+            }
+            visible:dpkgUnlockerBridge.showPendingChangesDialog
+            anchors.rightMargin:10
+            anchors.bottomMargin:5
+            Keys.onReturnPressed: dialogDiscardBtn.clicked()
+            Keys.onEnterPressed: dialogDiscardBtn.clicked()
+            onClicked:discardDialogClicked()
         }
 
         PC3.Button {
@@ -72,7 +103,7 @@ Dialog {
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogCancelBtn.clicked()
             Keys.onEnterPressed: dialogCancelBtn.clicked()
-            onClicked:discardDialogClicked()
+            onClicked:cancelDialogClicked()
         }
 
     }
