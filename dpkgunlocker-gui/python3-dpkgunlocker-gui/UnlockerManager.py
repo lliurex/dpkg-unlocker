@@ -21,7 +21,7 @@ class UnlockerManager:
 		self.isThereALock=False
 		self.KonsoleLog="/tmp/DpkgUnlocker_KonsoleLog.txt"
 		self.getSessionLang()
-		self.cleanEnvirontment()
+		self.cleanEnvironment()
 		self.metaProtectionEnabled=True
 
 	#def __init__
@@ -85,12 +85,12 @@ class UnlockerManager:
 
 	#def getSessionLang
 
-	def cleanEnvirontment(self):
+	def cleanEnvironment(self):
 
 		if os.path.exists(self.KonsoleLog):
 			os.remove(self.KonsoleLog)
 
-	#def cleanEnvirontment
+	#def cleanEnvironment
 
 	def initUnlockerProcesses(self):
 
