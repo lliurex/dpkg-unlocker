@@ -176,7 +176,6 @@ GridLayout{
             function onDialogApplyClicked(){
                 if (optionsLayout.currentIndex==2){
                     dpkgUnlockerBridge.changeProteccionStatus()
-                    unlockDialog.close()
                 }else{
                     feedBackText.visible=true
                     feedBackBar.visible=true
@@ -184,7 +183,6 @@ GridLayout{
                     protectionOption.enabled=false
                     applyChanges()
                     dpkgUnlockerBridge.launchUnlockProcess()
-                    unlockDialog.close()
                 }
             }
 

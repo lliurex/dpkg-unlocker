@@ -13,10 +13,21 @@ Dialog {
     signal dialogApplyClicked
     signal discardDialogClicked
     signal cancelDialogClicked
+    property bool xButton
 
     visible:dialogVisible
     title:dialogTitle
     modality:Qt.WindowModal
+
+    onVisibleChanged:{
+        if (!this.visible && xButton){
+            if (dpkgUnlockerBridge.showDialog){
+                cancelDialogClicked()
+            }
+        }else{
+            xButton=true
+        }
+    }
 
     contentItem: Rectangle {
         color: "#ebeced"
@@ -62,7 +73,10 @@ Dialog {
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogApplyBtn.clicked()
             Keys.onEnterPressed: dialogApplyBtn.clicked()
-            onClicked:dialogApplyClicked()
+            onClicked:{
+                xButton=false
+                dialogApplyClicked()
+            }
         }
 
         PC3.Button {
@@ -86,7 +100,10 @@ Dialog {
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogDiscardBtn.clicked()
             Keys.onEnterPressed: dialogDiscardBtn.clicked()
-            onClicked:discardDialogClicked()
+            onClicked:{
+                xButton:false
+                discardDialogClicked()
+            }
         }
 
         PC3.Button {
@@ -103,7 +120,11 @@ Dialog {
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogCancelBtn.clicked()
             Keys.onEnterPressed: dialogCancelBtn.clicked()
-            onClicked:cancelDialogClicked()
+            onClicked:{
+                xButton:false
+                cancelDialogClicked()
+
+            }
         }
 
     }
