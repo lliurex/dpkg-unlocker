@@ -1,3 +1,10 @@
+dpkg-unlocker (0.4) focal-updates; urgency=medium
+
+  * Migrated to PySide2/qml
+  * Added metapackage proteccion feature
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 27 May 2022 13:05:02 +0200
+
 dpkg-unlocker (0.3.14) focal; urgency=medium
 
   * Fixed zero app file
