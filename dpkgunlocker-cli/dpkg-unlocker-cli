@@ -8,34 +8,35 @@ from clint.textui import puts, indent, colored
 from dpkgunlockercli import DpkgUnlockerCli
 
 
-
-
 def usage():
 	puts("Usage")
 	with indent(4):
 		puts("dpkgunlocker-cli [FLAGS...] ACTION")
 		puts("Actions")
 		with indent(4):	
-			puts("showinfo")
-			puts("unlock")
+			puts("showservices: Show information about the status of services involved in installation of packages")
+			puts("unlock: Run command to try to recover the blocked services")
+			puts("showprotection: Show the current state of system metapackage protection")
+			puts("disableprotetion: Run command to disable system metapackage protection")
+			puts("enableprotection: Run command to enable system metapackage protection")		
 
 		puts("Flags")
 		with indent(4):
 			puts("-h --help : Show help")
-			puts("-u --unattended: Run the unlock command without prompting for user confirmation")
-			puts("-k --kill: Run the unlocke command killing the associated running process. It can cause problems if used incorrectly ")
+			puts("-u --unattended: Run the command without prompting for user confirmation")
+			puts("-k --kill: Run the unlock command killing the associated running process. It can cause problems if used incorrectly ")
 
 	sys.exit(1)
 
 #def usage	
 
-def isDpkgUnlocker_running():
+def isDpkgUnlockerRunning():
 
 	if os.path.exists('/var/run/dpkgUnlocker.lock'):
 		print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
 		sys.exit(1)
 
-#def isDpkgUnlocked_running
+#def isDpkgUnlockedRunning
 
 		
 if __name__ == '__main__':
@@ -44,8 +45,7 @@ if __name__ == '__main__':
 		print("  [DpkgUnlocker-Cli]: You need be root!")
 		sys.exit(1)
 
-	
-	isDpkgUnlocker_running()
+	isDpkgUnlockerRunning()
 		
 	args = arguments.Args().copy
 	mode=False
@@ -66,10 +66,16 @@ if __name__ == '__main__':
 	action = args.pop(0)
 
 	dpkgunlockercli = DpkgUnlockerCli(args.get(0))
-	if action == "showinfo":
-		sys.exit(dpkgunlockercli.showInfo(mode,kill))
+	if action == "showservices":
+		sys.exit(dpkgunlockercli.showServices())
 	elif action=="unlock":
 		sys.exit(dpkgunlockercli.unlock(mode,kill))	
+	elif action=="showprotection":
+		sys.exit(dpkgunlockercli.showProtection())
+	elif action=="disableprotection":
+		sys.exit(dpkgunlockercli.disableProtection(mode))
+	elif action=="enableprotection":
+		sys.exit(dpkgunlockercli.enableProtection(mode))
 	else:
 		dpkgunlockercli.dpkgUnlockerCore.cleanLockToken()
 		usage()		
