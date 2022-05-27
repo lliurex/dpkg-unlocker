@@ -2,6 +2,8 @@
 
 import dpkgunlocker.dpkgunlockermanager as DpkgUnlockerManager
 import os
+import subprocess
+import shutil
 import sys
 import syslog
 import json
@@ -23,6 +25,7 @@ class UnlockerManager:
 		self.getSessionLang()
 		self.cleanEnvironment()
 		self.metaProtectionEnabled=True
+		self.clearCache()
 
 	#def __init__
 
@@ -282,6 +285,53 @@ class UnlockerManager:
 		self.unlockerCore.cleanLockToken()
 
 	#def cleanLockToken
+	
+	def clearCache(self):
 
+		clear=False
+		versionFile="/root/.config/dpkg-unlocker-gui.conf"
+		cachePath1="/root/.cache/dpkg-unlocker-gui"
+		installedVersion=self.getPackageVersion()
+
+		if not os.path.exists(versionFile):
+			with open(versionFile,'w') as fd:
+				fd.write(installedVersion)
+				fd.close()
+
+			clear=True
+
+		else:
+			with open(versionFile,'r') as fd:
+				fileVersion=fd.readline()
+				fd.close()
+
+			if fileVersion!=installedVersion:
+				with open(versionFile,'w') as fd:
+					fd.write(installedVersion)
+					fd.close()
+				clear=True
+		
+		if clear:
+			if os.path.exists(cachePath1):
+				shutil.rmtree(cachePath1)
+
+	#def clearCache
+
+	def getPackageVersion(self):
+
+		command = "LANG=C LANGUAGE=en apt-cache policy dpkgunlocker-gui"
+		p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE)
+		installed = None
+		for line in iter(p.stdout.readline,b""):
+			if type(line) is bytes:
+				line=line.decode()
+
+			stripedline = line.strip()
+			if stripedline.startswith("Installed"):
+				installed = stripedline.replace("Installed: ","")
+
+		return installed
+
+	#def getPackageVersion
 
 #class UnlockerManager

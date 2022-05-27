@@ -59,23 +59,36 @@ ApplicationWindow {
             }
         }
 
-        StackLayout {
-            id: stackLayout
-            currentIndex:dpkgUnlockerBridge.currentStack
+        StackView {
+            id: mainView
+            property int currentView:dpkgUnlockerBridge.currentStack
             implicitWidth: 780
             Layout.alignment:Qt.AlignHCenter
             Layout.leftMargin:0
             Layout.fillWidth:true
             Layout.fillHeight: true
 
+            initialItem:loadingView
+
+            onCurrentViewChanged:{
+                mainView.clear()
+                mainView.push(applicationOptionView)
+            }
+        }
+         
+        Component{
+            id:loadingView
             Loading{
                 id:loading
             }
 
+         }
+
+        Component{
+            id:applicationOptionView
             ApplicationOptions{
                 id:applicationOptions
             }
-
         }
 
     }
