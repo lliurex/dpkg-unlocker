@@ -27,7 +27,7 @@ Description:Dpkg-Unlocker. CLI tool
 
 Package: dpkgunlocker-gui
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-dpkgunlocker (= ${binary:Version})
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-dpkgunlocker (= ${binary:Version}),qml-module-qmltermwidget
 Recommends: dpkgunlocked-cli (= ${binary:Version})
 Description:Dpkg-Unlocker. GUI tool
   Provides the graphic version (dpkg-unlocker-gui) of dpkg-unlocker
