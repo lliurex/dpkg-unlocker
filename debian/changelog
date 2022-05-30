@@ -1,3 +1,10 @@
+dpkg-unlocker (0.3) bionic-updates; urgency=medium
+
+  * Migrated to PySide2/qml.
+  * Added metapackage proteccion management
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 30 May 2022 10:51:19 +0200
+
 dpkg-unlocker (0.2.10) bionic; urgency=medium
 
   * Clean dpkgunlocker lock file when cli receives a bad argument
