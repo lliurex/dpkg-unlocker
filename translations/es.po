@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 10:33+0100\n"
-"PO-Revision-Date: 2019-02-26 10:34+0100\n"
+"POT-Creation-Date: 2022-05-30 10:24+0200\n"
+"PO-Revision-Date: 2022-05-30 10:24+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -19,86 +19,171 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:66
+#: dpkgunlocker-gui/dpkg-unlocker-gui:17
 msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
-msgstr "Dpkg-Unlocker esta siendo ejecutado. Espere un momento y pruebe otra vez"
+msgstr "Dpkg-Unlocker esta siendo ejecutado. Espere un momento y pruebe otra vez."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/Core.py:82
+#: dpkgunlocker-gui/dpkg-unlocker-gui:31
 msgid "You need administration privileges to run this application."
 msgstr "Necesita permisos de administración para ejecutar esta aplicación."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:450
-msgid "All processes seem correct. Nothing to do"
-msgstr "Todos los procesos parecen correctos. Nada que hacer"
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:26
+msgid "Services"
+msgstr "Servicios"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:452
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:37
+msgid "Unlock process"
+msgstr "Proceso de desbloqueo"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:49
+msgid "Metapackage protection"
+msgstr "Protección del metapaquete"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:61
+msgid "Help"
+msgstr "Ayuda"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:130
+msgid "Unlock"
+msgstr "Desbloquear"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:132
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:60
+msgid "Apply"
+msgstr "Aplicar"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:156
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
+msgid "System metapackage protection"
+msgstr "Protección del metapaquete del sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:158
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
+msgid "Services Information"
+msgstr "Información de los servicios"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:164
+msgid ""
+"Do you want to disable system metapackage protection?\n"
+"Disabling this protection can cause certain applications to be uninstalled\n"
+"automatically and cause system inconsistencies"
+msgstr ""
+"¿Desea desactivar la protección del metapaquete del sistema?\n"
+"Desactivar esta protección puede provocar que ciertas aplicaciones sean\n"
+"desinstaladas de forma automática y causar inconsistencias en el sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:166
+msgid "Do you want to enable system metapackage protection?"
+msgstr "¿Desea activar la protección del metapaquete del sistema?"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:170
+msgid "Do you want to run the unlock process?"
+msgstr "¿Desea ejecutar el proceso de desbloqueo?"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:242
 msgid "Removing Lliurex-Up lock file..."
 msgstr "Eliminando el fichero de bloqueo de Lliurex-Up..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:454
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:245
 msgid "Removing Dpkg lock file..."
 msgstr "Eliminando el fichero de bloqueo de Dpkg..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:456
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:248
 msgid "Removing Apt lock file..."
 msgstr "Eliminado el fichero de bloqueo de Apt..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:458
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:251
 msgid "Fixing the system..."
 msgstr "Estabilizando el sistema..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:460
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:50
+msgid "All processes seem correct. Nothing to do"
+msgstr "Todos los procesos parecen correctos. Nada que hacer"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
 msgid "Unlocking process finished successfully"
 msgstr "El proceso de desbloqueo ha finalizado correctamente"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:462
-msgid "Error fixing the system"
-msgstr "Error estabilizando el sistema"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:464
-msgid "Error removing Apt lock file"
-msgstr "Error eliminando el fichero de bloqueo de Apt"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:466
-msgid "Error removing Dpg lock file"
-msgstr "Error eliminando el fichero de bloqueo de Dpkg"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:468
-msgid "Error removing Lliurex-Up lock file"
-msgstr "Error eliminando el fichero de bloqueo de Lliurex-Up"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:470
-msgid "Do you want to execute the unlocking process?"
-msgstr "¿Desea ejecutar el proceso de desbloqueo?"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:472
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
 msgid "Some process are running. Wait a moment"
 msgstr "Algún proceso esta siendo ejecutado. Espere un momento"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/MainWindow.py:474
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
 msgid "Detected some blocked process"
 msgstr "Detectado algún proceso bloqueado"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:138
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
+msgid "Error fixing the system"
+msgstr "Error estabilizando el sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
+msgid "Error removing Apt lock file"
+msgstr "Error eliminando el fichero de bloqueo de Apt"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
+msgid "Error removing Dpg lock file"
+msgstr "Error eliminando el fichero de bloqueo de Dpkg"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
+msgid "Error removing Lliurex-Up lock file"
+msgstr "Error eliminando el fichero de bloqueo de Lliurex-Up"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
+msgid "Unlock process details"
+msgstr "Detalles del proceso de desbloqueo"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
+msgid "Enable system metapackage protection"
+msgstr "Activar la protección del metapaquete del sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
+msgid "System metapackage protection is enabled"
+msgstr "La protección del metapaquete del sistema está activada"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
+msgid "System metapackage protection is disable"
+msgstr "La protección del metapaquete del sistema está desactivada"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
+msgid "System metapackage protection change successfully"
+msgstr "La protección del metapaquete del sistema se ha cambiado correctamente"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
+msgid "Error activating system metapackage protection"
+msgstr "Error activando la protección del metaquete del sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
+msgid "Error disabling system metapackage protection"
+msgstr "Error desactivando la protección del metaquete del sistema"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:78
 msgid "Unlocked"
 msgstr "Desbloqueado"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:140
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:81
 msgid "Locked: Currently executing"
 msgstr "Bloqueado: Actualmente esta siendo ejecutado"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:142
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:84
 msgid "Locked: Not process found"
 msgstr "Bloqueado: No se ha encontrado ningún proceso"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:144
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:87
 msgid "Locked: Apt currently executing"
 msgstr "Bloqueado: Apt esta siendo ejecutado"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/ProcessBox.py:146
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:90
 msgid "Locked: Apt daemon currently executing"
 msgstr "Bloqueado: Apt daemon esta siendo ejecutado"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/dpkgunlocker.ui:101
-msgid "Unlock"
-msgstr "Desbloquear"
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesList.qml:39
+msgid "Loading. Wait a moment..."
+msgstr "Cargando. Espere un momento..."
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:86
+msgid "Discard"
+msgstr "Decartar"
+
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:113
+msgid "Cancel"
+msgstr "Cancelar"

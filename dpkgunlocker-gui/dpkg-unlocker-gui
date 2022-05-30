@@ -1,6 +1,58 @@
-#!/usr/bin/env python3
-import sys
-from dpkgunlockergui.Core import Core
+#!/usr/bin/python3
 
-c=Core.get_core()
+from PySide2.QtWidgets import QApplication
+from PySide2.QtCore import QUrl
+from PySide2.QtGui import QIcon
+from PySide2.QtQml import QQmlApplicationEngine
+
+import sys
+import os
+import gettext
+gettext.textdomain("dpkg-unlocker")
+_ = gettext.gettext
+
+
+if os.path.exists('/var/run/dpkgUnlocker.lock'):
+	print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
+	msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
+	cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+	os.system(cmd)
+	sys.exit(1)
+
+else:
+	try:
+		print("  [Dpkg-Unlocker-Gui]: Checking root")
+		f=open("/var/run/DpkgUnlocker.token","w")
+		f.close()
+		os.remove("/var/run/DpkgUnlocker.token")
+
+	except:
+		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
+		msg=_("You need administration privileges to run this application.")
+		cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+		os.system(cmd)
+		sys.exit(1)
+
+
+import dpkgunlockergui.DpkgUnlocker as DpkgUnlocker
+
+app = QApplication()
+engine = QQmlApplicationEngine()
+engine.clearComponentCache()
+context=engine.rootContext()
+dpkgUnlockerBridge=DpkgUnlocker.DpkgUnlocker()
+context.setContextProperty("dpkgUnlockerBridge", dpkgUnlockerBridge)
+
+url = QUrl("/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/dpkg-unlocker.qml")
+
+engine.load(url)
+if not engine.rootObjects():
+	sys.exit(-1)
+
+engine.quit.connect(QApplication.quit)
+app.setWindowIcon(QIcon("/usr/share/icons/hicolor/scalable/apps/dpkg-unlocker-gui.svg"));
+ret=app.exec_()
+del engine
+del app
+sys.exit(ret)
 
