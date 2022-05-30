@@ -67,28 +67,16 @@ ApplicationWindow {
             Layout.leftMargin:0
             Layout.fillWidth:true
             Layout.fillHeight: true
+            initialItem:applicationOptionView
 
-            initialItem:loadingView
-
-            onCurrentViewChanged:{
-                mainView.clear()
-                mainView.push(applicationOptionView)
-            }
         }
          
-        Component{
-            id:loadingView
-            Loading{
-                id:loading
-            }
-
-         }
-
         Component{
             id:applicationOptionView
             ApplicationOptions{
                 id:applicationOptions
-            }
+                        
+           } 
         }
 
     }

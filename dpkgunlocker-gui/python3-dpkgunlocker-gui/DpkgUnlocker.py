@@ -22,9 +22,8 @@ class GatherInfo(QThread):
 
 	def run(self,*args):
 		
-		time.sleep(1)
 		DpkgUnlocker.unlockerManager.loadInfo()
-
+		time.sleep(1)
 	#def run
 
 #class GatherInfo
@@ -59,7 +58,7 @@ class DpkgUnlocker(QObject):
 		self._closeGui=False
 		self._closePopUp=True
 		self._showServiceStatusMesage=[False,"","Success"]
-		self._currentStack=0
+		self._currentStack=1
 		self._currentOptionsStack=0
 		self._isThereALock=False
 		self._feedBackCode=0
@@ -103,7 +102,7 @@ class DpkgUnlocker(QObject):
 		DpkgUnlocker.unlockerManager.writeLog("Dpkg-Unlocker-Gui")
 		DpkgUnlocker.unlockerManager.writeLog("Initial System Metapackage Protecion. Enabled: %s"%(str(self.metaProtectionEnabled)))
 		DpkgUnlocker.unlockerManager.writeLog("Initial Services Status: %s"%(str(DpkgUnlocker.unlockerManager.servicesData)))
-		self.currentStack=1
+		
 
 	#def _loadConfig
 

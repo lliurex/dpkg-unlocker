@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-06 13:26+0200\n"
+"POT-Creation-Date: 2022-05-30 10:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,12 +46,12 @@ msgid "Unlock"
 msgstr ""
 
 #: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:132
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:49
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:60
 msgid "Apply"
 msgstr ""
 
 #: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:156
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:11
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
 msgid "System metapackage protection"
 msgstr ""
 
@@ -75,19 +75,19 @@ msgstr ""
 msgid "Do you want to run the unlock process?"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:244
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:242
 msgid "Removing Lliurex-Up lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:245
 msgid "Removing Dpkg lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:250
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:248
 msgid "Removing Apt lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:253
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:251
 msgid "Fixing the system..."
 msgstr ""
 
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Unlock process details"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:40
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
 msgid "Enable system metapackage protection"
 msgstr ""
 
@@ -171,14 +171,14 @@ msgstr ""
 msgid "Locked: Apt daemon currently executing"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/Loading.qml:39
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesList.qml:39
 msgid "Loading. Wait a moment..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:72
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:86
 msgid "Discard"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:96
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:113
 msgid "Cancel"
 msgstr ""
