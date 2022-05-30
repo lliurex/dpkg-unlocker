@@ -289,7 +289,7 @@ class UnlockerManager:
 	def clearCache(self):
 
 		clear=False
-		versionFile="/root/.config/dpkg-unlocker-gui.conf"
+		versionFile="/root/.dpkg-unlocker-gui.conf"
 		cachePath1="/root/.cache/dpkg-unlocker-gui"
 		installedVersion=self.getPackageVersion()
 
