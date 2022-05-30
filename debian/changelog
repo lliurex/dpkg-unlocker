@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.1) focal-updates; urgency=medium
+
+  * Fixed path of token to clean cache
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 30 May 2022 12:07:15 +0200
+
 dpkg-unlocker (0.4) focal-updates; urgency=medium
 
   * Migrated to PySide2/qml
