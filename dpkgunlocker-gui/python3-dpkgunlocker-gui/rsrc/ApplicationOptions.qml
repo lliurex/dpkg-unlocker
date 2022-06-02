@@ -181,6 +181,7 @@ GridLayout{
                     feedBackBar.visible=true
                     detailsOption.enabled=true
                     protectionOption.enabled=false
+                    konsolePanel.runCommand("clear\n")
                     applyChanges()
                     dpkgUnlockerBridge.launchUnlockProcess()
                 }
