@@ -1,0 +1,31 @@
+have dpkg-unlocker-cli &&
+_dpkg-unlocker-cli() 
+{
+    local cur prev opts base
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    #
+    #  The basic options we'll complete.
+    #
+    opts="showservices unlock showprotection disableprotection enableprotection help"
+
+    case "${prev}" in 
+        unlock)
+            local running="-u --unattended -k --kill"
+            COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        disableprotection | enableprotection)
+            local running="-u --unattended"
+            COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        *)
+           COMPREPLY=($(compgen -W "${opts}" -- ${cur}))  
+           return 0
+           ;;
+    esac
+}
+[ "$have" ] && complete -F _dpkg-unlocker-cli dpkg-unlocker-cli
