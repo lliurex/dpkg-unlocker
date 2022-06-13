@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.3) focal-updates; urgency=medium
+
+  * Fixed dpkg-unlocker-cli bash-completion installation
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 13 Jun 2022 08:54:40 +0200
+
 dpkg-unlocker (0.4.2) focal-updates; urgency=medium
 
   * Fixed window position
