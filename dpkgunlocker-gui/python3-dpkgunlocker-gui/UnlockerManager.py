@@ -21,6 +21,7 @@ class UnlockerManager:
 		self.servicesData=[]
 		self.sessionLang=""
 		self.isThereALock=False
+		self.areLiveProcess=False
 		self.KonsoleLog="/tmp/DpkgUnlocker_KonsoleLog.txt"
 		self.getSessionLang()
 		self.cleanEnvironment()
@@ -50,6 +51,7 @@ class UnlockerManager:
 		runningStatus=[1,3,4]
 		liveProcess=0
 		self.isThereALock=False
+		self.areLiveProcess=False
 		self.servicesData=[]
 
 		for item in info:
@@ -68,12 +70,16 @@ class UnlockerManager:
 			self.isThereAlock=False
 		else:
 			if count==0:
-				self.isThereAreLock=True
+				self.isThereALock=True
 			else:
-				if liveProcess==0:
-					self.isThereALock=True 
-				else:
+				if liveProcess==len(info):
 					self.isThereALock=False
+					self.areLiveProcess=True
+				elif liveProcess==0:
+					self.isThereALock=True 
+				elif liveProcess>0:
+					self.isThereALock=True
+					self.areLiveProcess=True
 
 	#def manageServiceInfo
 
