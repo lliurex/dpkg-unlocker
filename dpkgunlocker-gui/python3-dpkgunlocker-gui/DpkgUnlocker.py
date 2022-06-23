@@ -127,9 +127,12 @@ class DpkgUnlocker(QObject):
 
 		if not self.runningUnlockCommand:
 			self.isThereALock=DpkgUnlocker.unlockerManager.isThereALock
+			self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
 			
-			if self.isThereALock:
+			if self.isThereALock and not self.areLiveProcess:
 				self._updateServiceStatusMessage(12)
+			elif self.isThereALock and self.areLiveProcess:
+				self._updateServiceStatusMessage(11)
 			else:
 				self._updateServiceStatusMessage(0)
 			
@@ -164,7 +167,7 @@ class DpkgUnlocker(QObject):
 		errorCode=[12]
 
 		if code in infoCode:
-			self.showServiceStatusMesage=[True,code,"Info"]
+			self.showServiceStatusMesage=[True,code,"Warning"]
 		elif code in successCode:
 			self.showServiceStatusMesage=[True,code,"Success"]
 		elif code in errorCode:

@@ -87,6 +87,8 @@ Rectangle{
                 return Kirigami.MessageType.Positive
             case "Error":
                 return Kirigami.MessageType.Error
+            case "Warning":
+                return Kirigami.MessageType.Warning
         }
 
     } 
