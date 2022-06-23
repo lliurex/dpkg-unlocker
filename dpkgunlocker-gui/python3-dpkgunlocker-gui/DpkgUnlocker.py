@@ -87,9 +87,14 @@ class DpkgUnlocker(QObject):
 
 		self.metaProtectionEnabled=DpkgUnlocker.unlockerManager.metaProtectionEnabled
 	
-		self.isThereALock=DpkgUnlocker.unlockerManager.isThereALock
-		if self._isThereALock:
+		isThereALock=DpkgUnlocker.unlockerManager.isThereALock
+		self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
+
+		if isThereALock and not self.areLiveProcess:
+			self.isThereALock=True
 			self._updateServiceStatusMessage(12)
+		elif isThereALock and self.areLiveProcess:
+			self._updateServiceStatusMessage(11)
 		else:
 			self._updateServiceStatusMessage(0)
 		
@@ -126,14 +131,17 @@ class DpkgUnlocker(QObject):
 	def _updateServicesInfo(self):
 
 		if not self.runningUnlockCommand:
-			self.isThereALock=DpkgUnlocker.unlockerManager.isThereALock
+			isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 			self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
 			
-			if self.isThereALock and not self.areLiveProcess:
+			if isThereALock and not self.areLiveProcess:
+				self.isThereALock=True
 				self._updateServiceStatusMessage(12)
-			elif self.isThereALock and self.areLiveProcess:
+			elif isThereALock and self.areLiveProcess:
+				self.isThereALock=False
 				self._updateServiceStatusMessage(11)
 			else:
+				self.isThereALock=False
 				self._updateServiceStatusMessage(0)
 			
 			if not self.isProtectionChange:
