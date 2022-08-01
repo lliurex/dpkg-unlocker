@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.4.2) focal; urgency=medium
+
+  * Changed spinner to reduce ram consumption
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 01 Aug 2022 14:26:17 +0200
+
 dpkg-unlocker (0.4.4.1) focal-updates; urgency=medium
 
   * Fixed information when are locked and live process
