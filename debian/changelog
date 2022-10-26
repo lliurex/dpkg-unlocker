@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.4.3) focal; urgency=medium
+
+  * Make window resizable
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 26 Oct 2022 13:14:37 +0200
+
 dpkg-unlocker (0.4.4.2) focal; urgency=medium
 
   * Changed spinner to reduce ram consumption
