@@ -19,8 +19,8 @@ Rectangle{
         rows:2
         flow: GridLayout.TopToBottom
         rowSpacing:10
-        Layout.fillWidth: true
         anchors.left:parent.left
+        width:parent.width-10
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
@@ -28,7 +28,7 @@ Rectangle{
             text:getMessageText(dpkgUnlockerBridge.showProtectionStatusMessage[1])
             type:getMessageType(dpkgUnlockerBridge.showProtectionStatusMessage[2])
             Layout.minimumWidth:555
-            Layout.maximumWidth:555
+            Layout.fillWidth:true
             Layout.topMargin: 40
         }
 

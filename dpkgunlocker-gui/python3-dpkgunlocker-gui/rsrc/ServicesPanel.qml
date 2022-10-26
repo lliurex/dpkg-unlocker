@@ -18,8 +18,9 @@ Rectangle{
         rows:2
         flow: GridLayout.TopToBottom
         rowSpacing:10
-        Layout.fillWidth: true
         anchors.left:parent.left
+        width:parent.width-10
+        height:parent.height-25
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
@@ -27,16 +28,18 @@ Rectangle{
             text:getMessageText(dpkgUnlockerBridge.showServiceStatusMesage[1])
             type:getMessageType(dpkgUnlockerBridge.showServiceStatusMesage[2])
             Layout.minimumWidth:555
-            Layout.maximumWidth:555
+            Layout.fillWidth:true
             Layout.topMargin: 40
         }
 
         RowLayout{
-            id: optionsGrid
-            Layout.topMargin: messageLabel.visible?0:50
+           id: optionsGrid
+           Layout.topMargin: messageLabel.visible?0:50
 
            ServicesList{
                 id:servicesList
+                Layout.fillHeight:true
+                Layout.fillWidth:true
                 servicesModel:dpkgUnlockerBridge.servicesModel
             }
         }
