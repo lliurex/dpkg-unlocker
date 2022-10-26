@@ -11,8 +11,10 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:205
-        height:430
+        width:195
+        Layout.minimumHeight:430
+        Layout.preferredHeight:430
+        Layout.fillHeight:true
         border.color: "#d3d3d3"
 
         GridLayout{
@@ -77,9 +79,10 @@ GridLayout{
         StackLayout {
             id: optionsLayout
             currentIndex:dpkgUnlockerBridge.currentOptionsStack
-            implicitHeight: 300
+            Layout.fillHeight:true
+            Layout.fillWidth:true
             Layout.alignment:Qt.AlignHCenter
-            
+
             ServicesPanel{
                 id:servicesPanel
             }
@@ -100,7 +103,6 @@ GridLayout{
 
             ColumnLayout{
                 id:feedbackColumn
-                Layout.preferredWidth:455
                 spacing:5
                 Text{
                     id:feedBackText

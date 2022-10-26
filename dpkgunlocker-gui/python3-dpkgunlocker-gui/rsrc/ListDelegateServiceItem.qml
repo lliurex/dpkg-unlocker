@@ -15,6 +15,7 @@ Components.ListItem{
     Item{
         id: menuItem
         height:visible?70:0
+        width:parent.width-serviceLockedIcon.width-serviceErrorIcon.width
         Image {
             id:serviceLockedIcon
             source:{
@@ -32,7 +33,7 @@ Components.ListItem{
 
         Column{
             id: serviceText
-            width:440
+            width:parent.width-serviceErrorIcon.width
             anchors.left:serviceLockedIcon.right
             anchors.leftMargin:5
             anchors.verticalCenter:parent.verticalCenter

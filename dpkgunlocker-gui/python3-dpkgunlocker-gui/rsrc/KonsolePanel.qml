@@ -14,13 +14,14 @@ Rectangle{
 
     RowLayout{
         id:terminalLayout
-        Layout.fillWidth: true
-        anchors.verticalCenter:parent.verticalCenter
-
+        anchors.left:parent.left
+        width:parent.width-10
+        height:parent.height-25
+        
         Rectangle {
-            width: 555
-            height: 300
-
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.topMargin:40
             QMLTermWidget {
                 id: terminal
                 anchors.fill: parent
