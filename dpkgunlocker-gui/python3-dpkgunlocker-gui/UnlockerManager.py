@@ -53,7 +53,6 @@ class UnlockerManager:
 		self.isThereALock=False
 		self.areLiveProcess=False
 		self.servicesData=[]
-
 		for item in info:
 			tmp={}
 			tmp["serviceId"]=item
@@ -66,6 +65,9 @@ class UnlockerManager:
 
 			self.servicesData.append(tmp)
 
+		if liveProcess>0:
+			self.areLiveProcess=True
+		
 		if count==len(info):
 			self.isThereAlock=False
 		else:
@@ -74,12 +76,10 @@ class UnlockerManager:
 			else:
 				if liveProcess==len(info):
 					self.isThereALock=False
-					self.areLiveProcess=True
 				elif liveProcess==0:
 					self.isThereALock=True 
 				elif liveProcess>0:
 					self.isThereALock=True
-					self.areLiveProcess=True
 
 	#def manageServiceInfo
 
@@ -325,18 +325,15 @@ class UnlockerManager:
 
 	def getPackageVersion(self):
 
-		command = "LANG=C LANGUAGE=en apt-cache policy dpkgunlocker-gui"
-		p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE)
-		installed = None
-		for line in iter(p.stdout.readline,b""):
-			if type(line) is bytes:
-				line=line.decode()
+		packageVersionFile="/var/lib/dpkgunlocker-gui/version"
+		pkgVersion=""
 
-			stripedline = line.strip()
-			if stripedline.startswith("Installed"):
-				installed = stripedline.replace("Installed: ","")
+		if os.path.exists(packageVersionFile):
+			with open(packageVersionFile,'r') as fd:
+				pkgVersion=fd.readline()
+				fd.close()
 
-		return installed
+		return pkgVersion
 
 	#def getPackageVersion
 

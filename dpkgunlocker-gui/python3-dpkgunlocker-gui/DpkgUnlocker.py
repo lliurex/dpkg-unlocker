@@ -62,6 +62,7 @@ class DpkgUnlocker(QObject):
 		self._currentStack=0
 		self._currentOptionsStack=0
 		self._isThereALock=False
+		self._areLiveProcess=False
 		self._feedBackCode=0
 		self._metaProtectionEnabled=True
 		self._showProtectionStatusMessage=[False,"","Success"]
@@ -77,6 +78,7 @@ class DpkgUnlocker(QObject):
 		self.isWorked=True
 		self.runningUnlockCommand=False
 		self.moveToStack=""
+		self._showRepairStatusMessage=[False,"","Success"]
 		self.gatherInfo=GatherInfo()
 		self.gatherInfo.start()
 		self.gatherInfo.finished.connect(self._loadConfig)
@@ -133,7 +135,6 @@ class DpkgUnlocker(QObject):
 		if not self.runningUnlockCommand:
 			isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 			self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
-			
 			if isThereALock and not self.areLiveProcess:
 				self.isThereALock=True
 				self._updateServiceStatusMessage(12)
@@ -224,6 +225,20 @@ class DpkgUnlocker(QObject):
 			self.on_isThereALock.emit()
 
 	#def _setIsThereALock
+
+	def _getAreLiveProcess(self):
+
+		return self._areLiveProcess
+
+	#def _getAreLiveProcess
+
+	def _setAreLiveProcess(self,areLiveProcess):
+
+		if self._areLiveProcess!=areLiveProcess:
+			self._areLiveProcess=areLiveProcess
+			self.on_areLiveProcess.emit()
+
+	#def _setAreLiveProcess
 
 	def _getFeedBackCode(self):
 
@@ -384,6 +399,20 @@ class DpkgUnlocker(QObject):
 		return self._servicesModel
 
 	#def _getServicesModel
+
+	def _getShowRepairStatusMessage(self):
+
+		return self._showRepairStatusMessage
+
+	#def _getShowRepairStatusMessage
+
+	def _setShowRepairStatusMessage(self,showRepairStatusMessage):
+
+		if self._showRepairStatusMessage!=showRepairStatusMessage:
+			self._showRepairStatusMessage=showRepairStatusMessage
+			self.on_showRepairStatusMessage.emit()
+
+	#def _setShowRepairStatusMessage
 
 	def _updateServicesModel(self):
 
@@ -700,6 +729,9 @@ class DpkgUnlocker(QObject):
 	on_isThereALock=Signal()
 	isThereALock=Property(bool,_getIsThereALock,_setIsThereALock,notify=on_isThereALock)
 
+	on_areLiveProcess=Signal()
+	areLiveProcess=Property(bool,_getAreLiveProcess,_setAreLiveProcess,notify=on_areLiveProcess)
+
 	on_feedBackCode=Signal()
 	feedBackCode=Property(int,_getFeedBackCode,_setFeedBackCode,notify=on_feedBackCode)
 	
@@ -733,6 +765,9 @@ class DpkgUnlocker(QObject):
 	on_closeGui=Signal()
 	closeGui=Property(bool,_getCloseGui,_setCloseGui, notify=on_closeGui)
 
+	on_showRepairStatusMessage=Signal()
+	showRepairStatusMessage=Property('QVariantList',_getShowRepairStatusMessage,_setShowRepairStatusMessage,notify=on_showRepairStatusMessage)
+	
 	servicesModel=Property(QObject,_getServicesModel,constant=True)
 
 

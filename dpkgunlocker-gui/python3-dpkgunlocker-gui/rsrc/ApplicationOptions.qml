@@ -11,7 +11,7 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:195
+        width:200
         Layout.minimumHeight:430
         Layout.preferredHeight:430
         Layout.fillHeight:true
@@ -19,14 +19,14 @@ GridLayout{
 
         GridLayout{
             id: menuGrid
-            rows:4 
+            rows:5 
             flow: GridLayout.TopToBottom
             rowSpacing:0
 
             MenuOptionBtn {
                 id:servicesOption
                 optionText:i18nd("dpkg-unlocker","Services")
-                optionIcon:"/usr/share/icons/breeze/actions/16/run-build.svg"
+                optionIcon:"/usr/share/icons/breeze/actions/22/run-build.svg"
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.manageTransitions(0)
@@ -37,7 +37,7 @@ GridLayout{
             MenuOptionBtn {
                 id:detailsOption
                 optionText:i18nd("dpkg-unlocker","Unlock process")
-                optionIcon:"/usr/share/icons/breeze/apps/16/utilities-terminal.svg"
+                optionIcon:"/usr/share/icons/breeze/apps/22/utilities-terminal.svg"
                 enabled:false
                 Connections{
                     function onMenuOptionClicked(){
@@ -47,12 +47,30 @@ GridLayout{
             }
 
             MenuOptionBtn {
-                id:protectionOption
-                optionText:i18nd("dpkg-unlocker","Metapackage protection")
-                optionIcon:"/usr/share/icons/breeze/status/16/security-high.svg"
+                id:configureOption
+                optionText:i18nd("dpkg-unlocker","Stabilize services")
+                optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
+                enabled:{
+                    if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                        true
+                    }else{
+                        false
+                    }
+                }
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.manageTransitions(2)
+                    }
+                }
+            }
+
+            MenuOptionBtn {
+                id:protectionOption
+                optionText:i18nd("dpkg-unlocker","Metapackage protection")
+                optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
+                Connections{
+                    function onMenuOptionClicked(){
+                        dpkgUnlockerBridge.manageTransitions(3)
                     }
                 }
             }
@@ -61,7 +79,7 @@ GridLayout{
             MenuOptionBtn {
                 id:helpOption
                 optionText:i18nd("dpkg-unlocker","Help")
-                optionIcon:"/usr/share/icons/breeze/actions/16/help-contents.svg"
+                optionIcon:"/usr/share/icons/breeze/actions/22/help-contents.svg"
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.openHelp();
@@ -88,6 +106,9 @@ GridLayout{
             }
             KonsolePanel{
                 id:konsolePanel
+            }
+            RepairPanel{
+                id:repairPanel
             }
             ProtectionPanel{
                 id:protectionPanel
