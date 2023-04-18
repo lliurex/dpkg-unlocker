@@ -216,7 +216,7 @@ GridLayout{
                     "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
                     break;
                 case 1:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restor services")
+                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restore services")
                     break;
                 case 3:
                     "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
@@ -232,7 +232,7 @@ GridLayout{
                     i18nd("dpkg-unlocker","Do you want to run the unlock process?")
                     break
                 case 1:
-                    i18nd("dpkg-unlocker","Do you want to run the restore process?")
+                    i18nd("dpkg-unlocker","Do you want to run the services restore process?")
                     break
                 case 3:
                     if (!dpkgUnlockerBridge.metaProtectionEnabled){
