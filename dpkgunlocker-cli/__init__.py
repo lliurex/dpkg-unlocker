@@ -311,6 +311,72 @@ class DpkgUnlockerCli(object):
 
 	#def enableProtection
 
+	def restore(self,mode):
+
+		self.unlockInfo=self.dpkgUnlockerCore.getUnlockerCommand(False)
+		msgLog="Dpkg-Unlocker-Cli. Action: restore. Mode of execution: Unnattended: "+ str(mode)
+		self.writeLog(msgLog)
+		self.showServices(False)
+		result=True
+		
+		if len(self.unlockInfo["unlockCmd"])==0:
+
+			if self.unlockInfo["liveProcess"]==0:
+				if not mode:
+					response=input('  [Dpkg-Unlocker-Cli]: Do you want to execute the services restore process (yes/no)): ')
+				else:
+					response='yes'
+				if response.startswith('y'):
+					result=self.restoreProcess()
+					if result:
+						msgLog="Restore process finished successfully"
+						self.writeLog(msgLog)
+						self.dpkgUnlockerCore.cleanLockToken()
+						print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+						return 0
+					else:
+						self.dpkgUnlockerCore.cleanLockToken()
+						return 1
+				else:
+					msgLog="Restoring process cancelled"
+					self.writeLog(msgLog)
+					self.dpkgUnlockerCore.cleanLockToken()
+					print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+					return 0
+			else:
+				msgLog="Some process are running. Wait a moment and try again"
+				self.writeLog(msgLog)
+				self.dpkgUnlockerCore.cleanLockToken()
+				print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+				return 2
+		else:
+			msgLog="Some processes seem locked. Unable to launch the services restore process"
+			self.writeLog(msgLog)
+			self.dpkgUnlockerCore.cleanLockToken()
+			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+			return 0
+
+	#def restore
+
+	def restoreProcess(self):
+
+		command=self.dpkgUnlockerCore.getRestoreCommand()
+		msgLog="Restoring services"
+		self.writeLog(msgLog)
+		print ("  [Dpkg-Unlocker-Cli]: " +msgLog)
+		p=subprocess.Popen(command,shell=True,stderr=subprocess.PIPE)
+		output=p.communicate()
+		error=self.readErrorOutput(output[1])
+		if error["result"]:
+			msgLog="Restoring process. Error: " + str(error["content"])
+			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+			self.writeLog(msgLog)
+			return False
+
+		return True
+
+	#def restoreProcess
+
 	def writeLog(self,msg):
 
 		syslog.openlog("DpkgUnlocker")

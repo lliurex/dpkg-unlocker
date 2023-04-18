@@ -19,7 +19,8 @@ def usage():
 			puts("showprotection: Show the current state of system metapackage protection")
 			puts("disableprotetion: Run command to disable system metapackage protection")
 			puts("enableprotection: Run command to enable system metapackage protection")		
-
+			puts("restore: Run command to try to restore services involved in package installation")
+		
 		puts("Flags")
 		with indent(4):
 			puts("-h --help : Show help")
@@ -76,6 +77,8 @@ if __name__ == '__main__':
 		sys.exit(dpkgunlockercli.disableProtection(mode))
 	elif action=="enableprotection":
 		sys.exit(dpkgunlockercli.enableProtection(mode))
+	elif action=="restore":
+		sys.exit(dpkgunlockercli.restore(mode))
 	else:
 		dpkgunlockercli.dpkgUnlockerCore.cleanLockToken()
 		usage()		
