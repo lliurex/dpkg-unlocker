@@ -7,7 +7,13 @@ import QMLTermWidget 1.0
 Rectangle{
     color:"transparent"
     Text{ 
-        text:i18nd("dpkg-unlocker","Unlock process details")
+        text:{
+            if (dpkgUnlockerBridge.processLaunched=="Unlock"){
+                i18nd("dpkg-unlocker","Unlock process details")
+            }else{
+                i18nd("dpkg-unlocker","Restore process details")
+            }
+        }
         font.family: "Quattrocento Sans Bold"
         font.pointSize: 16
     }

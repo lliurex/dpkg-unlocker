@@ -361,6 +361,13 @@ class DpkgUnlockerManager(object):
 
 	#def changeMetaProtectionStatus
 
+	def getRestoreCommand(self):
+
+		cmd="LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive dpkg --configure -a; LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get update; LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get install -f -y --allow-downgrades --allow-remove-essential --allow-change-held-packages"
+		return cmd
+	
+	#def getRestoreCommand
+
 #class UnlockerUpManager
 
 
