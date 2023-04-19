@@ -39,10 +39,14 @@ GridLayout{
                 optionText:i18nd("dpkg-unlocker","Restore services")
                 optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
                 enabled:{
-                    if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                    if (dpkgUnlockerBridge.runningRestoreCommand){
                         true
                     }else{
-                        false
+                        if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                            true
+                        }else{
+                            false
+                        }
                     }
                 }
                 Connections{
