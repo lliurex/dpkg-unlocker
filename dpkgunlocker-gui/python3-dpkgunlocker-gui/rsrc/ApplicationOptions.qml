@@ -67,6 +67,7 @@ GridLayout{
                 id:protectionOption
                 optionText:i18nd("dpkg-unlocker","Metapackage protection")
                 optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
+                visible:dpkgUnlockerBridge.showProtectionOption
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.manageTransitions(3)

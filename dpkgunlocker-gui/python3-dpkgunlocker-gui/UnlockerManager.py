@@ -9,6 +9,8 @@ import syslog
 import json
 import codecs
 import tempfile
+import pwd
+import grp
 
 
 class UnlockerManager:
@@ -35,7 +37,7 @@ class UnlockerManager:
 		info=self.unlockerCore.checkingLocks()
 		self.manageServiceInfo(info)
 		self.getMetaProtectionStatus()
-
+		
 	#def loadInfo
 
 	def getMetaProtectionStatus(self):
@@ -206,7 +208,6 @@ class UnlockerManager:
 			elif action=="Restore":
 				self.restoreDone=True
 
-		print(command)
 		return command
 	
 	#def exec_command			
@@ -371,5 +372,36 @@ class UnlockerManager:
 		return pkgVersion
 
 	#def getPackageVersion
+
+	def showProtectionOption(self):
+
+		userGroups=self._getUserGroups()
+		
+		if 'admin' not in userGroups:
+			if 'teachers' in userGroups:
+				return False
+
+		return True
+
+	#def showProtectionOption
+
+	def _getUserGroups(self):
+
+		userGroups=[]
+
+		try:
+			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
+			gid = pwd.getpwnam(user).pw_gid
+			groups_gids = os.getgrouplist(user, gid)
+			userGroups = [ grp.getgrgid(x).gr_name for x in groups_gids ]
+		except:
+			user=os.environ["USER"]
+			gid = pwd.getpwnam(user).pw_gid
+			groups_gids = os.getgrouplist(user, gid)
+			userGroups = [ grp.getgrgid(x).gr_name for x in groups_gids ]
+
+		return userGroups
+
+	#def _getUserGroups
 
 #class UnlockerManager

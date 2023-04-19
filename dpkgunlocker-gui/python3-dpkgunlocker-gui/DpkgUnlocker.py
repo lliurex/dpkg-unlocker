@@ -84,6 +84,7 @@ class DpkgUnlocker(QObject):
 		self._processLaunched=""
 		self.moveToStack=""
 		self._showRestoreStatusMessage=[False,"","Success"]
+		self._showProtectionOption=False
 		self.gatherInfo=GatherInfo()
 		self.gatherInfo.start()
 		self.gatherInfo.finished.connect(self._loadConfig)
@@ -94,6 +95,7 @@ class DpkgUnlocker(QObject):
 
 		self.metaProtectionEnabled=DpkgUnlocker.unlockerManager.metaProtectionEnabled
 		self.runningRestoreCommand=False
+		self.showProtectionOption=DpkgUnlocker.unlockerManager.showProtectionOption()
 
 		isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 		self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
@@ -448,6 +450,20 @@ class DpkgUnlocker(QObject):
 			self.on_processLaunched.emit()
 
 	#def _setProcessLaunched
+
+	def _getShowProtectionOption(self):
+
+		return self._showProtectionOption
+
+	#def _getShowProtectionOption
+
+	def _setShowProtectionOption(self,showProtectionOption):
+
+		if self._showProtectionOption!=showProtectionOption:
+			self._showProtectionOption=showProtectionOption
+			self.on_showProtectionOption.emit()
+
+	#def _setShowProtectionOption
 
 	def _updateServicesModel(self):
 
@@ -865,6 +881,9 @@ class DpkgUnlocker(QObject):
 
 	on_processLaunched=Signal()
 	processLaunched=Property('QString',_getProcessLaunched,_setProcessLaunched,notify=on_processLaunched)
+	
+	on_showProtectionOption=Signal()
+	showProtectionOption=Property(bool,_getShowProtectionOption,_setShowProtectionOption,notify=on_showProtectionOption)
 	
 	servicesModel=Property(QObject,_getServicesModel,constant=True)
 

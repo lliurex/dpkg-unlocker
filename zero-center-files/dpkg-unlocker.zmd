@@ -1,6 +1,6 @@
 #!/bin/sh
 
 
-exec /usr/sbin/dpkg-unlocker-gui
+pkexec /usr/sbin/dpkg-unlocker-gui
 
 exit 0
