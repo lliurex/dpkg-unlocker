@@ -40,8 +40,8 @@ ApplicationWindow {
         id: mainLayout
         anchors.fill: parent
         anchors.margins: margin
-        Layout.minimumWidth:780
-        Layout.preferredWidth:780
+        Layout.minimumWidth:785
+        Layout.preferredWidth:785
         Layout.minimumHeight:550
 
         RowLayout {
@@ -66,8 +66,8 @@ ApplicationWindow {
         StackView {
             id: mainView
             property int currentView:dpkgUnlockerBridge.currentStack
-            Layout.minimumWidth:780
-            Layout.preferredWidth: 780
+            Layout.minimumWidth:785
+            Layout.preferredWidth: 785
             Layout.minimumHeight:430
             Layout.preferredHeight:430
             Layout.alignment:Qt.AlignHCenter|Qt.AlignVCenter

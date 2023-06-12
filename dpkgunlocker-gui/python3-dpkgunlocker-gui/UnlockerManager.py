@@ -9,6 +9,8 @@ import syslog
 import json
 import codecs
 import tempfile
+import pwd
+import grp
 
 
 class UnlockerManager:
@@ -35,7 +37,7 @@ class UnlockerManager:
 		info=self.unlockerCore.checkingLocks()
 		self.manageServiceInfo(info)
 		self.getMetaProtectionStatus()
-
+		
 	#def loadInfo
 
 	def getMetaProtectionStatus(self):
@@ -53,7 +55,6 @@ class UnlockerManager:
 		self.isThereALock=False
 		self.areLiveProcess=False
 		self.servicesData=[]
-
 		for item in info:
 			tmp={}
 			tmp["serviceId"]=item
@@ -66,6 +67,9 @@ class UnlockerManager:
 
 			self.servicesData.append(tmp)
 
+		if liveProcess>0:
+			self.areLiveProcess=True
+		
 		if count==len(info):
 			self.isThereAlock=False
 		else:
@@ -74,12 +78,10 @@ class UnlockerManager:
 			else:
 				if liveProcess==len(info):
 					self.isThereALock=False
-					self.areLiveProcess=True
 				elif liveProcess==0:
 					self.isThereALock=True 
 				elif liveProcess>0:
 					self.isThereALock=True
-					self.areLiveProcess=True
 
 	#def manageServiceInfo
 
@@ -135,6 +137,10 @@ class UnlockerManager:
 			self.tokenFixingProcess=tempfile.mkstemp('_Fixing')	
 			remove_tmp=' rm -f ' + self.tokenFixingProcess[1] + ';'+'\n'
 
+		elif action=="Restore":
+			self.tokenRestoreProcess=tempfile.mkstemp('_Restore')
+			remove_tmp=' rm -f ' + self.tokenRestoreProcess[1]+ ';'+'\n'
+					
 		cmd=command+remove_tmp
 		
 		return cmd
@@ -159,6 +165,10 @@ class UnlockerManager:
 			self.tokenFixingResult=tempfile.mkstemp('_Fixing')	
 			result_tmp=' echo $? > ' + self.tokenFixingResult[1] + ')'
 
+		elif action=="Restore":
+			self.tokenRestoreResult=tempfile.mkstemp('_Restore')
+			result_tmp=' echo $? > ' + self.tokenRestoreResult[1]+ ')'	
+		
 		cmd='(('+command+');'+result_tmp+'2>&1 | tee -a %s;'%self.KonsoleLog
 		
 		return cmd	
@@ -176,6 +186,8 @@ class UnlockerManager:
 		command=""
 		if type_cmd=="remove":
 			command=self.unlockInfo["unlockCmd"][action]
+		elif type_cmd=="restore":
+			command=self.restoreCommand
 		else:
 			command=self.unlockInfo["commonCmd"]
 
@@ -193,6 +205,9 @@ class UnlockerManager:
 				self.remove_ap_lock_done=True
 			elif action=="Fixing":
 				self.fixingSystemDone=True
+			elif action=="Restore":
+				self.restoreDone=True
+
 		return command
 	
 	#def exec_command			
@@ -209,6 +224,8 @@ class UnlockerManager:
 			token=self.tokenAptResult[1]
 		elif action=="Fixing":
 			token=self.tokenFixingResult[1]
+		elif action=="Restore":
+			token=self.tokenRestoreResult[1]
 					
 		if os.path.exists(token):
 			file=open(token)
@@ -221,6 +238,19 @@ class UnlockerManager:
 		return result
 		
 	#def check_process
+
+	def initRestoreProcesses(self):
+
+		self.restoreLaunched=False
+		self.restoreDone=False
+
+	#def initRestoreProcesses
+
+	def getRestoreCommand(self):
+
+		self.restoreCommand=self.unlockerCore.getRestoreCommand()
+
+	#def getStabilizeCommand
 
 	def changeMetaProtectionStatus(self,change):
 
@@ -237,6 +267,7 @@ class UnlockerManager:
 
 	def writeProcessLog(self,code):
 
+		msg=""
 		if code==1:
 			msg="Removing Lliurex-Up lock file"
 		elif code==2:
@@ -245,6 +276,8 @@ class UnlockerManager:
 			msg="Removing Apt lock file"
 		elif code==4:
 			msg="Fixing the system"
+		elif code==9:
+			msg="Restoring the services"
 		elif code==-6:
 			msg="Error fixing the sytem"
 		elif code==-7:
@@ -255,7 +288,10 @@ class UnlockerManager:
 			msg="Error removing Lliurex-Up lock file"
 
 		if msg!="":
-			self.writeLog("Unlocked process: %s"%msg)
+			if msg==9:
+				self.writeLog("Restoring process: %s"%msg)
+			else:
+				self.writeLog("Unlocked process: %s"%msg)
 
 	#def writeProcessLog
 
@@ -325,19 +361,47 @@ class UnlockerManager:
 
 	def getPackageVersion(self):
 
-		command = "LANG=C LANGUAGE=en apt-cache policy dpkgunlocker-gui"
-		p = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE)
-		installed = None
-		for line in iter(p.stdout.readline,b""):
-			if type(line) is bytes:
-				line=line.decode()
+		packageVersionFile="/var/lib/dpkgunlocker-gui/version"
+		pkgVersion=""
 
-			stripedline = line.strip()
-			if stripedline.startswith("Installed"):
-				installed = stripedline.replace("Installed: ","")
+		if os.path.exists(packageVersionFile):
+			with open(packageVersionFile,'r') as fd:
+				pkgVersion=fd.readline()
+				fd.close()
 
-		return installed
+		return pkgVersion
 
 	#def getPackageVersion
+
+	def showProtectionOption(self):
+
+		userGroups=self._getUserGroups()
+		
+		if 'admin' not in userGroups:
+			if 'teachers' in userGroups:
+				return False
+
+		return True
+
+	#def showProtectionOption
+
+	def _getUserGroups(self):
+
+		userGroups=[]
+
+		try:
+			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
+			gid = pwd.getpwnam(user).pw_gid
+			groups_gids = os.getgrouplist(user, gid)
+			userGroups = [ grp.getgrgid(x).gr_name for x in groups_gids ]
+		except:
+			user=os.environ["USER"]
+			gid = pwd.getpwnam(user).pw_gid
+			groups_gids = os.getgrouplist(user, gid)
+			userGroups = [ grp.getgrgid(x).gr_name for x in groups_gids ]
+
+		return userGroups
+
+	#def _getUserGroups
 
 #class UnlockerManager

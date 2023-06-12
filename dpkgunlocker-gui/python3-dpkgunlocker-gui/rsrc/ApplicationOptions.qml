@@ -11,7 +11,7 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:195
+        width:200
         Layout.minimumHeight:430
         Layout.preferredHeight:430
         Layout.fillHeight:true
@@ -19,14 +19,14 @@ GridLayout{
 
         GridLayout{
             id: menuGrid
-            rows:4 
+            rows:5 
             flow: GridLayout.TopToBottom
             rowSpacing:0
 
             MenuOptionBtn {
                 id:servicesOption
                 optionText:i18nd("dpkg-unlocker","Services")
-                optionIcon:"/usr/share/icons/breeze/actions/16/run-build.svg"
+                optionIcon:"/usr/share/icons/breeze/actions/22/run-build.svg"
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.manageTransitions(0)
@@ -35,13 +35,34 @@ GridLayout{
             }
 
             MenuOptionBtn {
-                id:detailsOption
-                optionText:i18nd("dpkg-unlocker","Unlock process")
-                optionIcon:"/usr/share/icons/breeze/apps/16/utilities-terminal.svg"
-                enabled:false
+                id:restoreOption
+                optionText:i18nd("dpkg-unlocker","Restore services")
+                optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
+                enabled:{
+                    if (dpkgUnlockerBridge.runningRestoreCommand){
+                        true
+                    }else{
+                        if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                            true
+                        }else{
+                            false
+                        }
+                    }
+                }
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.manageTransitions(1)
+                    }
+                }
+            }
+            MenuOptionBtn {
+                id:detailsOption
+                optionText:i18nd("dpkg-unlocker","Details process")
+                optionIcon:"/usr/share/icons/breeze/apps/22/utilities-terminal.svg"
+                enabled:false
+                Connections{
+                    function onMenuOptionClicked(){
+                        dpkgUnlockerBridge.manageTransitions(2)
                     }
                 }
             }
@@ -49,10 +70,11 @@ GridLayout{
             MenuOptionBtn {
                 id:protectionOption
                 optionText:i18nd("dpkg-unlocker","Metapackage protection")
-                optionIcon:"/usr/share/icons/breeze/status/16/security-high.svg"
+                optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
+                visible:dpkgUnlockerBridge.showProtectionOption
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.manageTransitions(2)
+                        dpkgUnlockerBridge.manageTransitions(3)
                     }
                 }
             }
@@ -61,7 +83,7 @@ GridLayout{
             MenuOptionBtn {
                 id:helpOption
                 optionText:i18nd("dpkg-unlocker","Help")
-                optionIcon:"/usr/share/icons/breeze/actions/16/help-contents.svg"
+                optionIcon:"/usr/share/icons/breeze/actions/22/help-contents.svg"
                 Connections{
                     function onMenuOptionClicked(){
                         dpkgUnlockerBridge.openHelp();
@@ -85,6 +107,9 @@ GridLayout{
 
             ServicesPanel{
                 id:servicesPanel
+            }
+            RestorePanel{
+                id:restorePanel
             }
             KonsolePanel{
                 id:konsolePanel
@@ -128,19 +153,56 @@ GridLayout{
                 display:AbstractButton.TextBesideIcon
                 icon.name:"dialog-ok"
                 text:{
-                    if (optionsLayout.currentIndex!=2){
-                        i18nd("dpkg-unlocker","Unlock")
-                    }else{
-                        i18nd("dpkg-unlocker","Apply")
+                    switch(optionsLayout.currentIndex){
+                        case 0:
+                            i18nd("dpkg-unlocker","Unlock")
+                            break;
+                        case 1:
+                            i18nd("dpkg-unlocker","Restore")
+                            break;
+                        case 3:
+                            i18nd("dpkg-unlocker","Apply")
+                            break;
+                        case 2:
+                            if (dpkgUnlockerBridge.processLaunched=="Unlock"){
+                                i18nd("dpkg-unlocker","Unlock")
+                            }else{
+                                i18nd("dpkg-unlocker","Restore")
+                            }
+                            break;
+                        default:
+                            i18nd("dpkg-unlocker","Unlock")
+                            break
                     }
                 }
                 Layout.preferredHeight:40
                 Layout.rightMargin:10
                 enabled:{
-                    if (optionsLayout.currentIndex!=2){
-                        dpkgUnlockerBridge.isThereALock
-                    }else{
-                        dpkgUnlockerBridge.isProtectionChange
+                    switch(optionsLayout.currentIndex){
+                        case 0:
+                            if (dpkgUnlockerBridge.runningRestoreCommand){
+                                false
+                            }else{
+                                dpkgUnlockerBridge.isThereALock
+                            }
+                            break;
+                        case 1:
+                            if (dpkgUnlockerBridge.runningRestoreCommand){
+                                false
+                            }else{
+                                if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                                    true
+                                }else{
+                                    false
+                                }
+                            }
+                            break;
+                        case 3:
+                            dpkgUnlockerBridge.isProtectionChange
+                            break
+                        default:
+                            false
+                            break;
                     }
                 }
                 Keys.onReturnPressed: unlockBtn.clicked()
@@ -154,37 +216,65 @@ GridLayout{
     UnlockDialog{
         id:unlockDialog
         dialogTitle:{
-            if (optionsLayout.currentIndex==2){
-                "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
-            }else{
-                "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
+            switch(optionsLayout.currentIndex){
+                case 0:
+                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
+                    break;
+                case 1:
+                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restore services")
+                    break;
+                case 3:
+                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
+                    break
+                default:
+                    ""
+                    break;
             }
         }
         dialogMsg:{
-            if (optionsLayout.currentIndex==2){
-                if (!dpkgUnlockerBridge.metaProtectionEnabled){
-                    i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
-                }else{
-                    i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
-                }
-
-            }else{
-                i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+            switch(optionsLayout.currentIndex){
+                case 0:
+                    i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+                    break
+                case 1:
+                    i18nd("dpkg-unlocker","Do you want to run the services restore process?")
+                    break
+                case 3:
+                    if (!dpkgUnlockerBridge.metaProtectionEnabled){
+                        i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
+                    }else{
+                        i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
+                    }
+                    break
+                default:
+                    ""
+                    break;
             }
         }
         dialogVisible:dpkgUnlockerBridge.showDialog
         Connections{
             target:unlockDialog
             function onDialogApplyClicked(){
-                if (optionsLayout.currentIndex==2){
-                    dpkgUnlockerBridge.changeProteccionStatus()
-                }else{
-                    feedBackText.visible=true
-                    feedBackBar.visible=true
-                    detailsOption.enabled=true
-                    protectionOption.enabled=false
-                    applyChanges()
-                    dpkgUnlockerBridge.launchUnlockProcess()
+                switch(optionsLayout.currentIndex){
+                    case 0:
+                        feedBackText.visible=true
+                        feedBackBar.visible=true
+                        detailsOption.enabled=true
+                        protectionOption.enabled=false
+                        applyChanges()
+                        dpkgUnlockerBridge.launchUnlockProcess()
+                        break;
+                    case 1:
+                        feedBackText.visible=true
+                        feedBackBar.visible=true
+                        detailsOption.enabled=true
+                        protectionOption.enabled=false
+                        applyChanges()
+                        dpkgUnlockerBridge.launchRestoreProcess()
+                        break;
+                    case 3:
+                        dpkgUnlockerBridge.changeProteccionStatus()
+                        break;
                 }
             }
 
@@ -252,7 +342,9 @@ GridLayout{
              case 4:
                 msg=i18nd("dpkg-unlocker","Fixing the system...");
                 break;
-           
+            case 9:
+                msg=i18nd("dpkg-unlocker","Restoring the services...");
+                break;
             default:
                 break;
         }

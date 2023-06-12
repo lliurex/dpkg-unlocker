@@ -13,5 +13,4 @@ Icon=dpkg-unlocker
 Category=System
 ScriptPath=dpkg-unlocker.zmd
 Service=False
-Using=pkexec
-Groups=sudo;admins
+Groups=sudo;admins;teachers

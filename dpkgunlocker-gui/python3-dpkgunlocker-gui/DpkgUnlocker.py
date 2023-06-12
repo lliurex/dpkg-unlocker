@@ -39,12 +39,15 @@ class DpkgUnlocker(QObject):
 	META_PROTECTION_ENABLED=6
 	META_PROTECTION_DISABLED=7
 	META_PROTECTION_CHANGE_SUCCESS=8
+	RESTORING_SERVICES_RUNNING=9
+	RESTORING_SERVICES_SUCCESS=10
 	FIXING_UNLOCK_COMMAND_ERROR=-6
 	APT_UNLOCK_COMMAND_ERROR=-7
 	DPKG_UNLOCK_COMMAND_ERROR=-8
 	LLXUP_UNLOCK_COMMAND_ERROR=-9
 	META_PROTECTION_ENABLED_ERROR=-10
 	META_PROTECTION_DISABLED_ERROR=-11
+	RESTORING_SERVICES_ERROR=-12
 	
 	def __init__(self):
 
@@ -62,6 +65,7 @@ class DpkgUnlocker(QObject):
 		self._currentStack=0
 		self._currentOptionsStack=0
 		self._isThereALock=False
+		self._areLiveProcess=False
 		self._feedBackCode=0
 		self._metaProtectionEnabled=True
 		self._showProtectionStatusMessage=[False,"","Success"]
@@ -76,7 +80,11 @@ class DpkgUnlocker(QObject):
 		self.statusServicesRunningTimer.start(5000)
 		self.isWorked=True
 		self.runningUnlockCommand=False
+		self._runningRestoreCommand=False
+		self._processLaunched=""
 		self.moveToStack=""
+		self._showRestoreStatusMessage=[False,"","Success"]
+		self._showProtectionOption=False
 		self.gatherInfo=GatherInfo()
 		self.gatherInfo.start()
 		self.gatherInfo.finished.connect(self._loadConfig)
@@ -86,7 +94,9 @@ class DpkgUnlocker(QObject):
 	def _loadConfig(self):		
 
 		self.metaProtectionEnabled=DpkgUnlocker.unlockerManager.metaProtectionEnabled
-	
+		self.runningRestoreCommand=False
+		self.showProtectionOption=DpkgUnlocker.unlockerManager.showProtectionOption()
+
 		isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 		self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
 
@@ -133,7 +143,6 @@ class DpkgUnlocker(QObject):
 		if not self.runningUnlockCommand:
 			isThereALock=DpkgUnlocker.unlockerManager.isThereALock
 			self.areLiveProcess=DpkgUnlocker.unlockerManager.areLiveProcess
-			
 			if isThereALock and not self.areLiveProcess:
 				self.isThereALock=True
 				self._updateServiceStatusMessage(12)
@@ -159,10 +168,11 @@ class DpkgUnlocker(QObject):
 				self._servicesModel.setData(index,'statusCode',updatedInfo[i]["statusCode"])
 
 			if not self.endProcess:
-				self.endProcess=True
-				self.endCurrentCommand=True
-				DpkgUnlocker.unlockerManager.writeLogTerminal()
-				DpkgUnlocker.unlockerManager.writeLog("Final Services Status: %s"%(str(updatedInfo)))
+				if not self.runningRestoreCommand:
+					self.endProcess=True
+					self.endCurrentCommand=True
+					DpkgUnlocker.unlockerManager.writeLogTerminal()
+					DpkgUnlocker.unlockerManager.writeLog("Final Services Status: %s"%(str(updatedInfo)))
 
 		self.isWorked=False
 
@@ -224,6 +234,20 @@ class DpkgUnlocker(QObject):
 			self.on_isThereALock.emit()
 
 	#def _setIsThereALock
+
+	def _getAreLiveProcess(self):
+
+		return self._areLiveProcess
+
+	#def _getAreLiveProcess
+
+	def _setAreLiveProcess(self,areLiveProcess):
+
+		if self._areLiveProcess!=areLiveProcess:
+			self._areLiveProcess=areLiveProcess
+			self.on_areLiveProcess.emit()
+
+	#def _setAreLiveProcess
 
 	def _getFeedBackCode(self):
 
@@ -385,6 +409,62 @@ class DpkgUnlocker(QObject):
 
 	#def _getServicesModel
 
+	def _getShowRestoreStatusMessage(self):
+
+		return self._showRestoreStatusMessage
+
+	#def _getShowRestoreStatusMessage
+
+	def _setShowRestoreStatusMessage(self,showRestoreStatusMessage):
+
+		if self._showRestoreStatusMessage!=showRestoreStatusMessage:
+			self._showRestoreStatusMessage=showRestoreStatusMessage
+			self.on_showRestoreStatusMessage.emit()
+
+	#def _setShowRestoreStatusMessage
+
+	def _getRunningRestoreCommand(self):
+
+		return self._runningRestoreCommand
+
+	#def _getRunningRestoreCommand
+
+	def _setRunningRestoreCommand(self,runningRestoreCommand):
+
+		if self._runningRestoreCommand!=runningRestoreCommand:
+			self._runningRestoreCommand=runningRestoreCommand
+			self.on_runningRestoreCommand.emit()
+
+	#def _setRunningRestoreCommand
+
+	def _getProcessLaunched(self):
+
+		return self._processLaunched
+
+	#def _getProcessLaunched
+
+	def _setProcessLaunched(self,processLaunched):
+
+		if self._processLaunched!=processLaunched:
+			self._processLaunched=processLaunched
+			self.on_processLaunched.emit()
+
+	#def _setProcessLaunched
+
+	def _getShowProtectionOption(self):
+
+		return self._showProtectionOption
+
+	#def _getShowProtectionOption
+
+	def _setShowProtectionOption(self,showProtectionOption):
+
+		if self._showProtectionOption!=showProtectionOption:
+			self._showProtectionOption=showProtectionOption
+			self.on_showProtectionOption.emit()
+
+	#def _setShowProtectionOption
+
 	def _updateServicesModel(self):
 
 		ret=self._servicesModel.clear()
@@ -413,6 +493,7 @@ class DpkgUnlocker(QObject):
 	def launchUnlockProcess(self):
 
 		self.showDialog=False
+		self.processLaunched="Unlock"
 		self.runningUnlockCommand=True
 		self.statusServicesRunningTimer.stop()
 		self.endProcess=False
@@ -555,6 +636,62 @@ class DpkgUnlocker(QObject):
 		
 	#def getNewCommand
 
+	@Slot()
+	def launchRestoreProcess(self):
+
+		self.showDialog=False
+		self.processLaunched="Restore"
+		self.runningRestoreCommand=True
+		self.endProcess=False
+		self.showRestoreStatusMessage=[False,"","Success"]
+		DpkgUnlocker.unlockerManager.initRestoreProcesses()
+		DpkgUnlocker.unlockerManager.getRestoreCommand()
+		DpkgUnlocker.unlockerManager.writeLog("Restore process launched")
+		self.restoreProcessRunningTimer=QTimer(None)
+		self.restoreProcessRunningTimer.timeout.connect(self._updateRestoreProcessStatus)
+		self.restoreProcessRunningTimer.start(100)
+
+	#def launchRestoreCommand
+
+	def _updateRestoreProcessStatus(self):
+
+		error=False
+
+		if not DpkgUnlocker.unlockerManager.restoreLaunched:
+			self.feedBackCode=DpkgUnlocker.RESTORING_SERVICES_RUNNING
+			DpkgUnlocker.unlockerManager.restoreLaunched=True
+			self.currentCommand=DpkgUnlocker.unlockerManager.execCommand("Restore","restore")
+			self.endCurrentCommand=True
+			self.restoreCheck=True
+			DpkgUnlocker.unlockerManager.writeProcessLog(self.feedBackCode)
+		
+		if DpkgUnlocker.unlockerManager.restoreDone:
+			if self.restoreCheck:
+				self.restoreResult=DpkgUnlocker.unlockerManager.checkProcess("Restore")
+									
+			if self.restoreResult:
+				code=DpkgUnlocker.RESTORING_SERVICES_SUCCESS	
+			else:
+				error=True
+				code=DpkgUnlocker.RESTORING_SERVICES_ERROR
+
+			if error:
+				self.showRestoreStatusMessage=[True,code,"Error"]
+			else:
+				self.showRestoreStatusMessage=[True,code,"Success"]
+
+			DpkgUnlocker.unlockerManager.writeProcessLog(code)
+			self.runningRestoreCommand=False
+			self.endProcess=True
+			self.restoreProcessRunningTimer.stop()
+
+		if DpkgUnlocker.unlockerManager.restoreLaunched:
+			if not DpkgUnlocker.unlockerManager.restoreDone:
+				if not os.path.exists(DpkgUnlocker.unlockerManager.tokenRestoreProcess[1]):
+					DpkgUnlocker.unlockerManager.restoreDone=True
+
+	#def _updateRestoreProcessStatus
+
 	@Slot(bool)
 	def getProtectionChange(self,change):
 		
@@ -675,7 +812,7 @@ class DpkgUnlocker(QObject):
 	@Slot()
 	def closeApplication(self):
 
-		if self.runningUnlockCommand:
+		if self.runningUnlockCommand or self.runningRestoreCommand:
 			self.closeGui=False
 		else:
 			if not self.isProtectionChange:
@@ -699,6 +836,9 @@ class DpkgUnlocker(QObject):
 
 	on_isThereALock=Signal()
 	isThereALock=Property(bool,_getIsThereALock,_setIsThereALock,notify=on_isThereALock)
+
+	on_areLiveProcess=Signal()
+	areLiveProcess=Property(bool,_getAreLiveProcess,_setAreLiveProcess,notify=on_areLiveProcess)
 
 	on_feedBackCode=Signal()
 	feedBackCode=Property(int,_getFeedBackCode,_setFeedBackCode,notify=on_feedBackCode)
@@ -733,6 +873,18 @@ class DpkgUnlocker(QObject):
 	on_closeGui=Signal()
 	closeGui=Property(bool,_getCloseGui,_setCloseGui, notify=on_closeGui)
 
+	on_showRestoreStatusMessage=Signal()
+	showRestoreStatusMessage=Property('QVariantList',_getShowRestoreStatusMessage,_setShowRestoreStatusMessage,notify=on_showRestoreStatusMessage)
+	
+	on_runningRestoreCommand=Signal()
+	runningRestoreCommand=Property(bool,_getRunningRestoreCommand,_setRunningRestoreCommand,notify=on_runningRestoreCommand)
+
+	on_processLaunched=Signal()
+	processLaunched=Property('QString',_getProcessLaunched,_setProcessLaunched,notify=on_processLaunched)
+	
+	on_showProtectionOption=Signal()
+	showProtectionOption=Property(bool,_getShowProtectionOption,_setShowProtectionOption,notify=on_showProtectionOption)
+	
 	servicesModel=Property(QObject,_getServicesModel,constant=True)
 
 

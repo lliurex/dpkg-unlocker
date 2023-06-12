@@ -9,7 +9,7 @@ _dpkg-unlocker-cli()
     #
     #  The basic options we'll complete.
     #
-    opts="showservices unlock showprotection disableprotection enableprotection help"
+    opts="showservices unlock showprotection disableprotection enableprotection restore help"
 
     case "${prev}" in 
         unlock)
@@ -18,6 +18,11 @@ _dpkg-unlocker-cli()
             return 0
             ;;
         disableprotection | enableprotection)
+            local running="-u --unattended"
+            COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
+            return 0
+            ;;
+        restore)
             local running="-u --unattended"
             COMPREPLY=( $(compgen -W "${running}" -- ${cur}) )
             return 0
