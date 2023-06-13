@@ -184,7 +184,7 @@ class DpkgUnlockerCli(object):
 		if type(output) is bytes:
 			output=output.decode()
 		lines=output.split('\n')
-		readError["content"]=lines
+		readError["content"]=output
 		for line in lines:
 			if "E: " in line:
 				cont=cont+1
