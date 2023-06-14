@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.5) focal; urgency=medium
+
+  * Added option to execute dpkg --configure
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 14 Jun 2023 17:14:15 +0200
+
 dpkg-unlocker (0.4.4.3) focal; urgency=medium
 
   * Make window resizable
