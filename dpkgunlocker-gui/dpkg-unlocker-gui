@@ -34,14 +34,22 @@ else:
 		sys.exit(1)
 
 
-import dpkgunlockergui.DpkgUnlocker as DpkgUnlocker
+from dpkgunlockergui.Core import Core
+c=Core.get_core()
 
 app = QApplication()
 engine = QQmlApplicationEngine()
 engine.clearComponentCache()
 context=engine.rootContext()
-dpkgUnlockerBridge=DpkgUnlocker.DpkgUnlocker()
-context.setContextProperty("dpkgUnlockerBridge", dpkgUnlockerBridge)
+mainStackBridge=c.mainStack
+serviceStackBridge=c.serviceStack
+restoreStackBridge=c.restoreStack
+protectionStackBridge=c.protectionStack
+
+context.setContextProperty("mainStackBridge", mainStackBridge)
+context.setContextProperty("serviceStackBridge", serviceStackBridge)
+context.setContextProperty("restoreStackBridge", restoreStackBridge)
+context.setContextProperty("protectionStackBridge", protectionStackBridge)
 
 url = QUrl("/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/dpkg-unlocker.qml")
 

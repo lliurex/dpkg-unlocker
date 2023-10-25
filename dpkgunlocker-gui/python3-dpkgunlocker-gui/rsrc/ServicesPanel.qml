@@ -24,9 +24,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:dpkgUnlockerBridge.showServiceStatusMesage[0]
-            text:getMessageText(dpkgUnlockerBridge.showServiceStatusMesage[1])
-            type:getMessageType(dpkgUnlockerBridge.showServiceStatusMesage[2])
+            visible:serviceStackBridge.showServiceStatusMesage[0]
+            text:getMessageText(serviceStackBridge.showServiceStatusMesage[1])
+            type:getMessageType(serviceStackBridge.showServiceStatusMesage[2])
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40
@@ -40,7 +40,7 @@ Rectangle{
                 id:servicesList
                 Layout.fillHeight:true
                 Layout.fillWidth:true
-                servicesModel:dpkgUnlockerBridge.servicesModel
+                servicesModel:serviceStackBridge.servicesModel
             }
         }
     }

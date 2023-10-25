@@ -24,9 +24,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:dpkgUnlockerBridge.showRestoreStatusMessage[0]
-            text:getMessageText(dpkgUnlockerBridge.showRestoreStatusMessage[1])
-            type:getMessageType(dpkgUnlockerBridge.showRestoreStatusMessage[2])
+            visible:restoreStackBridge.showRestoreStatusMessage[0]
+            text:getMessageText(restoreStackBridge.showRestoreStatusMessage[1])
+            type:getMessageType(restoreStackBridge.showRestoreStatusMessage[2])
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40

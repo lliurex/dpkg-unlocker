@@ -8,7 +8,7 @@ Rectangle{
     color:"transparent"
     Text{ 
         text:{
-            if (dpkgUnlockerBridge.processLaunched=="Unlock"){
+            if (mainStackBridge.processLaunched=="Unlock"){
                 i18nd("dpkg-unlocker","Unlock process details")
             }else{
                 i18nd("dpkg-unlocker","Restore process details")

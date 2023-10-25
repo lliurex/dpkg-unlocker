@@ -23,9 +23,9 @@ ApplicationWindow {
     }
     onClosing: {
         close.accepted=closing;
-        dpkgUnlockerBridge.closeApplication()
+        mainStackBridge.closeApplication()
         delay(100, function() {
-            if (dpkgUnlockerBridge.closeGui){
+            if (mainStackBridge.closeGui){
                 closing=true,
                 timer.stop(),           
                 mainWindow.close();
@@ -65,7 +65,7 @@ ApplicationWindow {
 
         StackView {
             id: mainView
-            property int currentView:dpkgUnlockerBridge.currentStack
+            property int currentView:mainStackBridge.currentStack
             Layout.minimumWidth:785
             Layout.preferredWidth: 785
             Layout.minimumHeight:430
