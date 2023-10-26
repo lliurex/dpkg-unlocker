@@ -156,6 +156,8 @@ class Bridge(QObject):
 		self.core.mainStack.isWorked=True
 		self.core.mainStack.runningUnlockCommand=True
 		self.isProtectionChange=False
+		self.showPendingChangesDialog=False
+
 		result=Bridge.unlockerManager.changeMetaProtectionStatus(self.metaProtectionEnabled)
 		if result:
 			self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_CHANGE_SUCCESS,"Success"]
