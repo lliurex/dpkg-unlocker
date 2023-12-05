@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.6) focal; urgency=medium
+
+  * Refactorized code.
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 05 Dec 2023 16:13:05 +0100
+
 dpkg-unlocker (0.4.5) focal; urgency=medium
 
   * Added option to execute dpkg --configure
