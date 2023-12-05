@@ -29,7 +29,7 @@ GridLayout{
                 optionIcon:"/usr/share/icons/breeze/actions/22/run-build.svg"
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.manageTransitions(0)
+                        mainStackBridge.manageTransitions(0)
                     }
                 }
             }
@@ -39,10 +39,10 @@ GridLayout{
                 optionText:i18nd("dpkg-unlocker","Restore services")
                 optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
                 enabled:{
-                    if (dpkgUnlockerBridge.runningRestoreCommand){
+                    if (restoreStackBridge.runningRestoreCommand){
                         true
                     }else{
-                        if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                        if ((!serviceStackBridge.areLiveProcess)&&(!serviceStackBridge.isThereALock)){
                             true
                         }else{
                             false
@@ -51,7 +51,7 @@ GridLayout{
                 }
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.manageTransitions(1)
+                        mainStackBridge.manageTransitions(1)
                     }
                 }
             }
@@ -62,7 +62,7 @@ GridLayout{
                 enabled:false
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.manageTransitions(2)
+                        mainStackBridge.manageTransitions(2)
                     }
                 }
             }
@@ -71,10 +71,10 @@ GridLayout{
                 id:protectionOption
                 optionText:i18nd("dpkg-unlocker","Metapackage protection")
                 optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
-                visible:dpkgUnlockerBridge.showProtectionOption
+                visible:protectionStackBridge.showProtectionOption
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.manageTransitions(3)
+                        mainStackBridge.manageTransitions(3)
                     }
                 }
             }
@@ -86,7 +86,7 @@ GridLayout{
                 optionIcon:"/usr/share/icons/breeze/actions/22/help-contents.svg"
                 Connections{
                     function onMenuOptionClicked(){
-                        dpkgUnlockerBridge.openHelp();
+                        mainStackBridge.openHelp();
                     }
                 }
             }
@@ -100,7 +100,7 @@ GridLayout{
 
         StackLayout {
             id: optionsLayout
-            currentIndex:dpkgUnlockerBridge.currentOptionsStack
+            currentIndex:mainStackBridge.currentOptionsStack
             Layout.fillHeight:true
             Layout.fillWidth:true
             Layout.alignment:Qt.AlignHCenter
@@ -131,7 +131,7 @@ GridLayout{
                 spacing:5
                 Text{
                     id:feedBackText
-                    text:getFeedBackText(dpkgUnlockerBridge.feedBackCode)
+                    text:getFeedBackText(mainStackBridge.feedBackCode)
                     visible:false
                     font.family: "Quattrocento Sans Bold"
                     font.pointSize: 10
@@ -164,7 +164,7 @@ GridLayout{
                             i18nd("dpkg-unlocker","Apply")
                             break;
                         case 2:
-                            if (dpkgUnlockerBridge.processLaunched=="Unlock"){
+                            if (mainStackBridge.processLaunched=="Unlock"){
                                 i18nd("dpkg-unlocker","Unlock")
                             }else{
                                 i18nd("dpkg-unlocker","Restore")
@@ -180,17 +180,17 @@ GridLayout{
                 enabled:{
                     switch(optionsLayout.currentIndex){
                         case 0:
-                            if (dpkgUnlockerBridge.runningRestoreCommand){
+                            if (restoreStackBridge.runningRestoreCommand){
                                 false
                             }else{
-                                dpkgUnlockerBridge.isThereALock
+                                serviceStackBridge.isThereALock
                             }
                             break;
                         case 1:
-                            if (dpkgUnlockerBridge.runningRestoreCommand){
+                            if (restoreStackBridge.runningRestoreCommand){
                                 false
                             }else{
-                                if ((!dpkgUnlockerBridge.areLiveProcess)&&(!dpkgUnlockerBridge.isThereALock)){
+                                if ((!serviceStackBridge.areLiveProcess)&&(!serviceStackBridge.isThereALock)){
                                     true
                                 }else{
                                     false
@@ -198,7 +198,7 @@ GridLayout{
                             }
                             break;
                         case 3:
-                            dpkgUnlockerBridge.isProtectionChange
+                            protectionStackBridge.isProtectionChange
                             break
                         default:
                             false
@@ -208,7 +208,7 @@ GridLayout{
                 Keys.onReturnPressed: unlockBtn.clicked()
                 Keys.onEnterPressed: unlockBtn.clicked()
                 onClicked:{
-                    dpkgUnlockerBridge.openDialog()
+                    mainStackBridge.openDialog()
                 }
             }
         }
@@ -240,7 +240,7 @@ GridLayout{
                     i18nd("dpkg-unlocker","Do you want to run the services restore process?")
                     break
                 case 3:
-                    if (!dpkgUnlockerBridge.metaProtectionEnabled){
+                    if (!protectionStackBridge.metaProtectionEnabled){
                         i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
                     }else{
                         i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
@@ -251,7 +251,7 @@ GridLayout{
                     break;
             }
         }
-        dialogVisible:dpkgUnlockerBridge.showDialog
+        dialogVisible:mainStackBridge.showDialog
         Connections{
             target:unlockDialog
             function onDialogApplyClicked(){
@@ -262,7 +262,7 @@ GridLayout{
                         detailsOption.enabled=true
                         protectionOption.enabled=false
                         applyChanges()
-                        dpkgUnlockerBridge.launchUnlockProcess()
+                        serviceStackBridge.launchUnlockProcess()
                         break;
                     case 1:
                         feedBackText.visible=true
@@ -270,27 +270,27 @@ GridLayout{
                         detailsOption.enabled=true
                         protectionOption.enabled=false
                         applyChanges()
-                        dpkgUnlockerBridge.launchRestoreProcess()
+                        restoreStackBridge.launchRestoreProcess()
                         break;
                     case 3:
-                        dpkgUnlockerBridge.changeProteccionStatus()
+                        protectionStackBridge.changeProteccionStatus()
                         break;
                 }
             }
 
             function onDiscardDialogClicked(){
-                dpkgUnlockerBridge.discardChangeProtectionStatus()
+                protectionStackBridge.discardChangeProtectionStatus()
             }
 
             function onCancelDialogClicked(){
                 if (optionsLayout.currentIndex==2){
-                    if (dpkgUnlockerBridge.showPendingChangesDialog){
-                        dpkgUnlockerBridge.cancelAction()
+                    if (mainStackBridge.showPendingChangesDialog){
+                        mainStackBridge.cancelAction()
                     }else{
-                        dpkgUnlockerBridge.discardChangeProtectionStatus()
+                        protectionStackBridge.discardChangeProtectionStatus()
                     }
                 }else{
-                    dpkgUnlockerBridge.cancelAction()
+                    mainStackBridge.cancelAction()
                 }
             }
 
@@ -310,16 +310,16 @@ GridLayout{
    
     function applyChanges(){
         delay(100, function() {
-            if (dpkgUnlockerBridge.endProcess){
+            if (mainStackBridge.endProcess){
                 timer.stop()
                 feedBackText.visible=false
                 feedBackBar.visible=false
                 protectionOption.enabled=true
                 
             }else{
-                if (dpkgUnlockerBridge.endCurrentCommand){
-                    dpkgUnlockerBridge.getNewCommand()
-                    var newCommand=dpkgUnlockerBridge.currentCommand
+                if (mainStackBridge.endCurrentCommand){
+                    mainStackBridge.getNewCommand()
+                    var newCommand=mainStackBridge.currentCommand
                     konsolePanel.runCommand(newCommand)
                 }
             }
