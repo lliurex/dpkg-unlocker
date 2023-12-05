@@ -24,9 +24,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:dpkgUnlockerBridge.showProtectionStatusMessage[0]
-            text:getMessageText(dpkgUnlockerBridge.showProtectionStatusMessage[1])
-            type:getMessageType(dpkgUnlockerBridge.showProtectionStatusMessage[2])
+            visible:protectionStackBridge.showProtectionStatusMessage[0]
+            text:getMessageText(protectionStackBridge.showProtectionStatusMessage[1])
+            type:getMessageType(protectionStackBridge.showProtectionStatusMessage[2])
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40
@@ -39,13 +39,13 @@ Rectangle{
             PC3.CheckBox {
                 id:disableProtectionCb
                 text:i18nd("dpkg-unlocker","Enable system metapackage protection")
-                checked:dpkgUnlockerBridge.metaProtectionEnabled
+                checked:protectionStackBridge.metaProtectionEnabled
                 font.pointSize: 10
                 focusPolicy: Qt.NoFocus
                 Keys.onReturnPressed: disableProtectionCb.toggled()
                 Keys.onEnterPressed: disableProtectionCb.toggled()
                 onToggled:{
-                   dpkgUnlockerBridge.getProtectionChange(checked)
+                   protectionStackBridge.getProtectionChange(checked)
                 }
 
                 Layout.alignment:Qt.AlignLeft
