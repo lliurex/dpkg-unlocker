@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
-import org.kde.plasma.components 3.0 as PC3
+//import org.kde.plasma.components 3.0 as PC3
 
 GridLayout{
     id: optionsGrid
@@ -25,7 +25,8 @@ GridLayout{
 
             MenuOptionBtn {
                 id:servicesOption
-                optionText:i18nd("dpkg-unlocker","Services")
+                //optionText:i18nd("dpkg-unlocker","Services")
+                optionText:"Services"
                 optionIcon:"/usr/share/icons/breeze/actions/22/run-build.svg"
                 Connections{
                     function onMenuOptionClicked(){
@@ -36,7 +37,8 @@ GridLayout{
 
             MenuOptionBtn {
                 id:restoreOption
-                optionText:i18nd("dpkg-unlocker","Restore services")
+                //optionText:i18nd("dpkg-unlocker","Restore services")
+                optionText:"Restore services"
                 optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
                 enabled:{
                     if (restoreStackBridge.runningRestoreCommand){
@@ -57,7 +59,8 @@ GridLayout{
             }
             MenuOptionBtn {
                 id:detailsOption
-                optionText:i18nd("dpkg-unlocker","Details process")
+                //optionText:i18nd("dpkg-unlocker","Details process")
+                optionText:"Details process"
                 optionIcon:"/usr/share/icons/breeze/apps/22/utilities-terminal.svg"
                 enabled:false
                 Connections{
@@ -69,7 +72,8 @@ GridLayout{
 
             MenuOptionBtn {
                 id:protectionOption
-                optionText:i18nd("dpkg-unlocker","Metapackage protection")
+                //optionText:i18nd("dpkg-unlocker","Metapackage protection")
+                optionText:"Metapackage protection"
                 optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
                 visible:protectionStackBridge.showProtectionOption
                 Connections{
@@ -82,7 +86,8 @@ GridLayout{
 
             MenuOptionBtn {
                 id:helpOption
-                optionText:i18nd("dpkg-unlocker","Help")
+                //optionText:i18nd("dpkg-unlocker","Help")
+                optionText:"Help"
                 optionIcon:"/usr/share/icons/breeze/actions/22/help-contents.svg"
                 Connections{
                     function onMenuOptionClicked(){
@@ -146,32 +151,40 @@ GridLayout{
                 }
             }
     
-            PC3.Button {
+            //PC3.Button {
+            Button{
                 id:unlockBtn
                 visible:true
                 focus:true
                 display:AbstractButton.TextBesideIcon
-                icon.name:"dialog-ok"
+                //icon.name:"dialog-ok"
+                icon.source:"/usr/share/icons/breeze/actions/22/dialog-ok"
                 text:{
                     switch(optionsLayout.currentIndex){
                         case 0:
-                            i18nd("dpkg-unlocker","Unlock")
+                            //i18nd("dpkg-unlocker","Unlock")
+                            "Unlock"
                             break;
                         case 1:
-                            i18nd("dpkg-unlocker","Restore")
+                            //i18nd("dpkg-unlocker","Restore")
+                            "Restore"
                             break;
                         case 3:
-                            i18nd("dpkg-unlocker","Apply")
+                            //i18nd("dpkg-unlocker","Apply")
+                            "Apply"
                             break;
                         case 2:
                             if (mainStackBridge.processLaunched=="Unlock"){
-                                i18nd("dpkg-unlocker","Unlock")
+                                //i18nd("dpkg-unlocker","Unlock")
+                                "Unlock"
                             }else{
-                                i18nd("dpkg-unlocker","Restore")
+                                //i18nd("dpkg-unlocker","Restore")
+                                "Restore"
                             }
                             break;
                         default:
-                            i18nd("dpkg-unlocker","Unlock")
+                            //i18nd("dpkg-unlocker","Unlock")
+                            "Unlock"
                             break
                     }
                 }
@@ -218,13 +231,16 @@ GridLayout{
         dialogTitle:{
             switch(optionsLayout.currentIndex){
                 case 0:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
+                    //"Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
+                    "Dpkg-Unlocker - Services Information"
                     break;
                 case 1:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restore services")
+                    //"Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restore services")
+                    "Dpkg-Unlocker - Restore services"
                     break;
                 case 3:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
+                    //"Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
+                    "Dpkg-Unlocker - System metapackage protection"
                     break
                 default:
                     ""
@@ -234,16 +250,20 @@ GridLayout{
         dialogMsg:{
             switch(optionsLayout.currentIndex){
                 case 0:
-                    i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+                    //i18nd("dpkg-unlocker","Do you want to run the unlock process?")
+                    "Do you want to run the unlock process?"
                     break
                 case 1:
-                    i18nd("dpkg-unlocker","Do you want to run the services restore process?")
+                    //i18nd("dpkg-unlocker","Do you want to run the services restore process?")
+                    "Do you want to run the services restore process?"
                     break
                 case 3:
                     if (!protectionStackBridge.metaProtectionEnabled){
-                        i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
+                        //i18nd("dpkg-unlocker","Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies")
+                        "Do you want to disable system metapackage protection?\nDisabling this protection can cause certain applications to be uninstalled\nautomatically and cause system inconsistencies"
                     }else{
-                        i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
+                        //i18nd("dpkg-unlocker","Do you want to enable system metapackage protection?")
+                        "Do you want to enable system metapackage protection?"
                     }
                     break
                 default:
@@ -331,19 +351,24 @@ GridLayout{
         var msg="";
         switch (code){
             case 1:
-                msg=i18nd("dpkg-unlocker","Removing Lliurex-Up lock file...");
+                //msg=i18nd("dpkg-unlocker","Removing Lliurex-Up lock file...");
+                msg="Removing Lliurex-Up lock file...";
                 break;
             case 2:
-                msg=i18nd("dpkg-unlocker","Removing Dpkg lock file...");
+                //msg=i18nd("dpkg-unlocker","Removing Dpkg lock file...");
+                msg="Removing Dpkg lock file...";
                 break;
             case 3:
-                msg=i18nd("dpkg-unlocker","Removing Apt lock file...");
+                //msg=i18nd("dpkg-unlocker","Removing Apt lock file...");
+                msg="Removing Apt lock file...";
                 break;
              case 4:
-                msg=i18nd("dpkg-unlocker","Fixing the system...");
+                //msg=i18nd("dpkg-unlocker","Fixing the system...");
+                msg="Fixing the system...";
                 break;
             case 9:
-                msg=i18nd("dpkg-unlocker","Restoring the services...");
+                //msg=i18nd("dpkg-unlocker","Restoring the services...");
+                msg="Restoring the services...";
                 break;
             default:
                 break;

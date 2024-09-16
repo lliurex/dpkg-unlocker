@@ -34,7 +34,8 @@ Rectangle{
 
             Text{
                 id:loadtext
-                text:i18nd("lliurex-access-control", "Loading. Wait a moment...")
+                //text:i18nd("lliurex-access-control", "Loading. Wait a moment...")
+                text:"Loading. Wait a moment..."
                 font.family: "Quattrocento Sans Bold"
                 font.pointSize: 10
                 Layout.alignment:Qt.AlignHCenter

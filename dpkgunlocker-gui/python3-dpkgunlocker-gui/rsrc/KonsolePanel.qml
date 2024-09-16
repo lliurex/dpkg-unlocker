@@ -9,9 +9,11 @@ Rectangle{
     Text{ 
         text:{
             if (mainStackBridge.processLaunched=="Unlock"){
-                i18nd("dpkg-unlocker","Unlock process details")
+                //i18nd("dpkg-unlocker","Unlock process details")
+                "Unlock process details"
             }else{
-                i18nd("dpkg-unlocker","Restore process details")
+                //i18nd("dpkg-unlocker","Restore process details")
+                "Restore process details"
             }
         }
         font.family: "Quattrocento Sans Bold"
