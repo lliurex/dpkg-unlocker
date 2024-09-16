@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
-import org.kde.plasma.components 3.0 as PC3
+//import org.kde.plasma.components 3.0 as PC3
 
 
 Dialog {
@@ -53,11 +53,14 @@ Dialog {
         
         }
       
-        PC3.Button {
+        //PC3.Button {
+        Button{
             id:dialogApplyBtn
             display:AbstractButton.TextBesideIcon
-            icon.name:"dialog-ok"
-            text: i18nd("dpkg-unlocker","Apply")
+            //icon.name:"dialog-ok"
+            icon.source:"/usr/share/icons/breeze/actions/22/dialog-ok"
+            //text: i18nd("dpkg-unlocker","Apply")
+            text:"Apply"
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
@@ -79,11 +82,14 @@ Dialog {
             }
         }
 
-        PC3.Button {
+        //PC3.Button {
+        Button{
             id:dialogDiscardBtn
             display:AbstractButton.TextBesideIcon
-            icon.name:"delete"
-            text: i18nd("dpkg-unlocker","Discard")
+            //icon.name:"delete"
+            icon.source:"/usr/share/icons/breeze/actions/22/delete"
+            //text: i18nd("dpkg-unlocker","Discard")
+            text:"Discard"
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
@@ -106,11 +112,14 @@ Dialog {
             }
         }
 
-        PC3.Button {
+        //PC3.Button {
+        Button{
             id:dialogCancelBtn
             display:AbstractButton.TextBesideIcon
-            icon.name:"dialog-cancel"
-            text: i18nd("dpkg-unlocker","Cancel")
+            //icon.name:"dialog-cancel"
+            icon.source:"/usr/share/icons/breeze/actions/22/dialog-cancel"
+            //text: i18nd("dpkg-unlocker","Cancel")
+            text:"Cancel"
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10

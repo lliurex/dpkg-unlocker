@@ -1,4 +1,4 @@
-import org.kde.plasma.core 2.1 as PlasmaCore
+//import org.kde.plasma.core 2.1 as PlasmaCore
 import org.kde.kirigami 2.16 as Kirigami
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -8,7 +8,8 @@ import QtQuick.Layouts 1.15
 Rectangle{
     color:"transparent"
     Text{ 
-        text:i18nd("dpkg-unlocker","Services Information")
+        //text:i18nd("dpkg-unlocker","Services Information")
+        text:"Services Information"
         font.family: "Quattrocento Sans Bold"
         font.pointSize: 16
     }
@@ -50,28 +51,36 @@ Rectangle{
         var msg="";
         switch (code){
             case 0:
-                msg=i18nd("dpkg-unlocker","All processes seem correct. Nothing to do");
+                //msg=i18nd("dpkg-unlocker","All processes seem correct. Nothing to do");
+                msg="All processes seem correct. Nothing to do";
                 break;
             case 5:
-                msg=i18nd("dpkg-unlocker","Unlocking process finished successfully");
+                //msg=i18nd("dpkg-unlocker","Unlocking process finished successfully");
+                msg="Unlocking process finished successfully";
                 break;
             case 11:
-                msg=i18nd("dpkg-unlocker","Some process are running. Wait a moment");
+                //msg=i18nd("dpkg-unlocker","Some process are running. Wait a moment");
+                msg="Some process are running. Wait a moment";
                 break;
              case 12:
-                msg=i18nd("dpkg-unlocker","Detected some blocked process");
+                //msg=i18nd("dpkg-unlocker","Detected some blocked process");
+                msg="Detected some blocked process";
                 break;
             case -6:
-                msg=i18nd("dpkg-unlocker","Error fixing the system");
+                //msg=i18nd("dpkg-unlocker","Error fixing the system");
+                msg="Error fixing the system";
                 break;
             case -7:
-                msg=i18nd("dpkg-unlocker","Error removing Apt lock file");
+                //msg=i18nd("dpkg-unlocker","Error removing Apt lock file");
+                msg="Error removing Apt lock file";
                 break;
             case -8:
-                msg=i18nd("dpkg-unlocker","Error removing Dpg lock file");
+                //msg=i18nd("dpkg-unlocker","Error removing Dpg lock file");
+                msg="Error removing Dpg lock file";
                 break;
             case -9:
-                msg=i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file");
+                //msg=i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file");
+                msg="Error removing Lliurex-Up lock file";
                 break;
            
             default:
