@@ -22,9 +22,3 @@ export PYBUILD_NAME=dpkgunlocker
 #override_dh_auto_configure:
 #	dh_auto_configure -- #	-DCMAKE_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)
 
-override_dh_auto_install:
-	dh_auto_install
-	python3 setup_cli.py install --root $(CURDIR)/debian/dpkgunlocker-cli --prefix=/usr
-	python3 setup_cli.py clean --all
-	python3 setup_gui.py install --root $(CURDIR)/debian/dpkgunlocker-gui --prefix=/usr
-	python3 setup_gui.py clean --all

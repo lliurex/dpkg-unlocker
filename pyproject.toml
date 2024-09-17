@@ -12,10 +12,8 @@ authors = [
 ]
 license = {text="GPL-3"}
 urls = {repository="https://github.com/lliurex/dpkg-unlocker"}
-
 [tool.setuptools]
 packages = ["dpkgunlocker","dpkgunlockercli","dpkgunlockergui"]
-script-files = [ "bin/dh_pkexec" ]
 
 [tool.setuptools.package-dir]
 dpkgunlocker = "python3-dpkgunlocker" 
