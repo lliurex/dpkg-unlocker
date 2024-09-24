@@ -12,6 +12,8 @@ authors = [
 ]
 license = {text="GPL-3"}
 urls = {repository="https://github.com/lliurex/dpkg-unlocker"}
+dependencies = ["psutil"]
+
 [tool.setuptools]
 packages = ["dpkgunlocker","dpkgunlockercli","dpkgunlockergui"]
 
