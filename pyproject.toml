@@ -23,7 +23,11 @@ dpkgunlockercli = "dpkgunlocker-cli"
 dpkgunlockergui = "dpkgunlocker-gui" 
 
 [tool.setuptools.package-data]
-dpkgunlockergui = ['rsrc/*']
+dpkgunlockergui = ["rsrc/*"]
+
+[tool.setuptools.exclude-package-data]
+dpkgunlockergui = ["dpkg-unlocker-gui"]
+dpkgunlockercli = ["dpkg-unlocker-cli"]
 
 [tool.setuptools.data-files]
 "sbin" = ["dpkgunlocker-cli/dpkg-unlocker-cli","dpkgunlocker-gui/dpkg-unlocker-gui" ]
