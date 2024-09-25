@@ -16,7 +16,7 @@
 export PYBUILD_NAME=dpkgunlocker
 export PYBUILD_DESTDIR_python3=debian/output
 %:
-	dh $@ --with llxsrc,zero,python3 --buildsystem pybuild
+	dh $@ --with llxsrc,zero,python3,i18n --buildsystem pybuild
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
