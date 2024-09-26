@@ -1,1 +1,2 @@
 debian/output/usr/lib/python3.12/dist-packages/dpkgunlockergui /usr/lib/python3.12/dist-packages
+debian/output/usr/sbin/dpkg-unlocker-gui /usr/sbin/
