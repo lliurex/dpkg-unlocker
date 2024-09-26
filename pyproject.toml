@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools","setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpkgunlocker" 
+version = "0.14"
+description = "Tool to unlock dpkg state"
+authors = [
+	{ name = "Juan Ramon Pelegrina", email="juapesai@hotmail.com" },
+	{ name = "LliureX Team"}
+]
+license = {text="GPL-3"}
+urls = {repository="https://github.com/lliurex/dpkg-unlocker"}
+dependencies = ["psutil"]
+
+[tool.setuptools]
+packages = ["dpkgunlocker","dpkgunlockercli","dpkgunlockergui"]
+
+[tool.setuptools.package-dir]
+dpkgunlocker = "python3-dpkgunlocker" 
+dpkgunlockercli = "dpkgunlocker-cli" 
+dpkgunlockergui = "dpkgunlocker-gui" 
+
+[tool.setuptools.package-data]
+dpkgunlockergui = ["rsrc/*"]
+
+[tool.setuptools.exclude-package-data]
+dpkgunlockergui = ["dpkg-unlocker-gui"]
+dpkgunlockercli = ["dpkg-unlocker-cli"]
+
+[tool.setuptools.data-files]
+"sbin" = ["dpkgunlocker-cli/dpkg-unlocker-cli","dpkgunlocker-gui/dpkg-unlocker-gui" ]
