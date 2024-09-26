@@ -1,2 +1,3 @@
 dpkgunlocker-cli.install/* /etc/bash_completion.d
-
+debian/output/usr/sbin/dpkg-unlocker-cli /usr/sbin/
+debian/output/usr/lib/python3.12/dist-packages/dpkgunlockercli /usr/lib/python3.12/dist-packages/
