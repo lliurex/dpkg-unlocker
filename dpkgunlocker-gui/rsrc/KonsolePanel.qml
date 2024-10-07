@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QMLTermWidget 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QMLTermWidget
 
 
 Rectangle{
@@ -9,11 +9,9 @@ Rectangle{
     Text{ 
         text:{
             if (mainStackBridge.processLaunched=="Unlock"){
-                //i18nd("dpkg-unlocker","Unlock process details")
-                "Unlock process details"
+                i18nd("dpkg-unlocker","Unlock process details")
             }else{
-                //i18nd("dpkg-unlocker","Restore process details")
-                "Restore process details"
+                i18nd("dpkg-unlocker","Restore process details")
             }
         }
         font.family: "Quattrocento Sans Bold"

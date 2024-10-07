@@ -1,6 +1,6 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQml.Models 2.8
+import QtQuick
+import QtQuick.Controls
+import QtQml.Models
 //import org.kde.plasma.components 2.0 as Components
 
 
@@ -77,24 +77,19 @@ Rectangle{
         var msg=""
         switch(statusCode){
             case 0:
-                //msg=i18nd("dpkg-unlocker","Unlocked")
-                "Unlocked"
+                msg=i18nd("dpkg-unlocker","Unlocked")
                 break;
             case 1:
-                //msg=i18nd("dpkg-unlocker","Locked: Currently executing")
-                "Locked: Currently executing"
+                msg=i18nd("dpkg-unlocker","Locked: Currently executing")
                 break;
             case 2:
-                //msg=i18nd("dpkg-unlocker","Locked: Not process found")
-                "Locked: Not process found"
+                msg=i18nd("dpkg-unlocker","Locked: Not process found")
                 break;
             case 3:
-                //msg=i18nd("dpkg-unlocker","Locked: Apt currently executing")
-                "Locked: Apt currently executing"
+                msg=i18nd("dpkg-unlocker","Locked: Apt currently executing")
                 break;
             case 4:
-                //msg=i18nd("dpkg-unlocker","Locked: Apt daemon currently executing")
-                "Locked: Apt daemon currently executing"
+                msg=i18nd("dpkg-unlocker","Locked: Apt daemon currently executing")
                 break;
             default:
                 break;

@@ -1,16 +1,15 @@
-//import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.kirigami 2.16 as Kirigami
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-//import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.plasma.components as PC
 
 
 Rectangle{
     color:"transparent"
     Text{ 
-        //text:i18nd("dpkg-unlocker","System metapackage protection")
-        text:"System metapackage protection"
+        text:i18nd("dpkg-unlocker","System metapackage protection")
         font.family: "Quattrocento Sans Bold"
         font.pointSize: 16
     }
@@ -37,11 +36,9 @@ Rectangle{
             id: optionsGrid
             Layout.topMargin: messageLabel.visible?0:50
 
-            //PC3.CheckBox {
-            CheckBox{
+            PC.CheckBox {
                 id:disableProtectionCb
-                //text:i18nd("dpkg-unlocker","Enable system metapackage protection")
-                text:"Enable system metapackage protection"
+                text:i18nd("dpkg-unlocker","Enable system metapackage protection")
                 checked:protectionStackBridge.metaProtectionEnabled
                 font.pointSize: 10
                 focusPolicy: Qt.NoFocus
@@ -62,24 +59,19 @@ Rectangle{
         var msg=""
         switch (code){
             case 6:
-                //msg=i18nd("dpkg-unlocker","System metapackage protection is enabled");
-                msg="System metapackage protection is enabled";
+                msg=i18nd("dpkg-unlocker","System metapackage protection is enabled");
                 break;
             case 7:
-                //msg=i18nd("dpkg-unlocker","System metapackage protection is disable");
-                msg="System metapackage protection is disable";
+                msg=i18nd("dpkg-unlocker","System metapackage protection is disable");
                 break;
             case 8:
-                //msg=i18nd("dpkg-unlocker","System metapackage protection change successfully")
-                msg="System metapackage protection change successfully"
+                msg=i18nd("dpkg-unlocker","System metapackage protection change successfully")
                 break;
             case -10:
-                //msg=i18nd("dpkg-unlocker","Error activating system metapackage protection");
-                msg="Error activating system metapackage protection";
+                msg=i18nd("dpkg-unlocker","Error activating system metapackage protection");
                 break;
             case -11:
-                //msg=i18nd("dpkg-unlocker","Error disabling system metapackage protection");
-                "Error disabling system metapackage protection";
+                msg=i18nd("dpkg-unlocker","Error disabling system metapackage protection");
                 break;
             default:
                 break;
