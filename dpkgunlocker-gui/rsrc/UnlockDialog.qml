@@ -18,6 +18,7 @@ Dialog {
     visible:dialogVisible
     title:dialogTitle
     modal:true
+    anchors.centerIn: Overlay.overlay
 
     onVisibleChanged:{
         if (!this.visible && xButton){
