@@ -1,17 +1,17 @@
 import QtQuick
 import QtQuick.Controls
 import QtQml.Models
-//import org.kde.plasma.components 2.0 as Components
+import org.kde.plasma.components as Components
 
 
 //Components.ListItem{
-Rectangle{
-    id: listServiceItem
+Rectangle{ 
+ id: listServiceItem
     property string serviceId
     property int statusCode
+    enabled:true
     color:"transparent"
     height:85
-    enabled:true
 
     Item{
         id: menuItem
