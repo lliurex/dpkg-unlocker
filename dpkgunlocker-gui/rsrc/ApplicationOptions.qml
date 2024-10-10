@@ -11,7 +11,7 @@ GridLayout{
     columnSpacing:10
 
     Rectangle{
-        width:200
+        width:210
         Layout.minimumHeight:430
         Layout.preferredHeight:430
         Layout.fillHeight:true
