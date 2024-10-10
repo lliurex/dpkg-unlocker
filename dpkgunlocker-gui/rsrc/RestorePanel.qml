@@ -1,16 +1,13 @@
-//import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.kirigami 2.16 as Kirigami
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-//import org.kde.plasma.components 3.0 as PC3
-
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle{
     color:"transparent"
     Text{ 
-        //text:i18nd("dpkg-unlocker","Restore installation services")
-        text:"Restore installation services"
+        text:i18nd("dpkg-unlocker","Restore installation services")
         font.family: "Quattrocento Sans Bold"
         font.pointSize: 16
     }
@@ -40,8 +37,7 @@ Rectangle{
             
             Text{
                 id:informationText
-                //text:i18nd("dpkg-unlocker","This option attemps to restore the services involves in the package installation, if the installation has been interrupted before the package configuration has finished .\nUse this option with caution.")
-                text:"This option attemps to restore the services involves in the package installation, if the installation has been interrupted before the package configuration has finished .\nUse this option with caution."
+                text:i18nd("dpkg-unlocker","This option attemps to restore the services involves in the package installation, if the installation has been interrupted before the package configuration has finished .\nUse this option with caution.")
                 horizontalAlignment:Text.AlignJustify
                 wrapMode:Text.WordWrap
                 font.family: "Quattrocento Sans Bold"
@@ -60,12 +56,10 @@ Rectangle{
         var msg=""
         switch (code){
             case 10:
-                //msg=i18nd("dpkg-unlocker","Restoration of services has finished successfully");
-                msg="Restoration of services has finished successfully";
+                msg=i18nd("dpkg-unlocker","Restoration of services has finished successfully");
                 break;
             case -12:
-                //msg=i18nd("dpkg-unlocker","Restoration of services has finished with errors");
-                msg="Restoration of services has finished with errors";
+                msg=i18nd("dpkg-unlocker","Restoration of services has finished with errors");
                 break;
             default:
                 break;

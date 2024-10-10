@@ -1,8 +1,8 @@
-import QtQuick 2.15      
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Dialogs 1.3
-//import org.kde.plasma.components 3.0 as PC3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import org.kde.plasma.components as PC
 
 
 Dialog {
@@ -17,7 +17,8 @@ Dialog {
 
     visible:dialogVisible
     title:dialogTitle
-    modality:Qt.WindowModal
+    modal:true
+    anchors.centerIn: Overlay.overlay
 
     onVisibleChanged:{
         if (!this.visible && xButton){
@@ -53,14 +54,11 @@ Dialog {
         
         }
       
-        //PC3.Button {
-        Button{
+        PC.Button {
             id:dialogApplyBtn
             display:AbstractButton.TextBesideIcon
-            //icon.name:"dialog-ok"
-            icon.source:"/usr/share/icons/breeze/actions/22/dialog-ok"
-            //text: i18nd("dpkg-unlocker","Apply")
-            text:"Apply"
+            icon.name:"dialog-ok"
+            text: i18nd("dpkg-unlocker","Apply")
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
@@ -82,14 +80,11 @@ Dialog {
             }
         }
 
-        //PC3.Button {
-        Button{
+        PC.Button {
             id:dialogDiscardBtn
             display:AbstractButton.TextBesideIcon
-            //icon.name:"delete"
-            icon.source:"/usr/share/icons/breeze/actions/22/delete"
-            //text: i18nd("dpkg-unlocker","Discard")
-            text:"Discard"
+            icon.name:"delete"
+            text: i18nd("dpkg-unlocker","Discard")
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
@@ -112,14 +107,11 @@ Dialog {
             }
         }
 
-        //PC3.Button {
-        Button{
+        PC.Button {
             id:dialogCancelBtn
             display:AbstractButton.TextBesideIcon
-            //icon.name:"dialog-cancel"
-            icon.source:"/usr/share/icons/breeze/actions/22/dialog-cancel"
-            //text: i18nd("dpkg-unlocker","Cancel")
-            text:"Cancel"
+            icon.name:"dialog-cancel"
+            text: i18nd("dpkg-unlocker","Cancel")
             focus:true
             font.family: "Quattrocento Sans Bold"
             font.pointSize: 10

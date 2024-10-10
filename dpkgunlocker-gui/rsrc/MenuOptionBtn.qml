@@ -1,6 +1,6 @@
-import QtQuick 2.15 
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 
 Item {
@@ -14,7 +14,7 @@ Item {
 
 	Rectangle{
 		id:menuOption
-		width:200
+		width:210
 		height:35
 		color:"transparent"
 		border.color:"transparent"
