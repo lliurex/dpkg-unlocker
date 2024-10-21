@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.3) noble; urgency=medium
+
+  * Fixed Dialog style
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Mon, 21 Oct 2024 12:32:16 +0200
+
 dpkg-unlocker (0.15.2) noble; urgency=medium
 
   * Migrated to PySide6
