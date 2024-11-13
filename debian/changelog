@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.4) noble; urgency=medium
+
+  * Minor fixes in style
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 13 Nov 2024 08:52:12 +0100
+
 dpkg-unlocker (0.15.3) noble; urgency=medium
 
   * Fixed Dialog style
