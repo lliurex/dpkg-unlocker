@@ -38,6 +38,7 @@ from dpkgunlockergui.Core import Core
 c=Core.get_core()
 
 app = QApplication()
+app-setDesktopFileName("dpkg-unlocker-gui")
 engine = QQmlApplicationEngine()
 engine.clearComponentCache()
 context=engine.rootContext()
@@ -58,7 +59,6 @@ if not engine.rootObjects():
 	sys.exit(-1)
 
 engine.quit.connect(QApplication.quit)
-app.setWindowIcon(QIcon("/usr/share/icons/hicolor/scalable/apps/dpkg-unlocker-gui.svg"));
 ret=app.exec()
 del engine
 del app
