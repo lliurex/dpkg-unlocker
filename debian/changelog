@@ -1,3 +1,9 @@
+dpkg-unlocker (0.14.7) jammy; urgency=medium
+
+  * Fixed kdialog command in launcher
+
+ -- Juan ramon Pelegrina <juapesai@hotmail.com>  Wed, 18 Dec 2024 10:10:35 +0100
+
 dpkg-unlocker (0.14.6) jammy; urgency=medium
 
   * Refactorized code
