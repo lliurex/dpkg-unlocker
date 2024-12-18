@@ -29,7 +29,9 @@ else:
 	except:
 		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
 		msg=_("You need administration privileges to run this application.")
-		cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+		cmd='kdialog --title "Dpkg-Unlocker" --icon "dpkg-unlocker-gui.svg" --sorry "%s"'%(msg)
+		
+		print(cmd)
 		os.system(cmd)
 		sys.exit(1)
 
