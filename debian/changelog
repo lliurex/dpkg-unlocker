@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.8) noble; urgency=medium
+
+  * Fixed icon name used in kdialog in launcher
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 08 Jan 2025 17:16:06 +0100
+
 dpkg-unlocker (0.15.7) noble; urgency=medium
 
   * Fixed kdialog command in launcher
