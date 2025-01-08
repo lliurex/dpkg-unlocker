@@ -1,3 +1,9 @@
+dpkg-unlocker (0.4.7) focal; urgency=medium
+
+  * Fixed icon name in kdialog
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Wed, 08 Jan 2025 17:21:15 +0100
+
 dpkg-unlocker (0.4.6) focal; urgency=medium
 
   * Refactorized code.
