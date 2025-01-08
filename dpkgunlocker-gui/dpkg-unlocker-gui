@@ -15,7 +15,7 @@ _ = gettext.gettext
 if os.path.exists('/var/run/dpkgUnlocker.lock'):
 	print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
 	msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
-	cmd='kdialog --title "Dpkg-Unlocker" --icon "dpkg-unlocker-gui.svg" --sorry "%s"'%(msg)
+	cmd='kdialog --title "Dpkg-Unlocker" --icon "dpkg-unlocker-gui" --sorry "%s"'%(msg)
 	os.system(cmd)
 	sys.exit(1)
 
@@ -29,7 +29,7 @@ else:
 	except:
 		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
 		msg=_("You need administration privileges to run this application.")
-		cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui.svg' --sorry '%s'"%(msg)
+		cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui' --sorry '%s'"%(msg)
 		os.system(cmd)
 		sys.exit(1)
 
