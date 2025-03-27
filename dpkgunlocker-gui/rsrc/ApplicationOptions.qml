@@ -59,7 +59,7 @@ GridLayout{
                 id:detailsOption
                 optionText:i18nd("dpkg-unlocker","Details process")
                 optionIcon:"/usr/share/icons/breeze/apps/22/utilities-terminal.svg"
-                enabled:false
+                visible:mainStackBridge.enableKonsole
                 Connections{
                     function onMenuOptionClicked(){
                         mainStackBridge.manageTransitions(2)
@@ -260,7 +260,6 @@ GridLayout{
                     case 0:
                         feedBackText.visible=true
                         feedBackBar.visible=true
-                        detailsOption.enabled=true
                         protectionOption.enabled=false
                         applyChanges()
                         serviceStackBridge.launchUnlockProcess()
@@ -268,7 +267,6 @@ GridLayout{
                     case 1:
                         feedBackText.visible=true
                         feedBackBar.visible=true
-                        detailsOption.enabled=true
                         protectionOption.enabled=false
                         applyChanges()
                         restoreStackBridge.launchRestoreProcess()
