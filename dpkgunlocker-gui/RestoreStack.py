@@ -72,6 +72,7 @@ class Bridge(QObject):
 
 		self.core.mainStack.showDialog=False
 		self.core.mainStack.processLaunched="Restore"
+		self.core.mainStack.enableKonsole=True
 		self.runningRestoreCommand=True
 		self.core.mainStack.endProcess=False
 		self.showRestoreStatusMessage=[False,"","Success"]

@@ -47,6 +47,7 @@ class Bridge(QObject):
 		self.isWorked=False
 		self._processLaunched=""
 		self._runPkexec=Bridge.unlockerManager.runPkexec
+		self._enableKonsole=False
 		self.moveToStack=""
 
 	#def __init__
@@ -205,6 +206,20 @@ class Bridge(QObject):
 
 	#def _getRunPkexec
 
+	def _getEnableKonsole(self):
+
+		return self._enableKonsole
+
+	#def _getEnableKonsole
+
+	def _setEnableKonsole(self,enableKonsole):
+
+		if self._enableKonsole!=enableKonsole:
+			self._enableKonsole=enableKonsole
+			self.on_enableKonsole.emit()
+
+	#def _setEnableKonsole
+
 	@Slot()
 	def openDialog(self):
 		
@@ -315,6 +330,9 @@ class Bridge(QObject):
 	on_processLaunched=Signal()
 	processLaunched=Property('QString',_getProcessLaunched,_setProcessLaunched,notify=on_processLaunched)
 	
+	on_enableKonsole=Signal()
+	enableKonsole=Property(bool,_getEnableKonsole,_setEnableKonsole, notify=on_enableKonsole)
+
 	runPkexec=Property(bool,_getRunPkexec,constant=True)
 
 #class Bridge

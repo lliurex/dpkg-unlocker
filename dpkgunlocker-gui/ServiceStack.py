@@ -204,6 +204,7 @@ class Bridge(QObject):
 
 		self.core.mainStack.showDialog=False
 		self.core.mainStack.processLaunched="Unlock"
+		self.core.mainStack.enableKonsole=True
 		self.runningUnlockCommand=True
 		self.statusServicesRunningTimer.stop()
 		self.core.mainStack.endProcess=False
