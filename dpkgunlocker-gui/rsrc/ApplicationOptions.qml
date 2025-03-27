@@ -143,6 +143,7 @@ GridLayout{
                     indeterminate:true
                     visible:false
                     Layout.fillWidth:true
+                    implicitHeight:mainStackBridge.runPkexec?7:25
                 }
             }
     

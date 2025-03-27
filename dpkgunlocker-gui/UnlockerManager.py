@@ -28,9 +28,18 @@ class UnlockerManager:
 		self.getSessionLang()
 		self.cleanEnvironment()
 		self.metaProtectionEnabled=True
+		self.runPkexec=True
+		self._isRunPkexec()
 		self.clearCache()
 
 	#def __init__
+
+	def _isRunPkexec(self):
+
+		if 'PKEXEC_UID' not in os.environ:
+			self.runPkexec=False
+
+	#def _isRunPkexec
 
 	def loadInfo(self):
 

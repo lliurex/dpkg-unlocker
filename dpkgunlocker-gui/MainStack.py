@@ -46,6 +46,7 @@ class Bridge(QObject):
 		self._currentCommand=""
 		self.isWorked=False
 		self._processLaunched=""
+		self._runPkexec=Bridge.unlockerManager.runPkexec
 		self.moveToStack=""
 
 	#def __init__
@@ -198,6 +199,12 @@ class Bridge(QObject):
 
 	#def _setProcessLaunched
 
+	def _getRunPkexec(self):
+
+		return self._runPkexec
+
+	#def _getRunPkexec
+
 	@Slot()
 	def openDialog(self):
 		
@@ -239,17 +246,12 @@ class Bridge(QObject):
 	@Slot()
 	def openHelp(self):
 		
-		runPkexec=False
-		
-		if "PKEXEC_UID" in os.environ:
-			runPkexec=True
-
 		if 'valencia' in Bridge.unlockerManager.sessionLang:
 			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
 		else:
 			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
 		
-		if not runPkexec:
+		if not self._runPkexec:
 			self.helpCmd="su -c '%s' $USER"%self.helpCmd
 		else:
 			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
@@ -313,6 +315,8 @@ class Bridge(QObject):
 	on_processLaunched=Signal()
 	processLaunched=Property('QString',_getProcessLaunched,_setProcessLaunched,notify=on_processLaunched)
 	
+	runPkexec=Property(bool,_getRunPkexec,constant=True)
+
 #class Bridge
 
 from . import Core
