@@ -57,9 +57,9 @@ Rectangle{
             id:serviceErrorIcon
             source:{
                 if (statusCode==2){
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/error.svg"
+                    "/usr/share/icons/breeze/status/24/data-error.svg"
                 }else{
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/ok.svg"
+                    "/usr/share/icons/breeze/status/24/data-success.svg"
                 }
 
             }
