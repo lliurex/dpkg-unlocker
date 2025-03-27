@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.9) noble; urgency=medium
+
+  * Minor fixes in style
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Thu, 27 Mar 2025 09:57:58 +0100
+
 dpkg-unlocker (0.15.8) noble; urgency=medium
 
   * Fixed icon name used in kdialog in launcher
