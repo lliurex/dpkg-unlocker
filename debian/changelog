@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.10) noble; urgency=medium
+
+  * Fixed clint imports in cli
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 27 May 2025 08:50:19 +0200
+
 dpkg-unlocker (0.15.9) noble; urgency=medium
 
   * Minor fixes in style
