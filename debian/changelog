@@ -1,3 +1,9 @@
+dpkg-unlocker (0.14.9) jammy; urgency=medium
+
+  * Fixed clint imports in cli
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 27 May 2025 08:53:21 +0200
+
 dpkg-unlocker (0.14.8) jammy; urgency=medium
 
   * Fixed icon name in kdialog
