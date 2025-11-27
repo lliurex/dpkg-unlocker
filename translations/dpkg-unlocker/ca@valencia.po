@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 14:07+0200\n"
-"PO-Revision-Date: 2023-04-18 14:23+0200\n"
+"POT-Creation-Date: 2025-11-27 11:30+0100\n"
+"PO-Revision-Date: 2025-11-27 11:30+0100\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: LliureX\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: dpkgunlocker-gui/dpkg-unlocker-gui:17
 msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
@@ -29,62 +29,51 @@ msgid "You need administration privileges to run this application."
 msgstr ""
 "Necessiteu privilegis d'administració per a executar aquesta aplicació."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:28
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:27
 msgid "Services"
 msgstr "Serveis"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:39
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:219
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:38
 msgid "Restore services"
 msgstr "Restaura serveis"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:56
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:59
 msgid "Details process"
 msgstr "Details del procés"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:68
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:71
 msgid "Metapackage protection"
 msgstr "Protecció del metapaquet"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:80
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:84
 msgid "Help"
 msgstr "Ajuda"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:153
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:163
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:169
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:158
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:168
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:174
 msgid "Unlock"
 msgstr "Desbloqueja"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:156
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:165
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:161
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:170
 msgid "Restore"
 msgstr "Restaura"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:159
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:60
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:164
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:55
 msgid "Apply"
 msgstr "Aplica"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:216
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
-msgid "Services Information"
-msgstr "Informació dels serveis"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:222
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
-msgid "System metapackage protection"
-msgstr "Protecció del metapaquet del sistema"
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:232
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:221
 msgid "Do you want to run the unlock process?"
 msgstr "Voleu executar el procés de desbloqueig?"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:235
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:224
 msgid "Do you want to run the services restore process?"
 msgstr "Voleu executar el procés de restauració dels serveis?"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:239
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
 msgid ""
 "Do you want to disable system metapackage protection?\n"
 "Disabling this protection can cause certain applications to be uninstalled\n"
@@ -95,123 +84,131 @@ msgstr ""
 "siguen\n"
 "desinstal·lades de manera automàtica i causar inconsistències en el sistema"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:241
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:230
 msgid "Do you want to enable system metapackage protection?"
 msgstr "Voleu desactivar la protecció del metapaquet del sistema?"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:329
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:316
 msgid "Removing Lliurex-Up lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Lliurex-Up..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:332
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:319
 msgid "Removing Dpkg lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Dkpg..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:335
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:322
 msgid "Removing Apt lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig d'Apt..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:338
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:325
 msgid "Fixing the system..."
 msgstr "S'està estabilitzant el sistema..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:341
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:328
 msgid "Restoring the services..."
 msgstr "S'està restaurant el serveis..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
+msgid "Services Information"
+msgstr "Informació dels serveis"
+
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
 msgid "All processes seem correct. Nothing to do"
 msgstr "Tots els processos semblen correctes. No hi ha res a fer"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
 msgid "Unlocking process finished successfully"
 msgstr "El procés de desbloqueig ha finalitzat correctament"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
 msgid "Some process are running. Wait a moment"
 msgstr "Algun procés està en execució. Espereu un moment"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
 msgid "Detected some blocked process"
 msgstr "Detectat algun procés bloquejat"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
 msgid "Error fixing the system"
 msgstr "S'ha produït un error en estabilitzar el sistema"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
 msgid "Error removing Apt lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig d'Apt"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
 msgid "Error removing Dpg lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Dkpg"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:74
 msgid "Error removing Lliurex-Up lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Lliurex-Up"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
 msgid "Unlock process details"
 msgstr "Details del procés de desbloqueig"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:14
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:14
 msgid "Restore process details"
 msgstr "Details del procés de restauració"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
+msgid "System metapackage protection"
+msgstr "Protecció del metapaquet del sistema"
+
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
 msgid "Enable system metapackage protection"
 msgstr "Activa la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
 msgid "System metapackage protection is enabled"
 msgstr "La protecció del metapaquet del sistema està activada"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
 msgid "System metapackage protection is disable"
 msgstr "La protecció del metapaquet del sistema està desactivada"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
 msgid "System metapackage protection change successfully"
 msgstr ""
 "El canvi en la protecció del metapaquet del sistema ha finalitzat "
 "correctament"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
 msgid "Error activating system metapackage protection"
 msgstr ""
 "S'ha produït un error en activar la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
 msgid "Error disabling system metapackage protection"
 msgstr ""
 "S'ha produït un error en desactivar la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:79
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:80
 msgid "Unlocked"
 msgstr "Desbloquejat"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:82
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:83
 msgid "Locked: Currently executing"
 msgstr "Bloquejat: ara mateix està en execució"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:85
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:86
 msgid "Locked: Not process found"
 msgstr "Bloquejat: no s'ha trobat cap procés"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:88
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:89
 msgid "Locked: Apt currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:91
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:92
 msgid "Locked: Apt daemon currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt Daemon"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:12
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:10
 msgid "Restore installation services"
 msgstr "Restauració dels serveis d'instalació"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:42
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:40
 msgid ""
 "This option attemps to restore the services involves in the package "
 "installation, if the installation has been interrupted before the package "
@@ -223,22 +220,22 @@ msgstr ""
 "dels mateixos haja finalitzat.\n"
 "Useu aquesta opció amb precaució."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:61
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:59
 msgid "Restoration of services has finished successfully"
 msgstr "El procés de restauració dels serveis ha finalitzat correctament"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:64
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:62
 msgid "Restoration of services has finished with errors"
 msgstr "El procés de restauració dels serveis ha finalitzat amb errors"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/Loading.qml:37
+#: dpkgunlocker-gui/rsrc/Loading.qml:37
 msgid "Loading. Wait a moment..."
 msgstr "S'està carregant. Espereu un moment..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:86
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:80
 msgid "Discard"
 msgstr "Descarta"
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:113
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:106
 msgid "Cancel"
 msgstr "Cancel·la"
