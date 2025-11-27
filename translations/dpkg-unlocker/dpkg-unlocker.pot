@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 14:07+0200\n"
+"POT-Creation-Date: 2025-11-27 11:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,181 +25,178 @@ msgstr ""
 msgid "You need administration privileges to run this application."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:28
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:27
 msgid "Services"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:39
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:219
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:38
 msgid "Restore services"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:56
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:59
 msgid "Details process"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:68
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:71
 msgid "Metapackage protection"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:80
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:84
 msgid "Help"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:153
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:163
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:169
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:158
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:168
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:174
 msgid "Unlock"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:156
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:165
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:161
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:170
 msgid "Restore"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:159
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:60
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:164
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:55
 msgid "Apply"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:216
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
-msgid "Services Information"
-msgstr ""
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:222
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
-msgid "System metapackage protection"
-msgstr ""
-
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:232
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:221
 msgid "Do you want to run the unlock process?"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:235
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:224
 msgid "Do you want to run the services restore process?"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:239
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
 msgid ""
 "Do you want to disable system metapackage protection?\n"
 "Disabling this protection can cause certain applications to be uninstalled\n"
 "automatically and cause system inconsistencies"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:241
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:230
 msgid "Do you want to enable system metapackage protection?"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:329
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:316
 msgid "Removing Lliurex-Up lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:332
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:319
 msgid "Removing Dpkg lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:335
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:322
 msgid "Removing Apt lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:338
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:325
 msgid "Fixing the system..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:341
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:328
 msgid "Restoring the services..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
+msgid "Services Information"
+msgstr ""
+
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
 msgid "All processes seem correct. Nothing to do"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
 msgid "Unlocking process finished successfully"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
 msgid "Some process are running. Wait a moment"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
 msgid "Detected some blocked process"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
 msgid "Error fixing the system"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
 msgid "Error removing Apt lock file"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
 msgid "Error removing Dpg lock file"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ServicesPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:74
 msgid "Error removing Lliurex-Up lock file"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
 msgid "Unlock process details"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/KonsolePanel.qml:14
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:14
 msgid "Restore process details"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
+msgid "System metapackage protection"
+msgstr ""
+
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
 msgid "Enable system metapackage protection"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
 msgid "System metapackage protection is enabled"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
 msgid "System metapackage protection is disable"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
 msgid "System metapackage protection change successfully"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
 msgid "Error activating system metapackage protection"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
 msgid "Error disabling system metapackage protection"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:79
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:80
 msgid "Unlocked"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:82
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:83
 msgid "Locked: Currently executing"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:85
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:86
 msgid "Locked: Not process found"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:88
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:89
 msgid "Locked: Apt currently executing"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:91
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:92
 msgid "Locked: Apt daemon currently executing"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:12
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:10
 msgid "Restore installation services"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:42
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:40
 msgid ""
 "This option attemps to restore the services involves in the package "
 "installation, if the installation has been interrupted before the package "
@@ -207,22 +204,22 @@ msgid ""
 "Use this option with caution."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:61
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:59
 msgid "Restoration of services has finished successfully"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/RestorePanel.qml:64
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:62
 msgid "Restoration of services has finished with errors"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/Loading.qml:37
+#: dpkgunlocker-gui/rsrc/Loading.qml:37
 msgid "Loading. Wait a moment..."
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:86
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:80
 msgid "Discard"
 msgstr ""
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:113
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:106
 msgid "Cancel"
 msgstr ""

@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs
 import org.kde.plasma.components as PC
 
 GridLayout{
@@ -216,22 +215,6 @@ GridLayout{
     }
     UnlockDialog{
         id:unlockDialog
-        dialogTitle:{
-            switch(optionsLayout.currentIndex){
-                case 0:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Services Information")
-                    break;
-                case 1:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","Restore services")
-                    break;
-                case 3:
-                    "Dpkg-Unlocker"+" - "+i18nd("dpkg-unlocker","System metapackage protection")
-                    break
-                default:
-                    ""
-                    break;
-            }
-        }
         dialogMsg:{
             switch(optionsLayout.currentIndex){
                 case 0:
