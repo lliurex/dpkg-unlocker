@@ -11,17 +11,19 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class GatherInfo(QThread):
 
-	def __init__(self,*args):
+	infoGathered=Signal()
+	def __init__(self,manager):
 
-		QThread.__init__(self)
+		super().__init__()
+		self.manager=manager
 	
 	#def __init__
 		
-
 	def run(self,*args):
 		
 		time.sleep(1)
-		Bridge.unlockerManager.loadInfo()
+		self.manager.loadInfo()
+		self.infoGathered.emit()
 
 	#def run
 
@@ -29,14 +31,23 @@ class GatherInfo(QThread):
 
 class Bridge(QObject):
 
+	currentStackChanged=Signal()
+	currentOptionsStackChanged=Signal()
+	feedBackCodeChanged=Signal()
+	showDialogChanged=Signal()
+	endProcessChanged=Signal()
+	endCurrentCommandChanged=Signal()
+	currentCommandChanged=Signal()
+	closeGuiChanged=Signal()
+	processLaunchedChanged=Signal()
+	enableKonsoleChanged=Signal()
 	
 	def __init__(self):
 
-		QObject.__init__(self)
+		super().__init__()
 		self.core=Core.Core.get_core()
-		Bridge.unlockerManager=self.core.unlockerManager
+		self.unlockerManager=self.core.unlockerManager
 		self._closeGui=False
-		self._closePopUp=True
 		self._currentStack=0
 		self._currentOptionsStack=0
 		self._feedBackCode=0
@@ -46,179 +57,194 @@ class Bridge(QObject):
 		self._currentCommand=""
 		self.isWorked=False
 		self._processLaunched=""
-		self._runPkexec=Bridge.unlockerManager.runPkexec
 		self._enableKonsole=False
 		self.moveToStack=""
 
 	#def __init__
 
+	@Property(int,notify=currentStackChanged)
+	def currentStack(self):
+
+		return self._currentStack
+
+	#def currentStack
+
+	@currentStack.setter
+	def currentStack(self,currentStack):
+
+		if self._currentStack!=currentStack:
+			self._currentStack=currentStack
+			self.currentStackChanged.emit()
+
+	#def currentStack
+
+	@Property(int,notify=currentOptionsStackChanged)
+	def  currentOptionsStack(self):
+
+		return self._currentOptionsStack
+
+	#def currentOptionsStack
+
+	@currentOptionsStack.setter
+	def currentOptionsStack(self,currentOptionsStack):
+
+		if self._currentOptionsStack!=currentOptionsStack:
+			self._currentOptionsStack=currentOptionsStack
+			self.currentOptionsStackChanged.emit()
+
+	#def currentOptionsStack
+
+	@Property(int,notify=feedBackCodeChanged)
+	def feedBackCode(self):
+
+		return self._feedBackCode
+
+	#def feedBackCode
+
+	@feedBackCode.setter
+	def feedBackCode(self,feedBackCode):
+
+		if self._feedBackCode!=feedBackCode:
+			self._feedBackCode=feedBackCode
+			self.feedBackCodeChanged.emit()
+
+	#def feedBackCode
+
+	@Property(bool,notify=showDialogChanged)
+	def showDialog(self):
+
+		return self._showDialog
+
+	#def showDialog
+
+	@showDialog.setter
+	def showDialog(self,showDialog):
+
+		if self._showDialog!=showDialog:
+			self._showDialog=showDialog
+			self.showDialogChanged.emit()
+	
+	#def _showDialog
+
+	@Property(bool,notify=endProcessChanged)
+	def endProcess(self):
+
+		return self._endProcess
+
+	#def endProcess	
+
+	@endProcess.setter
+	def endProcess(self,endProcess):
+		
+		if self._endProcess!=endProcess:
+			self._endProcess=endProcess		
+			self.endProcessChanged.emit()
+
+	#def endProcess
+
+	@Property(bool,notify=endCurrentCommandChanged)
+	def endCurrentCommand(self):
+
+		return self._endCurrentCommand
+
+	#def endCurrentCommand
+
+	@endCurrentCommand.setter
+	def endCurrentCommand(self,endCurrentCommand):
+		
+		if self._endCurrentCommand!=endCurrentCommand:
+			self._endCurrentCommand=endCurrentCommand		
+			self.endCurrentCommandChanged.emit()
+
+	#def endCurrentCommand
+
+	@Property(str,notify=currentCommandChanged)
+	def currentCommand(self):
+
+		return self._currentCommand
+
+	#def currentCommand
+
+	@currentCommand.setter
+	def currentCommand(self,currentCommand):
+		
+		if self._currentCommand!=currentCommand:
+			self._currentCommand=currentCommand		
+			self.currentCommandChanged.emit()
+
+	#def currentCommand
+
+	@Property(bool,notify=closeGuiChanged)
+	def closeGui(self):
+
+		return self._closeGui
+
+	#def closeGui	
+
+	@closeGui.setter
+	def closeGui(self,closeGui):
+		
+		if self._closeGui!=closeGui:
+			self._closeGui=closeGui		
+			self.closeGuiChanged.emit()
+
+	#def closeGui	
+
+	@Property(str,notify=processLaunchedChanged)
+	def processLaunched(self):
+
+		return self._processLaunched
+
+	#def processLaunched
+
+	@processLaunched.setter
+	def processLaunched(self,processLaunched):
+
+		if self._processLaunched!=processLaunched:
+			self._processLaunched=processLaunched
+			self.processLaunchedChanged.emit()
+
+	#def processLaunched
+
+	@Property(bool,notify=enableKonsoleChanged)
+	def enableKonsole(self):
+
+		return self._enableKonsole
+
+	#def enableKonsole
+
+	@enableKonsole.setter
+	def enableKonsole(self,enableKonsole):
+
+		if self._enableKonsole!=enableKonsole:
+			self._enableKonsole=enableKonsole
+			self.enableKonsoleChanged.emit()
+
+	#def enableKonsole
+
 	def initBridge(self):
 
 		self.isWorked=True
-		self.gatherInfo=GatherInfo()
-		self.gatherInfo.start()
-		self.gatherInfo.finished.connect(self._loadConfig)
+		self.gatherInfoT=GatherInfo(self.unlockerManager)
+		self.gatherInfoT.start()
+		self.gatherInfoT.infoGathered.connect(self._loadConfig)
+		self.gatherInfoT.finished.connect(self.gatherInfoT.deleteLater)
 
 	#def initBridge
 
+	@Slot()
 	def _loadConfig(self):		
 
 		self.core.protectionStack.loadConfig()
 		self.core.serviceStack.loadConfig()
 			
-		Bridge.unlockerManager.writeLog("Dpkg-Unlocker-Gui")
-		Bridge.unlockerManager.writeLog("Initial System Metapackage Protecion. Enabled: %s"%(str(self.core.protectionStack.metaProtectionEnabled)))
-		Bridge.unlockerManager.writeLog("Initial Services Status: %s"%(str(Bridge.unlockerManager.servicesData)))
+		self.unlockerManager.writeLog("Dpkg-Unlocker-Gui")
+		self.unlockerManager.writeLog(f"Initial System Metapackage Protecion. Enabled: {self.core.protectionStack.metaProtectionEnabled}")
+		self.unlockerManager.writeLog(f"Initial Services Status: {self.unlockerManager.servicesData}")
 		self.core.serviceStack.initWatcher()
 		self.currentStack=1
 
 	#def _loadConfig
-
-	def _getCurrentStack(self):
-
-		return self._currentStack
-
-	#def _getCurrentStack
-
-	def _setCurrentStack(self,currentStack):
-
-		if self._currentStack!=currentStack:
-			self._currentStack=currentStack
-			self.on_currentStack.emit()
-
-	#def _setCurrentStack
-
-	def _getCurrentOptionsStack(self):
-
-		return self._currentOptionsStack
-
-	#def _getCurrentOptionsStack
-
-	def _setCurrentOptionsStack(self,currentOptionsStack):
-
-		if self._currentOptionsStack!=currentOptionsStack:
-			self._currentOptionsStack=currentOptionsStack
-			self.on_currentOptionsStack.emit()
-
-	#def _setCurrentOptionsStack
-
-	def _getFeedBackCode(self):
-
-		return self._feedBackCode
-
-	#def _getFeedBackCode
-
-	def _setFeedBackCode(self,feedBackCode):
-
-		if self._feedBackCode!=feedBackCode:
-			self._feedBackCode=feedBackCode
-			self.on_feedBackCode.emit()
-
-	#def _setFeedBackCode
-
-	def _getShowDialog(self):
-
-		return self._showDialog
-
-	#def _getShowDialog
-
-	def _setShowDialog(self,showDialog):
-
-		if self._showDialog!=showDialog:
-			self._showDialog=showDialog
-			self.on_showDialog.emit()
-	
-	#def _setShowDialog
-
-	def _getEndProcess(self):
-
-		return self._endProcess
-
-	#def _getEndProcess	
-
-	def _setEndProcess(self,endProcess):
-		
-		if self._endProcess!=endProcess:
-			self._endProcess=endProcess		
-			self.on_endProcess.emit()
-
-	#def _setEndProcess
-
-	def _getEndCurrentCommand(self):
-
-		return self._endCurrentCommand
-
-	#def _getEndCurrentCommand
-
-	def _setEndCurrentCommand(self,endCurrentCommand):
-		
-		if self._endCurrentCommand!=endCurrentCommand:
-			self._endCurrentCommand=endCurrentCommand		
-			self.on_endCurrentCommand.emit()
-
-	#def _setEndCurrentCommand
-
-	def _getCurrentCommand(self):
-
-		return self._currentCommand
-
-	#def _getCurrentCommand
-
-	def _setCurrentCommand(self,currentCommand):
-		
-		if self._currentCommand!=currentCommand:
-			self._currentCommand=currentCommand		
-			self.on_currentCommand.emit()
-
-	#def _setCurrentCommand
-
-	def _getCloseGui(self):
-
-		return self._closeGui
-
-	#def _getCloseGui	
-
-	def _setCloseGui(self,closeGui):
-		
-		if self._closeGui!=closeGui:
-			self._closeGui=closeGui		
-			self.on_closeGui.emit()
-
-	#def _setCloseGui	
-
-	def _getProcessLaunched(self):
-
-		return self._processLaunched
-
-	#def _getProcessLaunched
-
-	def _setProcessLaunched(self,processLaunched):
-
-		if self._processLaunched!=processLaunched:
-			self._processLaunched=processLaunched
-			self.on_processLaunched.emit()
-
-	#def _setProcessLaunched
-
-	def _getRunPkexec(self):
-
-		return self._runPkexec
-
-	#def _getRunPkexec
-
-	def _getEnableKonsole(self):
-
-		return self._enableKonsole
-
-	#def _getEnableKonsole
-
-	def _setEnableKonsole(self,enableKonsole):
-
-		if self._enableKonsole!=enableKonsole:
-			self._enableKonsole=enableKonsole
-			self.on_enableKonsole.emit()
-
-	#def _setEnableKonsole
 
 	@Slot()
 	def openDialog(self):
@@ -260,81 +286,45 @@ class Bridge(QObject):
 
 	@Slot()
 	def openHelp(self):
-		
-		if 'valencia' in Bridge.unlockerManager.sessionLang:
-			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker.'
-		else:
-			self.helpCmd='xdg-open https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker'
-		
-		if not self._runPkexec:
-			self.helpCmd="su -c '%s' $USER"%self.helpCmd
-		else:
-			user=pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
-			self.helpCmd="su -c '%s' %s"%(self.helpCmd,user)
-		
-		self.openHelpT=threading.Thread(target=self._openHelp)
-		self.openHelpT.daemon=True
-		self.openHelpT.start()
 
+		wikiUrl="https://wiki.edu.gva.es/lliurex/tiki-index.php?page=Dpkg-Unlocker"
+
+		realUid=os.environ.get("PKEXEC_UID") or os.environ.get("SUDO_UID")
+
+		if realUid and os.getuid()==0:
+			cmd=["sudo","-u",f"#{realUid}","gio","open",wikiUrl]
+		else:
+			cmd=["xdg-open",wikiUrl]
+
+		subprocess.Popen(cmd)
+		
 	#def openHelp
-
-	def _openHelp(self):
-
-		os.system(self.helpCmd)
-
-	#def _openHelp
 
 	@Slot()
 	def closeApplication(self):
 
-		if self.core.serviceStack.runningUnlockCommand or self.core.restoreStack.runningRestoreCommand:
+		isRunningCmd=(self.core.serviceStack.runningUnlockCommand or self.core.restoreStack.runningRestoreCommand)
+		
+		if isRunningCmd:
 			self.closeGui=False
-		else:
-			if not self.core.protectionStack.isProtectionChange:
-				if self.isWorked:
-					self.core.serviceStack.statusServicesRunningTimer.stop()
-				self.closeGui=True
-				Bridge.unlockerManager.cleanLockToken()
-				Bridge.unlockerManager.writeLog("Quit")
-			else:
-				self.showDialog=True
-				self.core.protectionStack.showPendingChangesDialog=True
-				self.closeGui=False
+			return
+
+		
+		if self.core.protectionStack.isProtectionChange:
+			self.showDialog=True
+			self.core.protectionStack.showPendingChangesDialog=True
+			self.closeGui=False
+			return
+
+		if self.isWorked:
+			self.core.serviceStack.statusServicesRunningTimer.stop()
+		
+		self.closeGui=True
+		self.unlockerManager.cleanLockToken()
+		self.unlockerManager.writeLog("Quit")
 
 	#def closeApplication
 	
-	on_currentStack=Signal()
-	currentStack=Property(int,_getCurrentStack,_setCurrentStack, notify=on_currentStack)
-	
-	on_currentOptionsStack=Signal()
-	currentOptionsStack=Property(int,_getCurrentOptionsStack,_setCurrentOptionsStack, notify=on_currentOptionsStack)
-
-	on_feedBackCode=Signal()
-	feedBackCode=Property(int,_getFeedBackCode,_setFeedBackCode,notify=on_feedBackCode)
-	
-	on_showDialog=Signal()
-	showDialog=Property(bool,_getShowDialog,_setShowDialog,notify=on_showDialog)
-	
-	on_endProcess=Signal()
-	endProcess=Property(bool,_getEndProcess,_setEndProcess, notify=on_endProcess)
-
-	on_endCurrentCommand=Signal()
-	endCurrentCommand=Property(bool,_getEndCurrentCommand,_setEndCurrentCommand, notify=on_endCurrentCommand)
-
-	on_currentCommand=Signal()
-	currentCommand=Property('QString',_getCurrentCommand,_setCurrentCommand, notify=on_currentCommand)
-
-	on_closeGui=Signal()
-	closeGui=Property(bool,_getCloseGui,_setCloseGui, notify=on_closeGui)
-
-	on_processLaunched=Signal()
-	processLaunched=Property('QString',_getProcessLaunched,_setProcessLaunched,notify=on_processLaunched)
-	
-	on_enableKonsole=Signal()
-	enableKonsole=Property(bool,_getEnableKonsole,_setEnableKonsole, notify=on_enableKonsole)
-
-	runPkexec=Property(bool,_getRunPkexec,constant=True)
-
 #class Bridge
 
 from . import Core

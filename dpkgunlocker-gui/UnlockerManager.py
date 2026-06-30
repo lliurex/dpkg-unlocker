@@ -57,41 +57,35 @@ class UnlockerManager:
 
 	def manageServiceInfo(self,info):
 
+		okStatus={0,1,3,4}
+		runningStatus={1,3,4}
+
 		count=0
-		okStatus=[0,1,3,4]
-		runningStatus=[1,3,4]
 		liveProcess=0
-		self.isThereALock=False
-		self.areLiveProcess=False
 		self.servicesData=[]
-		for item in info:
-			tmp={}
-			tmp["serviceId"]=item
-			tmp["statusCode"]=info[item]
+		
+		for serviceId,statusCode in info.items():
+			self.servicesData.append(
+				{
+				"serviceId":serviceId,
+				"statusCode":statusCode
+				}
+			)
 			
-			if info[item] in okStatus:
+			if statusCode in okStatus:
 				count+=1 
-			if info[item] in runningStatus:
+			if statusCode in runningStatus:
 				liveProcess+=1 
 
-			self.servicesData.append(tmp)
+		self.areLiveProcess=liveProcess > 0
 
+		if count == len(info) or liveProcess == len(info):
+			self.isThereALock=False
+		else:
+			self.isThereALock=True
 		if liveProcess>0:
 			self.areLiveProcess=True
 		
-		if count==len(info):
-			self.isThereAlock=False
-		else:
-			if count==0:
-				self.isThereALock=True
-			else:
-				if liveProcess==len(info):
-					self.isThereALock=False
-				elif liveProcess==0:
-					self.isThereALock=True 
-				elif liveProcess>0:
-					self.isThereALock=True
-
 	#def manageServiceInfo
 
 	def getSessionLang(self):
@@ -131,54 +125,64 @@ class UnlockerManager:
 	def createProcessToken(self,command,action):
 
 		if action=="Lliurex-Up":
-			self.tokenLlxupProcess=tempfile.mkstemp('_LlxUp')
-			remove_tmp=' rm -f ' + self.tokenLlxupProcess[1] + ';'+'\n'
+			self.tokenLlxupProcess=self._getTempFile('LlxUp')
+			remove_tmp=f' rm -f {self.tokenLlxupProcess};\n'
 			
 		elif action=="Dpkg":
-			self.tokenDpkgProcess=tempfile.mkstemp('_Dpkg')
-			remove_tmp=' rm -f ' + self.tokenDpkgProcess[1] + ';'+'\n'
+			self.tokenDpkgProcess=self._getTempFile('Dpkg')
+			remove_tmp=f' rm -f {self.tokenDpkgProcess};\n'
 
 		elif action=="Apt":
-			self.tokenAptProcess=tempfile.mkstemp('_Apt')	
-			remove_tmp=' rm -f ' + self.tokenAptProcess[1] + ';'+'\n'
+			self.tokenAptProcess=self._getTempFile('Apt')	
+			remove_tmp=f' rm -f {self.tokenAptProcess};\n'
 			
 		elif action=="Fixing":
-			self.tokenFixingProcess=tempfile.mkstemp('_Fixing')	
-			remove_tmp=' rm -f ' + self.tokenFixingProcess[1] + ';'+'\n'
+			self.tokenFixingProcess=self._getTempFile('Fixing')	
+			remove_tmp=f' rm -f {self.tokenFixingProcess};\n'
 
 		elif action=="Restore":
-			self.tokenRestoreProcess=tempfile.mkstemp('_Restore')
-			remove_tmp=' rm -f ' + self.tokenRestoreProcess[1]+ ';'+'\n'
+			self.tokenRestoreProcess=self._getTempFile('Restore')
+			remove_tmp=f' rm -f {self.tokenRestoreProcess};\n'
 					
 		cmd=command+remove_tmp
 		
 		return cmd
 
-	#def create_process_token	
+	#def create_process_token
+
+	def _getTempFile(self,action):
+
+		suffixName=f"_{action}"
+		tmpFile=tempfile.NamedTemporaryFile(suffix=suffixName,delete=False)
+		tmpFile.close()
+
+		return tmpFile.name
+
+	#def _getTempFile	
 
 	def createResultToken(self,command,action):
 
 		if action=="Lliurex-Up":
-			self.tokenLlxupResult=tempfile.mkstemp('_LlxUp')
-			result_tmp=' echo $? >' + self.tokenLlxupResult[1]+ ')'
+			self.tokenLlxupResult=self._getTempFile('LlxUp')
+			result_tmp=f' echo $? > {self.tokenLlxupResult})'
 			
 		elif action=="Dpkg":
-			self.tokenDpkgResult=tempfile.mkstemp('_Dpkg')
-			result_tmp=' echo $? > ' + self.tokenDpkgResult[1] + ')'
+			self.tokenDpkgResult=self._getTempFile('Dpkg')
+			result_tmp=f' echo $? > {self.tokenDpkgResult})'
 
 		elif action=="Apt":
-			self.tokenAptResult=tempfile.mkstemp('_Apt')	
-			result_tmp=' echo $? > ' + self.tokenAptResult[1] + ')'
+			self.tokenAptResult=self._getTempFile('Apt')	
+			result_tmp=f' echo $? > {self.tokenAptResult})'
 			
 		elif action=="Fixing":
-			self.tokenFixingResult=tempfile.mkstemp('_Fixing')	
-			result_tmp=' echo $? > ' + self.tokenFixingResult[1] + ')'
+			self.tokenFixingResult=self._getTempFile('Fixing')	
+			result_tmp=f' echo $? > {self.tokenFixingResult})'
 
 		elif action=="Restore":
-			self.tokenRestoreResult=tempfile.mkstemp('_Restore')
-			result_tmp=' echo $? > ' + self.tokenRestoreResult[1]+ ')'	
+			self.tokenRestoreResult=self._getTempFile('Restore')
+			result_tmp=f' echo $? > {self.tokenRestoreResult})'	
 		
-		cmd='(('+command+');'+result_tmp+'2>&1 | tee -a %s;'%self.KonsoleLog
+		cmd=f"(('{command}');{result_tmp} '2>&1 | tee -a {self.KonsoleLog};"
 		
 		return cmd	
 
@@ -190,33 +194,33 @@ class UnlockerManager:
 
 	#def getUnlockerCommand
 
-	def execCommand(self,action,type_cmd):
+	def execCommand(self,action,typeCmd):
 
 		command=""
-		if type_cmd=="remove":
-			command=self.unlockInfo["unlockCmd"][action]
-		elif type_cmd=="restore":
+		if typeCmd=="remove":
+			command=self.unlockInfo.get("unlockCmd",{}).get(action,"")
+		elif typeCmd=="restore":
 			command=self.restoreCommand
 		else:
-			command=self.unlockInfo["commonCmd"]
+			command=self.unlockInfo.get("commonCmd",{})
 
 		length=len(command)
 		
-		if length>0:
+		if command:
 			command=self.createResultToken(command,action)
 			command=self.createProcessToken(command,action)
 		else:
-			if action=="Lliurex-Up":
-				self.removeLlxupLockDone=True
-			elif action=="Dpkg":
-				self.removeDpkgLockDone=True
-			elif action=="Apt":
-				self.remove_ap_lock_done=True
-			elif action=="Fixing":
-				self.fixingSystemDone=True
-			elif action=="Restore":
-				self.restoreDone=True
+			statusFlag={
+				"Lliurex-Up": "removeLlxupLockDone",
+				"Dpkg": "removeDpkgLockDone",
+				"Apt": "removeAptLockDone",
+				"Fixing": "fixingSystemDone",
+				"Restore": "restoreDone"
+			}
 
+			if action in statusFlag:
+				setattr(self,statusFlag[action],True)
+			
 		return command
 	
 	#def exec_command			
@@ -225,28 +229,38 @@ class UnlockerManager:
 
 		result=True
 
-		if action=="Lliurex-Up":
-			token=self.tokenLlxupResult[1]
-		elif action=="Dpkg":
-			token=self.tokenDpkgResult[1]
-		elif action=="Apt":
-			token=self.tokenAptResult[1]
-		elif action=="Fixing":
-			token=self.tokenFixingResult[1]
-		elif action=="Restore":
-			token=self.tokenRestoreResult[1]
+		actionFlags={
+			"Lliurex-Up": "tokenLlxupResult",
+			"Dpkg": "tokenDpkgResult",
+			"Apt": "tokenAptResult",
+			"Fixing": "tokenFixingResult",
+			"Restore": "tokenRestoreResult"
+		}
+
+		tmpToken=actionFlags.get(action)
+
+		if not tmpToken:
+			return result
+
+		token=getattr(self,tmpToken)
 					
-		if os.path.exists(token):
-			file=open(token)
-			content=file.readline()
-			if '0' not in content:
-				result=False
-			file.close()
+		if not os.path.exists(token):
+			return True
+
+		try:
+			with open(token,'r') as fd:
+				content=fd.readline()
+				if '0' not in content:
+					result=False
+
 			os.remove(token)
+		
+		except OSError:
+			pass
 
 		return result
 		
-	#def check_process
+	#def checkProcess
 
 	def initRestoreProcesses(self):
 
@@ -269,7 +283,7 @@ class UnlockerManager:
 			self.writeLog("Try to disable metapackage protection")
 
 		result=self.unlockerCore.changeMetaProtectionStatus(change)
-		self.writeLog("Change metapackage protection result: %s"%(str(result)))
+		self.writeLog(f"Change metapackage protection result: {result}")
 		return result[0]
 
 	#def changeMetaProtectionStatus
@@ -296,11 +310,11 @@ class UnlockerManager:
 		elif code==-9:
 			msg="Error removing Lliurex-Up lock file"
 
-		if msg!="":
+		if msg:
 			if msg==9:
-				self.writeLog("Restoring process: %s"%msg)
+				self.writeLog(f"Restoring process: {msg}")
 			else:
-				self.writeLog("Unlocked process: %s"%msg)
+				self.writeLog(f"Unlocked process: {msg}")
 
 	#def writeProcessLog
 
@@ -316,7 +330,6 @@ class UnlockerManager:
 		if len(content)>0:
 			for line in content:
 				self.writeLog(line)
-
 		else:
 			self.writeLog("KonsoleLog is empty")
 
@@ -347,8 +360,6 @@ class UnlockerManager:
 		if not os.path.exists(versionFile):
 			with open(versionFile,'w') as fd:
 				fd.write(installedVersion)
-				fd.close()
-
 			clear=True
 
 		else:
@@ -359,7 +370,6 @@ class UnlockerManager:
 			if fileVersion!=installedVersion:
 				with open(versionFile,'w') as fd:
 					fd.write(installedVersion)
-					fd.close()
 				clear=True
 		
 		if clear:

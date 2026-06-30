@@ -1,13 +1,10 @@
 #!/usr/bin/python3
 
-from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QUrl
-from PySide6.QtGui import QIcon
-from PySide6.QtQml import QQmlApplicationEngine
-
 import sys
 import os
+import subprocess
 import gettext
+
 gettext.textdomain("dpkg-unlocker")
 _ = gettext.gettext
 
@@ -15,26 +12,26 @@ _ = gettext.gettext
 if os.path.exists('/var/run/dpkgUnlocker.lock'):
 	print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
 	msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
-	cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui' --sorry '%s'"%(msg)
-	os.system(cmd)
+	
+	try:
+		subprocess.run(["kdialog","--title","Dpkg-Unlocker","--icon","dpkg-unlocker-gui","--sorry",msg],timeout=10)
+	except Exception as e:
+		pass
 	sys.exit(1)
 
-else:
+if os.geteuid() != 0:
+	print("  [Dpkg-Unlocker-Gui]: No administration privileges")
+	msg=_("You need administration privileges to run this application.")
 	try:
-		print("  [Dpkg-Unlocker-Gui]: Checking root")
-		f=open("/var/run/DpkgUnlocker.token","w")
-		f.close()
-		os.remove("/var/run/DpkgUnlocker.token")
+		subprocess.run(["kdialog","--title","Dpkg-Unlocker","--icon","dpkg-unlocker-gui","--sorry",msg],timeout=10)
+	except Exception as e:
+		pass
+	sys.exit(1)
 
-	except:
-		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
-		msg=_("You need administration privileges to run this application.")
-		cmd='kdialog --title "Dpkg-Unlocker" --icon "dpkg-unlocker-gui" --sorry "%s"'%(msg)
-		
-		print(cmd)
-		os.system(cmd)
-		sys.exit(1)
-
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QIcon
+from PySide6.QtQml import QQmlApplicationEngine
 
 from dpkgunlockergui.Core import Core
 c=Core.get_core()
@@ -60,7 +57,7 @@ engine.load(url)
 if not engine.rootObjects():
 	sys.exit(-1)
 
-engine.quit.connect(QApplication.quit)
+engine.quit.connect(app.quit)
 ret=app.exec()
 del engine
 del app
