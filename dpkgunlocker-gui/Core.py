@@ -2,7 +2,6 @@
 
 import sys
 
-
 from . import UnlockerManager
 from . import ProtectionStack
 from . import RestoreStack

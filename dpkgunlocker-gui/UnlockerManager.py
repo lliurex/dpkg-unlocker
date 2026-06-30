@@ -15,6 +15,11 @@ import grp
 
 class UnlockerManager:
 
+	KIRIGAMI_MSG_OK=0
+	KIRIGAMI_MSG_ERROR=1
+	KIRIGAMI_MSG_WARNING=2
+	KIRIGAMI_MSG_INFO=3
+
 	def __init__(self):
 
 		self.unlockerCore=DpkgUnlockerManager.DpkgUnlockerManager()
