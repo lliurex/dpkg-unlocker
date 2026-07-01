@@ -41,6 +41,7 @@ class Bridge(QObject):
 	closeGuiChanged=Signal()
 	processLaunchedChanged=Signal()
 	enableKonsoleChanged=Signal()
+	showProgressBarChanged=Signal()
 	
 	def __init__(self):
 
@@ -58,6 +59,7 @@ class Bridge(QObject):
 		self.isWorked=False
 		self._processLaunched=""
 		self._enableKonsole=False
+		self._showProgressBar=False
 		self.moveToStack=""
 
 	#def __init__
@@ -220,6 +222,20 @@ class Bridge(QObject):
 			self.enableKonsoleChanged.emit()
 
 	#def enableKonsole
+
+	@Property(bool,notify=showProgressBarChanged)
+	def showProgressBar(self):
+
+		return self._showProgressBar
+
+	#def showProgressBar
+
+	@showProgressBar.setter
+	def showProgressBar(self,showProgressBar):
+
+		if self._showProgressBar!=showProgressBar:
+			self._showProgressBar=showProgressBar
+			self.showProgressBarChanged.emit()
 
 	def initBridge(self):
 

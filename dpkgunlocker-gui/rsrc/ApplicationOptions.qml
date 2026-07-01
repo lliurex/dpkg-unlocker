@@ -3,99 +3,71 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.plasma.components as PC
 
-GridLayout{
+RowLayout{
     id: optionsGrid
-    columns: 2
-    flow: GridLayout.LeftToRight
-    columnSpacing:10
+    spacing:10
 
     Rectangle{
-        width:210
-        Layout.minimumHeight:430
-        Layout.preferredHeight:430
+        width:225
         Layout.fillHeight:true
-        border.color: "#d3d3d3"
+        border.color: palette.mid
 
-        GridLayout{
+        ColumnLayout{
             id: menuGrid
-            rows:5 
-            flow: GridLayout.TopToBottom
-            rowSpacing:0
+            anchors.fill:parent
+            spacing:0
 
             MenuOptionBtn {
                 id:servicesOption
                 optionText:i18nd("dpkg-unlocker","Services")
-                optionIcon:"/usr/share/icons/breeze/actions/22/run-build.svg"
-                Connections{
-                    function onMenuOptionClicked(){
-                        mainStackBridge.manageTransitions(0)
-                    }
-                }
+                optionIcon:"run-build"
+                onMenuOptionClicked:mainStackBridge.manageTransitions(0)
             }
 
             MenuOptionBtn {
                 id:restoreOption
                 optionText:i18nd("dpkg-unlocker","Restore services")
-                optionIcon:"/usr/share/icons/breeze/actions/22/tools.svg"
-                enabled:{
-                    if (restoreStackBridge.runningRestoreCommand){
-                        true
-                    }else{
-                        if ((!serviceStackBridge.areLiveProcess)&&(!serviceStackBridge.isThereALock)){
-                            true
-                        }else{
-                            false
-                        }
-                    }
-                }
-                Connections{
-                    function onMenuOptionClicked(){
-                        mainStackBridge.manageTransitions(1)
-                    }
-                }
+                optionIcon:"tools"
+                enabled:restoreStackBridge.runningRestoreCommand || (!serviceStackBridge.areLiveProcess && !serviceStackBridge.isThereALock)
+                onMenuOptionClicked:mainStackBridge.manageTransitions(1)
             }
+
             MenuOptionBtn {
                 id:detailsOption
                 optionText:i18nd("dpkg-unlocker","Details process")
-                optionIcon:"/usr/share/icons/breeze/apps/22/utilities-terminal.svg"
+                optionIcon:"utilities-terminal"
                 visible:mainStackBridge.enableKonsole
-                Connections{
-                    function onMenuOptionClicked(){
-                        mainStackBridge.manageTransitions(2)
-                    }
-                }
+                onMenuOptionClicked:mainStackBridge.manageTransitions(2)
             }
 
             MenuOptionBtn {
                 id:protectionOption
                 optionText:i18nd("dpkg-unlocker","Metapackage protection")
-                optionIcon:"/usr/share/icons/breeze/status/22/security-high.svg"
+                optionIcon:"security-high"
                 visible:protectionStackBridge.showProtectionOption
-                Connections{
-                    function onMenuOptionClicked(){
-                        mainStackBridge.manageTransitions(3)
-                    }
-                }
+                onMenuOptionClicked:mainStackBridge.manageTransitions(3)
             }
           
 
             MenuOptionBtn {
                 id:helpOption
                 optionText:i18nd("dpkg-unlocker","Help")
-                optionIcon:"/usr/share/icons/breeze/actions/22/help-contents.svg"
-                Connections{
-                    function onMenuOptionClicked(){
-                        mainStackBridge.openHelp();
-                    }
-                }
+                optionIcon:"help-contents"
+                onMenuOptionClicked:mainStackBridge.openHelp()
+            }
+
+            Item {
+                Layout.fillHeight:true
             }
         }
     }
-    GridLayout{
+    ColumnLayout{
         id: layoutGrid
-        rows:3 
-        flow: GridLayout.TopToBottom
-        rowSpacing:0
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        Layout.leftMargin:5
+        Layout.rightMargin:15
+        spacing:10
 
         StackLayout {
             id: optionsLayout
@@ -122,6 +94,7 @@ GridLayout{
         RowLayout{
             id:feedbackRow
             spacing:10
+            Layout.topMargin:5
             Layout.bottomMargin:15
             Layout.fillWidth:true
 
@@ -131,18 +104,43 @@ GridLayout{
                 Text{
                     id:feedBackText
                     text:getFeedBackText(mainStackBridge.feedBackCode)
-                    visible:false
-                    font.family: "Quattrocento Sans Bold"
+                    visible:mainStackBridge.showProgressBar
                     font.pointSize: 10
                     Layout.alignment:Qt.AlignHCenter
                     Layout.bottomMargin:7
                 }
-                ProgressBar{
+                Item{
                     id:feedBackBar
-                    indeterminate:true
-                    visible:false
-                    Layout.fillWidth:true
-                    implicitHeight:mainStackBridge.runPkexec?7:25
+                    visible:mainStackBridge.showProgressBar
+                    implicitWidth:100
+                    implicitHeight:5
+                    Layout.alignment:Qt.AlignHCenter
+
+                    Rectangle{
+                        anchors.fill:parent
+                        color:"#E0E0E0"
+                        clip:true
+
+                        Rectangle{
+                            id:bar
+                            width:parent.width*0.2
+                            height:parent.height
+                            color:"#2196F3"
+                            x:0
+                        }    
+                    }
+                    Timer{
+                        id:pbTimer
+                        running:feedBackBar.visible
+                        repeat:true
+                        interval:60
+                        onTriggered:{
+                            bar.x+=4;
+                            if (bar.x > feedBackBar.width){
+                                bar.x=-bar.width
+                            }
+                        }
+                    }
                 }
             }
     
@@ -175,8 +173,6 @@ GridLayout{
                             break
                     }
                 }
-                Layout.preferredHeight:40
-                Layout.rightMargin:10
                 enabled:{
                     switch(optionsLayout.currentIndex){
                         case 0:
@@ -213,6 +209,7 @@ GridLayout{
             }
         }
     }
+
     UnlockDialog{
         id:unlockDialog
         dialogMsg:{
@@ -236,20 +233,21 @@ GridLayout{
             }
         }
         dialogVisible:mainStackBridge.showDialog
+        btnAcceptVisible:optionsLayout.currentIndex!==3?false:true
+        btnDiscardText:optionsLayout.currentIndex!==3?i18nd("dpkg-unlocker","Apply"):i18nd("dpkg-unlocker","Discard")
+        btnDiscardIcon:optionsLayout.currentIndex!==3?"dialog-ok":"dialog-discard"
+
         Connections{
             target:unlockDialog
-            function onDialogApplyClicked(){
+            function dialogApplyClicked(){
+                console.log("DENTRO")
                 switch(optionsLayout.currentIndex){
                     case 0:
-                        feedBackText.visible=true
-                        feedBackBar.visible=true
                         protectionOption.enabled=false
                         applyChanges()
                         serviceStackBridge.launchUnlockProcess()
                         break;
                     case 1:
-                        feedBackText.visible=true
-                        feedBackBar.visible=true
                         protectionOption.enabled=false
                         applyChanges()
                         restoreStackBridge.launchRestoreProcess()
@@ -281,32 +279,24 @@ GridLayout{
 
     Timer{
         id:timer
-    }
-
-    function delay(delayTime,cb){
-        timer.interval=delayTime;
-        timer.repeat=true;
-        timer.triggered.connect(cb);
-        timer.start()
-    }
-   
-    function applyChanges(){
-        delay(100, function() {
+        interval:100
+        repeat:true
+        onTriggered:{
             if (mainStackBridge.endProcess){
                 timer.stop()
-                feedBackText.visible=false
-                feedBackBar.visible=false
-                protectionOption.enabled=true
-                
             }else{
                 if (mainStackBridge.endCurrentCommand){
                     mainStackBridge.getNewCommand()
                     var newCommand=mainStackBridge.currentCommand
                     konsolePanel.runCommand(newCommand)
-                }
+                }  
             }
-          })
-    } 
+        }
+    }
+
+    function applyChanges(){
+        timer.restart()
+    }
  
     function getFeedBackText(code){
 

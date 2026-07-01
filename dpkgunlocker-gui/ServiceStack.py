@@ -224,6 +224,7 @@ class Bridge(QObject):
 		self.core.mainStack.endProcess=False
 		self.core.mainStack.isWorked=True
 		self.showServiceStatusMesage={"show":False,"msgCode":"","type":""}
+		self.core.mainStack.showProgressBar=True
 		self.unlockerManager.initUnlockerProcesses()
 		self.unlockerManager.getUnlockerCommand()
 		self.unlockerManager.writeLog(f"Services Status Error: {self.unlockerManager.servicesData}")
@@ -330,6 +331,7 @@ class Bridge(QObject):
 		
 		self.unlockerProcessRunningTimer.stop()
 		self.runningUnlockCommand=False
+		self.core.mainStack.showProgressBar=False
 		self._gatherInfoThread()
 
 	#def _updateUnlockerProcessStatus
@@ -340,6 +342,7 @@ class Bridge(QObject):
 		self.showServiceStatusMesage={"show":True,"msgCode":code,"type":self.unlockerManager.KIRIGAMI_MSG_ERROR}
 		self.unlockerProcessRunningTimer.stop()
 		self.unlockerManager.writeProcessLog(code)
+		self.core.mainStack.showProgressBar=False
 		self._gatherInfoThread()
 
 	#def _endProcessWithErrors

@@ -70,6 +70,7 @@ class Bridge(QObject):
 		self.runningRestoreCommand=True
 		self.core.mainStack.endProcess=False
 		self.showRestoreStatusMessage={"show":False,"msgCode":"","type":""}
+		self.core.mainStack.showProgressBar=True
 		self.unlockerManager.initRestoreProcesses()
 		self.unlockerManager.getRestoreCommand()
 		self.unlockerManager.writeLog("Restore process launched")
@@ -106,6 +107,7 @@ class Bridge(QObject):
 		self.runningRestoreCommand=False
 		self.core.mainStack.endProcess=True
 		self.restoreProcessRunningTimer.stop()
+		self.core.mainStack.showProgressBar=False
 
 	#def _updateRestoreProcessStatus
 
