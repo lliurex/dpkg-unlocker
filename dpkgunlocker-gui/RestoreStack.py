@@ -14,58 +14,52 @@ class Bridge(QObject):
 	RESTORING_SERVICES_RUNNING=9
 	RESTORING_SERVICES_SUCCESS=10
 	RESTORING_SERVICES_ERROR=-12
+
+	showRestoreStatusMessageChanged=Signal()
+	runningRestoreCommandChanged=Signal()
+
 	
 	def __init__(self):
 
-		QObject.__init__(self)
+		super().__init__()
 		self.core=Core.Core.get_core()
-		Bridge.unlockerManager=self.core.unlockerManager
-		self._showRestoreStatusMessage=[False,"","Success"]
+		self.unlockerManager=self.core.unlockerManager
+		self._showRestoreStatusMessage={"show":False,"msgCode":"","type":""}
 		self._runningRestoreCommand=False
 
 	#def __init__
 
-	def _getShowRestoreStatusMessage(self):
+	@Property(dict,notify=showRestoreStatusMessageChanged)
+	def showRestoreStatusMessage(self):
 
 		return self._showRestoreStatusMessage
 
-	#def _getShowRestoreStatusMessage
+	#def showRestoreStatusMessage
 
-	def _setShowRestoreStatusMessage(self,showRestoreStatusMessage):
+	@showRestoreStatusMessage.setter
+	def showRestoreStatusMessage(self,showRestoreStatusMessage):
 
 		if self._showRestoreStatusMessage!=showRestoreStatusMessage:
 			self._showRestoreStatusMessage=showRestoreStatusMessage
-			self.on_showRestoreStatusMessage.emit()
+			self.showRestoreStatusMessageChanged.emit()
 
-	#def _setShowRestoreStatusMessage
+	#def showRestoreStatusMessage
 
-	def _getRunningRestoreCommand(self):
+	@Property(bool,notify=runningRestoreCommandChanged)
+	def runningRestoreCommand(self):
 
 		return self._runningRestoreCommand
 
-	#def _getRunningRestoreCommand
+	#def runningRestoreCommand
 
-	def _setRunningRestoreCommand(self,runningRestoreCommand):
+	@runningRestoreCommand.setter
+	def runningRestoreCommand(self,runningRestoreCommand):
 
 		if self._runningRestoreCommand!=runningRestoreCommand:
 			self._runningRestoreCommand=runningRestoreCommand
-			self.on_runningRestoreCommand.emit()
+			self.runningRestoreCommandChanged.emit()
 
-	#def _setRunningRestoreCommand
-
-	def _getProcessLaunched(self):
-
-		return self._processLaunched
-
-	#def _getProcessLaunched
-
-	def _setProcessLaunched(self,processLaunched):
-
-		if self._processLaunched!=processLaunched:
-			self._processLaunched=processLaunched
-			self.on_processLaunched.emit()
-
-	#def _setProcessLaunched
+	#def runningRestoreCommand
 
 	@Slot()
 	def launchRestoreProcess(self):
@@ -75,11 +69,11 @@ class Bridge(QObject):
 		self.core.mainStack.enableKonsole=True
 		self.runningRestoreCommand=True
 		self.core.mainStack.endProcess=False
-		self.showRestoreStatusMessage=[False,"","Success"]
-		Bridge.unlockerManager.initRestoreProcesses()
-		Bridge.unlockerManager.getRestoreCommand()
-		Bridge.unlockerManager.writeLog("Restore process launched")
-		self.restoreProcessRunningTimer=QTimer(None)
+		self.showRestoreStatusMessage={"show":False,"msgCode":"","type":""}
+		self.unlockerManager.initRestoreProcesses()
+		self.unlockerManager.getRestoreCommand()
+		self.unlockerManager.writeLog("Restore process launched")
+		self.restoreProcessRunningTimer=QTimer(self)
 		self.restoreProcessRunningTimer.timeout.connect(self._updateRestoreProcessStatus)
 		self.restoreProcessRunningTimer.start(100)
 
@@ -87,48 +81,41 @@ class Bridge(QObject):
 
 	def _updateRestoreProcessStatus(self):
 
-		error=False
-
-		if not Bridge.unlockerManager.restoreLaunched:
+		if not self.unlockerManager.restoreLaunched:
 			self.core.mainStack.feedBackCode=Bridge.RESTORING_SERVICES_RUNNING
-			Bridge.unlockerManager.restoreLaunched=True
-			self.core.mainStack.currentCommand=Bridge.unlockerManager.execCommand("Restore","restore")
+			self.unlockerManager.restoreLaunched=True
+			self.core.mainStack.currentCommand=self.unlockerManager.execCommand("Restore","restore")
 			self.core.mainStack.endCurrentCommand=True
-			self.restoreCheck=True
-			Bridge.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
+			self.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
 		
-		if Bridge.unlockerManager.restoreDone:
-			if self.restoreCheck:
-				self.restoreResult=Bridge.unlockerManager.checkProcess("Restore")
-									
-			if self.restoreResult:
-				code=Bridge.RESTORING_SERVICES_SUCCESS	
-			else:
-				error=True
-				code=Bridge.RESTORING_SERVICES_ERROR
+		if not self.unlockerManager.restoreDone:
+			return self._checkProcessToken()
 
-			if error:
-				self.showRestoreStatusMessage=[True,code,"Error"]
-			else:
-				self.showRestoreStatusMessage=[True,code,"Success"]
+		self.restoreResult=self.unlockerManager.checkProcess("Restore")
+								
+		if self.restoreResult:
+			code=Bridge.RESTORING_SERVICES_SUCCESS	
+			type=self.unlockerManager.KIRIGAMI_MSG_OK
+		else:
+			code=Bridge.RESTORING_SERVICES_ERROR
+			type=self.unlockerManager.KIRIGAMI_MSG_ERROR
 
-			Bridge.unlockerManager.writeProcessLog(code)
-			self.runningRestoreCommand=False
-			self.core.mainStack.endProcess=True
-			self.restoreProcessRunningTimer.stop()
+		self.showRestoreStatusMessage={"show":True,"msgCode":code,"type":type}
 
-		if Bridge.unlockerManager.restoreLaunched:
-			if not Bridge.unlockerManager.restoreDone:
-				if not os.path.exists(Bridge.unlockerManager.tokenRestoreProcess[1]):
-					Bridge.unlockerManager.restoreDone=True
+		self.unlockerManager.writeProcessLog(code)
+		self.runningRestoreCommand=False
+		self.core.mainStack.endProcess=True
+		self.restoreProcessRunningTimer.stop()
 
 	#def _updateRestoreProcessStatus
 
-	on_showRestoreStatusMessage=Signal()
-	showRestoreStatusMessage=Property('QVariantList',_getShowRestoreStatusMessage,_setShowRestoreStatusMessage,notify=on_showRestoreStatusMessage)
-	
-	on_runningRestoreCommand=Signal()
-	runningRestoreCommand=Property(bool,_getRunningRestoreCommand,_setRunningRestoreCommand,notify=on_runningRestoreCommand)
+	def _checkProcessToken(self):
+
+		if self.unlockerManager.restoreLaunched and not self.unlockerManager.restoreDone:
+			if not os.path.exists(self.unlockerManager.tokenRestoreProcess):
+				self.unlockerManager.restoreDone=True
+
+	#def _checkProcessToken
 
 #class Bridge
 

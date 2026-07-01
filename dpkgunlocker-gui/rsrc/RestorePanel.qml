@@ -22,9 +22,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:restoreStackBridge.showRestoreStatusMessage[0]
-            text:getMessageText(restoreStackBridge.showRestoreStatusMessage[1])
-            type:getMessageType(restoreStackBridge.showRestoreStatusMessage[2])
+            visible:restoreStackBridge.showRestoreStatusMessage.show
+            text:getMessageText(restoreStackBridge.showRestoreStatusMessage.msgCode)
+            type:getMessageType(restoreStackBridge.showRestoreStatusMessage.type)
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40
@@ -53,30 +53,30 @@ Rectangle{
 
     function getMessageText(code){
 
-        var msg=""
         switch (code){
             case 10:
-                msg=i18nd("dpkg-unlocker","Restoration of services has finished successfully");
-                break;
+                return i18nd("dpkg-unlocker","Restoration of services has finished successfully")
             case -12:
-                msg=i18nd("dpkg-unlocker","Restoration of services has finished with errors");
-                break;
+                return i18nd("dpkg-unlocker","Restoration of services has finished with errors")
             default:
-                break;
+                return ""
         }
-        return msg;
 
     }
 
     function getMessageType(type){
 
         switch (type){
-            case "Success":
+            case 0:
                 return Kirigami.MessageType.Positive
-            case "Error":
+            case 1:
                 return Kirigami.MessageType.Error
+            case 2:
+                return Kirigami.MessageType.Warning
+            case 3:
+            default:
+                return Kirigami.MessageType.Information
           }
-
     } 
 
 } 

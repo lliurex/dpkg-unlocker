@@ -95,12 +95,23 @@ class UnlockerManager:
 
 	def getSessionLang(self):
 
-		lang=os.environ["LANG"]
-		
-		if 'valencia' in lang:
-			self.sessionLang="ca@valencia"
+		tmpLang=os.environ["LANGUAGE"]
+
+		if tmpLang!="":
+			tmpLang=tmpLang.split(":")
+
+		currentLang=""
+		if len(tmpLang)>0:
+			currentLang=tmpLang[0]
 		else:
+			currentLang=os.environ["LANG"]
+		
+		if 'ca' in currentLang:
+			self.sessionLang="ca@valencia"
+		elif 'es' in currentLang:
 			self.sessionLang="es"
+		else:
+			self.sessionLang="en"
 
 	#def getSessionLang
 
@@ -131,26 +142,26 @@ class UnlockerManager:
 
 		if action=="Lliurex-Up":
 			self.tokenLlxupProcess=self._getTempFile('LlxUp')
-			remove_tmp=f' rm -f {self.tokenLlxupProcess};\n'
+			removeToken=f' rm -f {self.tokenLlxupProcess};\n'
 			
 		elif action=="Dpkg":
 			self.tokenDpkgProcess=self._getTempFile('Dpkg')
-			remove_tmp=f' rm -f {self.tokenDpkgProcess};\n'
+			removeToken=f' rm -f {self.tokenDpkgProcess};\n'
 
 		elif action=="Apt":
 			self.tokenAptProcess=self._getTempFile('Apt')	
-			remove_tmp=f' rm -f {self.tokenAptProcess};\n'
+			removeToken=f' rm -f {self.tokenAptProcess};\n'
 			
 		elif action=="Fixing":
 			self.tokenFixingProcess=self._getTempFile('Fixing')	
-			remove_tmp=f' rm -f {self.tokenFixingProcess};\n'
+			removeToken=f' rm -f {self.tokenFixingProcess};\n'
 
 		elif action=="Restore":
 			self.tokenRestoreProcess=self._getTempFile('Restore')
-			remove_tmp=f' rm -f {self.tokenRestoreProcess};\n'
+			removeToken=f' rm -f {self.tokenRestoreProcess};\n'
 					
-		cmd=command+remove_tmp
-		
+		cmd=command+removeToken
+
 		return cmd
 
 	#def create_process_token
@@ -187,7 +198,7 @@ class UnlockerManager:
 			self.tokenRestoreResult=self._getTempFile('Restore')
 			result_tmp=f' echo $? > {self.tokenRestoreResult})'	
 		
-		cmd=f"(('{command}');{result_tmp} '2>&1 | tee -a {self.KonsoleLog};"
+		cmd=f"(({command});{result_tmp} 2>&1 | tee -a {self.KonsoleLog};"
 		
 		return cmd	
 

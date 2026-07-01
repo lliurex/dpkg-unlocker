@@ -24,9 +24,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:protectionStackBridge.showProtectionStatusMessage[0]
-            text:getMessageText(protectionStackBridge.showProtectionStatusMessage[1])
-            type:getMessageType(protectionStackBridge.showProtectionStatusMessage[2])
+            visible:protectionStackBridge.showProtectionStatusMessage.show
+            text:getMessageText(protectionStackBridge.showProtectionStatusMessage.msgCode)
+            type:getMessageType(protectionStackBridge.showProtectionStatusMessage.type)
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40
@@ -56,41 +56,35 @@ Rectangle{
 
     function getMessageText(code){
 
-        var msg=""
         switch (code){
             case 6:
-                msg=i18nd("dpkg-unlocker","System metapackage protection is enabled");
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection is enabled")
             case 7:
-                msg=i18nd("dpkg-unlocker","System metapackage protection is disable");
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection is disable")
             case 8:
-                msg=i18nd("dpkg-unlocker","System metapackage protection change successfully")
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection change successfully")
             case -10:
-                msg=i18nd("dpkg-unlocker","Error activating system metapackage protection");
-                break;
+                return i18nd("dpkg-unlocker","Error activating system metapackage protection")
             case -11:
-                msg=i18nd("dpkg-unlocker","Error disabling system metapackage protection");
-                break;
+                return i18nd("dpkg-unlocker","Error disabling system metapackage protection")
             default:
-                break;
+                return ""
         }
-        return msg;
 
     }
 
     function getMessageType(type){
 
         switch (type){
-            case "Info":
-                return Kirigami.MessageType.Information
-            case "Success":
+            case 0:
                 return Kirigami.MessageType.Positive
-            case "Error":
+            case 1:
                 return Kirigami.MessageType.Error
-            case "Warning":
+            case 2:
                 return Kirigami.MessageType.Warning
+            case 3:
+            default:
+                return Kirigami.MessageType.Information
         }
 
     } 

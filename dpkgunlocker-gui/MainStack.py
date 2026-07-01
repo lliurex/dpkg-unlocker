@@ -2,16 +2,16 @@
 
 from PySide6.QtCore import QObject,Signal,Slot,QThread,Property,QTimer,Qt,QModelIndex
 import os
-import threading
+import subprocess
 import signal
-import copy
-import time
-import pwd
+import time 
+
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class GatherInfo(QThread):
 
 	infoGathered=Signal()
+
 	def __init__(self,manager):
 
 		super().__init__()
@@ -158,9 +158,8 @@ class Bridge(QObject):
 
 	#def endCurrentCommand
 
-	@Property(str,notify=currentCommandChanged)
+	@Property('QString',notify=currentCommandChanged)
 	def currentCommand(self):
-
 		return self._currentCommand
 
 	#def currentCommand

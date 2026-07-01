@@ -24,9 +24,9 @@ Rectangle{
         enabled:true
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:serviceStackBridge.showServiceStatusMesage[0]
-            text:getMessageText(serviceStackBridge.showServiceStatusMesage[1])
-            type:getMessageType(serviceStackBridge.showServiceStatusMesage[2])
+            visible:serviceStackBridge.showServiceStatusMesage.show
+            text:getMessageText(serviceStackBridge.showServiceStatusMesage.msgCode)
+            type:getMessageType(serviceStackBridge.showServiceStatusMesage.type)
             Layout.minimumWidth:555
             Layout.fillWidth:true
             Layout.topMargin: 40
@@ -47,51 +47,41 @@ Rectangle{
 
     function getMessageText(code){
 
-        var msg="";
         switch (code){
             case 0:
-                msg=i18nd("dpkg-unlocker","All processes seem correct. Nothing to do");
-                break;
+                return i18nd("dpkg-unlocker","All processes seem correct. Nothing to do")
             case 5:
-                msg=i18nd("dpkg-unlocker","Unlocking process finished successfully");
-                break;
+                return i18nd("dpkg-unlocker","Unlocking process finished successfully")
             case 11:
-                msg=i18nd("dpkg-unlocker","Some process are running. Wait a moment");
-                break;
+                return i18nd("dpkg-unlocker","Some process are running. Wait a moment")
              case 12:
-                msg=i18nd("dpkg-unlocker","Detected some blocked process");
-                break;
+                return i18nd("dpkg-unlocker","Detected some blocked process")
             case -6:
-                msg=i18nd("dpkg-unlocker","Error fixing the system");
-                break;
+                return i18nd("dpkg-unlocker","Error fixing the system")
             case -7:
-                msg=i18nd("dpkg-unlocker","Error removing Apt lock file");
-                break;
+                return i18nd("dpkg-unlocker","Error removing Apt lock file")
             case -8:
-                msg=i18nd("dpkg-unlocker","Error removing Dpg lock file");
-                break;
+                return i18nd("dpkg-unlocker","Error removing Dpg lock file")
             case -9:
-                msg=i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file");
-                break;
-           
+                return i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file")
             default:
-                break;
+                return ""
         }
-        return msg;
 
     }
 
     function getMessageType(type){
 
         switch (type){
-            case "Info":
-                return Kirigami.MessageType.Information
-            case "Success":
+            case 0:
                 return Kirigami.MessageType.Positive
-            case "Error":
+            case 1:
                 return Kirigami.MessageType.Error
-            case "Warning":
+            case 2:
                 return Kirigami.MessageType.Warning
+            case 3:
+            default:
+                return Kirigami.MessageType.Information
         }
 
     } 
