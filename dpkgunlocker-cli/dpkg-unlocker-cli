@@ -1,72 +1,102 @@
-#!/usr/bin/env python3
+#! /usr/bin/python3
 import sys
 import os
-
-from clint import arguments
-from clint.textui import puts, indent
+import argparse
 
 from dpkgunlockercli import DpkgUnlockerCli
-
-
-def usage():
-	puts("Usage")
-	with indent(4):
-		puts("dpkgunlocker-cli [FLAGS...] ACTION")
-		puts("Actions")
-		with indent(4):	
-			puts("showservices: Show information about the status of services involved in installation of packages")
-			puts("unlock: Run command to try to recover the blocked services")
-			puts("showprotection: Show the current state of system metapackage protection")
-			puts("disableprotetion: Run command to disable system metapackage protection")
-			puts("enableprotection: Run command to enable system metapackage protection")		
-			puts("restore: Run command to try to restore services involved in package installation")
-		
-		puts("Flags")
-		with indent(4):
-			puts("-h --help : Show help")
-			puts("-u --unattended: Run the command without prompting for user confirmation")
-			puts("-k --kill: Run the unlock command killing the associated running process. It can cause problems if used incorrectly ")
-
-	sys.exit(1)
-
-#def usage	
 
 def isDpkgUnlockerRunning():
 
 	if os.path.exists('/var/run/dpkgUnlocker.lock'):
-		print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
+		printf("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
 		sys.exit(1)
 
 #def isDpkgUnlockedRunning
 
-		
 if __name__ == '__main__':
 
 	if os.geteuid() != 0:
-		print("  [DpkgUnlocker-Cli]: You need be root!")
+		printf("  [DpkgUnlocker-Cli]: You need be root!")
 		sys.exit(1)
 
 	isDpkgUnlockerRunning()
+
+	parser = argparse.ArgumentParser(add_help=False)
+	parent_parser=argparse.ArgumentParser(add_help=False)
+
+	def custom_print_help():
+		help_text = (
+			"Usage:\n"
+			"    dpkgunlocker-cli [FLAGS...] ACTION\n\n"
+			"Actions:\n"
+			"    showservices:       Show information about the status of services involved in installation of packages\n"
+			"    unlock:             Run command to try to recover the blocked services\n"
+			"    showprotection:     Show the current state of system metapackage protection\n"
+			"    disableprotection:  Run command to disable system metapackage protection\n"
+			"    enableprotection:   Run command to enable system metapackage protection\n"
+			"    restore:            Run command to try to restore services involved in package installation\n\n"
+			
+			"Flags:\n"
+			"    -h, --help          Show help\n"
+			"    -u, --unattended    Run the actions without prompting for user confirmation\n"
+			"    -k, --kill          Run the unlock command killing the associated running process. It can cause problems if used incorrectly "
+		)
+		print(help_text)
 		
-	args = arguments.Args().copy
-	mode=False
-	kill=False
+	parser.print_help = custom_print_help
+	
+	def custom_error(message):
+		print(f"Error: {message}\n", file=sys.stderr)
+		parser.print_help()
+		sys.exit(2)
+		
+	parser.error = custom_error
+	
+	class HelpAction(argparse.Action):
+		def __call__(self, parser, namespace, values, option_string=None):
+			parser.print_help()
+			sys.exit(0)
+			
+	parser.add_argument("-h", "--help", action=HelpAction, nargs=0)
+	parent_parser.add_argument("-u", "--unattended", action="store_true",dest="unattended",default=argparse.SUPPRESS)
+	parser.add_argument("-u", "--unattended", action="store_true",dest="unattended")
+	parent_parser.add_argument("-k", "--kill", action="store_true",dest="kill",default=argparse.SUPPRESS)
+	parser.add_argument("-k", "--kill", action="store_true",dest="kill")
+	
+	VALID_ACTIONS = [
+		"showservices", "unlock", "showprotection", "disableprotection",
+		"enableprotection", "restore"
+	]
+	
+	user_args = [arg for arg in sys.argv[1:] if arg not in ["-h", "--help", "-u", "--unattended", "-k", "--kill"]]
 
-	if args.contains(["-h","--help"]) or len(args.all) == 0 :
-		usage()		
-	if args.contains(["-u","--unattended"]):
-		mode=True
-		index = args.first(["-u","--unattended"])
-		args.pop(index)
-	if args.contains(["-k","--kill"]):
-		kill=True
-		index = args.first(["-k","--kill"])
-		args.pop(index)
+	if user_args:
+		potential_action = user_args[0]
+		if potential_action not in VALID_ACTIONS:
+			print(f"Error: Invalid action or unknown parameter: '{potential_action}'\n", file=sys.stderr)
+			parser.print_help()
+			sys.exit(2)
 
+	subparsers = parser.add_subparsers(dest="action", required=True)
+	subparsers.add_parser("showservices", parents=[parent_parser])
+	subparsers.add_parser("unlock", parents=[parent_parser])
+	subparsers.add_parser("showprotection", parents=[parent_parser])
+	subparsers.add_parser("disableprotection", parents=[parent_parser])
+	subparsers.add_parser("enableprotection", parents=[parent_parser])
+	subparsers.add_parser("restore", parents=[parent_parser])
 
-	action = args.pop(0)
+	try:
+		args = parser.parse_args()
+	except argparse.ArgumentError:
+		parser.print_help()
+		sys.exit(1)
+		
+	action=args.action
+	mode = args.unattended
+	kill = args.kill
+	
+	dpkgunlockercli = DpkgUnlockerCli()
 
-	dpkgunlockercli = DpkgUnlockerCli(args.get(0))
 	if action == "showservices":
 		sys.exit(dpkgunlockercli.showServices())
 	elif action=="unlock":
@@ -79,6 +109,3 @@ if __name__ == '__main__':
 		sys.exit(dpkgunlockercli.enableProtection(mode))
 	elif action=="restore":
 		sys.exit(dpkgunlockercli.restore(mode))
-	else:
-		dpkgunlockercli.dpkgUnlockerCore.cleanLockToken()
-		usage()		
