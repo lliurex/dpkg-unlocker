@@ -1,47 +1,39 @@
-import org.kde.plasma.core as PlasmaCore
-import org.kde.kirigami as Kirigami
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
 
 
 Rectangle{
     color:"transparent"
-    Text{ 
-        text:i18nd("dpkg-unlocker","Services Information")
-        font.family: "Quattrocento Sans Bold"
-        font.pointSize: 16
-    }
 
-    GridLayout{
-        id:generalLayout
-        rows:2
-        flow: GridLayout.TopToBottom
-        rowSpacing:10
-        anchors.left:parent.left
-        width:parent.width-10
-        height:parent.height-25
-        enabled:true
+    ColumnLayout{
+        id: mainContent
+        anchors.fill:parent
+        anchors.rightMargin:5
+        anchors.bottomMargin:10
+        spacing:10
+
+
+        Text{ 
+            text:i18nd("dpkg-unlocker","Services Information")
+            font.pointSize: 16
+        }
+
         Kirigami.InlineMessage {
             id: messageLabel
             visible:serviceStackBridge.showServiceStatusMesage.show
             text:getMessageText(serviceStackBridge.showServiceStatusMesage.msgCode)
             type:getMessageType(serviceStackBridge.showServiceStatusMesage.type)
-            Layout.minimumWidth:555
             Layout.fillWidth:true
-            Layout.topMargin: 40
         }
 
-        RowLayout{
-           id: optionsGrid
-           Layout.topMargin: messageLabel.visible?0:50
-
-           ServicesList{
-                id:servicesList
-                Layout.fillHeight:true
-                Layout.fillWidth:true
-                servicesModel:serviceStackBridge.servicesModel
-            }
+        ServicesList{
+            id:servicesList
+            Layout.fillHeight:true
+            Layout.fillWidth:true
+            servicesModel:serviceStackBridge.servicesModel
         }
     }
 

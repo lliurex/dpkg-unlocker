@@ -6,28 +6,30 @@ import QMLTermWidget
 
 Rectangle{
     color:"transparent"
-    Text{ 
-        text:{
-            if (mainStackBridge.processLaunched=="Unlock"){
-                i18nd("dpkg-unlocker","Unlock process details")
-            }else{
-                i18nd("dpkg-unlocker","Restore process details")
-            }
-        }
-        font.family: "Quattrocento Sans Bold"
-        font.pointSize: 16
-    }
+    Layout.fillWidth:true
+    Layout.fillHeight:true
 
-    RowLayout{
+    ColumnLayout{
         id:terminalLayout
-        anchors.left:parent.left
-        width:parent.width-10
-        height:parent.height-25
-        
+        spacing: 25
+        anchors.fill:parent
+        anchors.bottomMargin:10
+
+        Text{ 
+            text:{
+                if (mainStackBridge.processLaunched=="Unlock"){
+                    i18nd("dpkg-unlocker","Unlock process details")
+                }else{
+                    i18nd("dpkg-unlocker","Restore process details")
+                }
+            }
+            font.pointSize: 16
+        }
+
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.topMargin:40
+            
             QMLTermWidget {
                 id: terminal
                 anchors.fill: parent
@@ -40,7 +42,7 @@ Rectangle{
                 }
                 Component.onCompleted: {
                     mainsession.startShellProgram();
-                    mainsession.sendText('setterm -cursor off;stty -echo;PS1="";clear\n');
+                    mainsession.sendText('setterm -cursor off;stty -echo;PS1="";history -c;clear;\n');
                 }
 
             }
@@ -60,6 +62,7 @@ Rectangle{
     }
     
     function runCommand(command){
+        mainsession.sendText('\n')
         mainsession.sendText(command)
 
     } 

@@ -98,21 +98,27 @@ RowLayout{
             Layout.bottomMargin:15
             Layout.fillWidth:true
 
+            Item{
+                Layout.fillWidth:true
+            }
+
             ColumnLayout{
                 id:feedbackColumn
                 spacing:5
+                Layout.alignment:Qt.AlignHCenter
+
                 Text{
                     id:feedBackText
                     text:getFeedBackText(mainStackBridge.feedBackCode)
                     visible:mainStackBridge.showProgressBar
                     font.pointSize: 10
+                    horizontalAlignment:Text.AlignHCenter
                     Layout.alignment:Qt.AlignHCenter
-                    Layout.bottomMargin:7
                 }
                 Item{
                     id:feedBackBar
                     visible:mainStackBridge.showProgressBar
-                    implicitWidth:100
+                    implicitWidth:200
                     implicitHeight:5
                     Layout.alignment:Qt.AlignHCenter
 
@@ -143,7 +149,11 @@ RowLayout{
                     }
                 }
             }
-    
+
+            Item{
+                Layout.fillWidth:true
+            }
+       
             PC.Button {
                 id:unlockBtn
                 visible:true
@@ -239,27 +249,30 @@ RowLayout{
 
         Connections{
             target:unlockDialog
-            function dialogApplyClicked(){
-                console.log("DENTRO")
+            function onDialogApplyClicked(){
+                console.log(optionsLayout.currentIndex)
+                if (optionsLayout.currentIndex==3){
+                    protectionStackBridge.changeProteccionStatus()
+                }
+            }
+
+            function onDiscardDialogClicked(){
                 switch(optionsLayout.currentIndex){
                     case 0:
                         protectionOption.enabled=false
                         applyChanges()
                         serviceStackBridge.launchUnlockProcess()
                         break;
-                    case 1:
+                   case 1:
                         protectionOption.enabled=false
                         applyChanges()
                         restoreStackBridge.launchRestoreProcess()
                         break;
                     case 3:
-                        protectionStackBridge.changeProteccionStatus()
-                        break;
-                }
-            }
+                         protectionStackBridge.discardChangeProtectionStatus()
 
-            function onDiscardDialogClicked(){
-                protectionStackBridge.discardChangeProtectionStatus()
+                }
+               
             }
 
             function onCancelDialogClicked(){
@@ -283,6 +296,7 @@ RowLayout{
         repeat:true
         onTriggered:{
             if (mainStackBridge.endProcess){
+                protectionOption.enabled=true
                 timer.stop()
             }else{
                 if (mainStackBridge.endCurrentCommand){
@@ -300,30 +314,27 @@ RowLayout{
  
     function getFeedBackText(code){
 
-        var msg="";
         switch (code){
             case 1:
-                msg=i18nd("dpkg-unlocker","Removing Lliurex-Up lock file...");
-                break;
+               return i18nd("dpkg-unlocker","Removing Lliurex-Up lock file...")
+               break
             case 2:
-                msg=i18nd("dpkg-unlocker","Removing Dpkg lock file...");
-                break;
+                return i18nd("dpkg-unlocker","Removing Dpkg lock file...")
+                break
             case 3:
-                msg=i18nd("dpkg-unlocker","Removing Apt lock file...");
-                break;
+                return i18nd("dpkg-unlocker","Removing Apt lock file...")
+                break
              case 4:
-                msg=i18nd("dpkg-unlocker","Fixing the system...");
-                break;
+                return i18nd("dpkg-unlocker","Fixing the system...")
+                break
             case 9:
-                msg=i18nd("dpkg-unlocker","Restoring the services...");
-                break;
+                return i18nd("dpkg-unlocker","Restoring the services...")
+                break
             default:
-                break;
+                return ""
         }
-        return msg;
 
     }
-
     
 }
 

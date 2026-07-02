@@ -1,40 +1,36 @@
-import org.kde.plasma.core as PlasmaCore
-import org.kde.kirigami as Kirigami
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.plasma.components as PC
+import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
 
 
 Rectangle{
     color:"transparent"
-    Text{ 
-        text:i18nd("dpkg-unlocker","System metapackage protection")
-        font.family: "Quattrocento Sans Bold"
-        font.pointSize: 16
-    }
 
-    GridLayout{
-        id:generalLayout
-        rows:2
-        flow: GridLayout.TopToBottom
-        rowSpacing:10
-        anchors.left:parent.left
-        width:parent.width-10
-        enabled:true
+    ColumnLayout{
+        id: mainContent
+        anchors.fill:parent
+        anchors.rightMargin:5
+        anchors.bottomMargin:10
+        spacing:10
+
+        Text{ 
+            text:i18nd("dpkg-unlocker","System metapackage protection")
+            font.pointSize: 16
+        }
+
         Kirigami.InlineMessage {
             id: messageLabel
             visible:protectionStackBridge.showProtectionStatusMessage.show
             text:getMessageText(protectionStackBridge.showProtectionStatusMessage.msgCode)
             type:getMessageType(protectionStackBridge.showProtectionStatusMessage.type)
-            Layout.minimumWidth:555
             Layout.fillWidth:true
-            Layout.topMargin: 40
         }
 
         RowLayout{
             id: optionsGrid
-            Layout.topMargin: messageLabel.visible?0:50
 
             PC.CheckBox {
                 id:disableProtectionCb
@@ -49,8 +45,11 @@ Rectangle{
                 }
 
                 Layout.alignment:Qt.AlignLeft
-                Layout.bottomMargin:15
             }
+        }
+
+        Item{
+            Layout.fillHeight:true
         }
     }
 
