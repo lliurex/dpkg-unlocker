@@ -250,7 +250,6 @@ RowLayout{
         Connections{
             target:unlockDialog
             function onDialogApplyClicked(){
-                console.log(optionsLayout.currentIndex)
                 if (optionsLayout.currentIndex==3){
                     protectionStackBridge.changeProteccionStatus()
                 }

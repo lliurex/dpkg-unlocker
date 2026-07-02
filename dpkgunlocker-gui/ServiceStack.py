@@ -69,6 +69,7 @@ class Bridge(QObject):
 		self._isThereALock=False
 		self._areLiveProcess=False
 		self.runningUnlockCommand=False
+		self.gatherInfoT=None
 
 	#def __init__
 
@@ -173,10 +174,12 @@ class Bridge(QObject):
 
 	def _gatherInfoThread(self):
 		
+		if self.gatherInfoT is not None and self.gatherInfoT.isRunning():
+			return
+
 		self.gatherInfoT=GatherInfo(self.unlockerManager)
 		self.gatherInfoT.start()
 		self.gatherInfoT.infoGathered.connect(self._updateServicesInfo)
-		self.gatherInfoT.finished.connect(self.gatherInfoT.deleteLater)
 	
 	#def _gatherInfoThread
 
@@ -212,6 +215,17 @@ class Bridge(QObject):
 		self.core.mainStack.isWorked=False
 
 	#def _updateServicesModel
+
+	def stopServices(self):
+
+		if hasattr(self,'statusServicesRunningTimer'):
+			self.statusServicesRunningTimer.stop()
+
+		if self.gatherInfoT is not None and self.gatherInfoT.isRunning():
+			self.gatherInfoT.requestInterruption()
+			self.gatherInfoT.wait()
+
+	#def stopServices
 
 	@Slot()
 	def launchUnlockProcess(self):

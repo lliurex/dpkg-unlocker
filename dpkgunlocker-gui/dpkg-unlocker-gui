@@ -65,6 +65,7 @@ if not engine.rootObjects():
 	sys.exit(-1)
 
 engine.quit.connect(app.quit)
+app.aboutToQuit.connect(serviceStackBridge.stopServices)
 ret=app.exec()
 del engine
 del app

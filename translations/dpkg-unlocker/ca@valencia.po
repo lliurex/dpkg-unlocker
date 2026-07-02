@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-27 11:30+0100\n"
-"PO-Revision-Date: 2025-11-27 11:30+0100\n"
+"POT-Creation-Date: 2026-07-02 12:05+0200\n"
+"PO-Revision-Date: 2026-07-02 12:05+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: LliureX\n"
 "Language: ca\n"
@@ -19,61 +19,62 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: dpkgunlocker-gui/dpkg-unlocker-gui:17
+#: dpkgunlocker-gui/dpkg-unlocker-gui:14
 msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
 msgstr ""
 "Dpkg-Unlocker està en execució. Espereu un moment i torneu-ho a provar."
 
-#: dpkgunlocker-gui/dpkg-unlocker-gui:31
+#: dpkgunlocker-gui/dpkg-unlocker-gui:24
 msgid "You need administration privileges to run this application."
 msgstr ""
 "Necessiteu privilegis d'administració per a executar aquesta aplicació."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:27
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:22
 msgid "Services"
 msgstr "Serveis"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:38
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:29
 msgid "Restore services"
 msgstr "Restaura serveis"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:59
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:37
 msgid "Details process"
 msgstr "Details del procés"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:71
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:45
 msgid "Metapackage protection"
 msgstr "Protecció del metapaquet"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:84
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:54
 msgid "Help"
 msgstr "Ajuda"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:158
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:168
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:174
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:166
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:176
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:182
 msgid "Unlock"
 msgstr "Desbloqueja"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:161
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:170
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:169
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:178
 msgid "Restore"
 msgstr "Restaura"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:164
-#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:55
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:172
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:76
 msgid "Apply"
 msgstr "Aplica"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:221
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
 msgid "Do you want to run the unlock process?"
 msgstr "Voleu executar el procés de desbloqueig?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:224
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:231
 msgid "Do you want to run the services restore process?"
 msgstr "Voleu executar el procés de restauració dels serveis?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:235
 msgid ""
 "Do you want to disable system metapackage protection?\n"
 "Disabling this protection can cause certain applications to be uninstalled\n"
@@ -84,131 +85,135 @@ msgstr ""
 "siguen\n"
 "desinstal·lades de manera automàtica i causar inconsistències en el sistema"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:230
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:237
 msgid "Do you want to enable system metapackage protection?"
 msgstr "Voleu desactivar la protecció del metapaquet del sistema?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:316
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
+msgid "Discard"
+msgstr "Descarta"
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:318
 msgid "Removing Lliurex-Up lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Lliurex-Up..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:319
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:321
 msgid "Removing Dpkg lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig de Dkpg..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:322
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:324
 msgid "Removing Apt lock file..."
 msgstr "S'està eliminant el fitxer de bloqueig d'Apt..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:325
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:327
 msgid "Fixing the system..."
 msgstr "S'està estabilitzant el sistema..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:328
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:330
 msgid "Restoring the services..."
 msgstr "S'està restaurant el serveis..."
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:11
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:20
 msgid "Services Information"
 msgstr "Informació dels serveis"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:53
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:44
 msgid "All processes seem correct. Nothing to do"
 msgstr "Tots els processos semblen correctes. No hi ha res a fer"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:46
 msgid "Unlocking process finished successfully"
 msgstr "El procés de desbloqueig ha finalitzat correctament"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:59
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:48
 msgid "Some process are running. Wait a moment"
 msgstr "Algun procés està en execució. Espereu un moment"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:50
 msgid "Detected some blocked process"
 msgstr "Detectat algun procés bloquejat"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:52
 msgid "Error fixing the system"
 msgstr "S'ha produït un error en estabilitzar el sistema"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:54
 msgid "Error removing Apt lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig d'Apt"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:56
 msgid "Error removing Dpg lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Dkpg"
 
-#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ServicesPanel.qml:58
 msgid "Error removing Lliurex-Up lock file"
 msgstr "S'ha produït un error en eliminar el fitxer de bloqueig de Lliurex-Up"
 
-#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:12
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:21
 msgid "Unlock process details"
 msgstr "Details del procés de desbloqueig"
 
-#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:14
+#: dpkgunlocker-gui/rsrc/KonsolePanel.qml:23
 msgid "Restore process details"
 msgstr "Details del procés de restauració"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:12
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:20
 msgid "System metapackage protection"
 msgstr "Protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:41
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:37
 msgid "Enable system metapackage protection"
 msgstr "Activa la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:60
 msgid "System metapackage protection is enabled"
 msgstr "La protecció del metapaquet del sistema està activada"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:65
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:62
 msgid "System metapackage protection is disable"
 msgstr "La protecció del metapaquet del sistema està desactivada"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:64
 msgid "System metapackage protection change successfully"
 msgstr ""
 "El canvi en la protecció del metapaquet del sistema ha finalitzat "
 "correctament"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:71
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:66
 msgid "Error activating system metapackage protection"
 msgstr ""
 "S'ha produït un error en activar la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:74
+#: dpkgunlocker-gui/rsrc/ProtectionPanel.qml:68
 msgid "Error disabling system metapackage protection"
 msgstr ""
 "S'ha produït un error en desactivar la protecció del metapaquet del sistema"
 
-#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:80
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:65
 msgid "Unlocked"
 msgstr "Desbloquejat"
 
-#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:83
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:67
 msgid "Locked: Currently executing"
 msgstr "Bloquejat: ara mateix està en execució"
 
-#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:86
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:69
 msgid "Locked: Not process found"
 msgstr "Bloquejat: no s'ha trobat cap procés"
 
-#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:89
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:71
 msgid "Locked: Apt currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt"
 
-#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:92
+#: dpkgunlocker-gui/rsrc/ListDelegateServiceItem.qml:73
 msgid "Locked: Apt daemon currently executing"
 msgstr "Bloquejat: ara mateix està en execució Apt Daemon"
 
-#: dpkgunlocker-gui/rsrc/RestorePanel.qml:10
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:18
 msgid "Restore installation services"
 msgstr "Restauració dels serveis d'instalació"
 
-#: dpkgunlocker-gui/rsrc/RestorePanel.qml:40
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:33
 msgid ""
 "This option attemps to restore the services involves in the package "
 "installation, if the installation has been interrupted before the package "
@@ -220,22 +225,18 @@ msgstr ""
 "dels mateixos haja finalitzat.\n"
 "Useu aquesta opció amb precaució."
 
-#: dpkgunlocker-gui/rsrc/RestorePanel.qml:59
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:50
 msgid "Restoration of services has finished successfully"
 msgstr "El procés de restauració dels serveis ha finalitzat correctament"
 
-#: dpkgunlocker-gui/rsrc/RestorePanel.qml:62
+#: dpkgunlocker-gui/rsrc/RestorePanel.qml:52
 msgid "Restoration of services has finished with errors"
 msgstr "El procés de restauració dels serveis ha finalitzat amb errors"
 
-#: dpkgunlocker-gui/rsrc/Loading.qml:37
-msgid "Loading. Wait a moment..."
+#: dpkgunlocker-gui/rsrc/Loading.qml:46
+msgid "Loading.Wait a moment..."
 msgstr "S'està carregant. Espereu un moment..."
 
-#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:80
-msgid "Discard"
-msgstr "Descarta"
-
-#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:106
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:103
 msgid "Cancel"
 msgstr "Cancel·la"

@@ -73,7 +73,7 @@ Popup {
                 id:dialogApplyBtn
                 display:AbstractButton.TextBesideIcon
                 icon.name:"dialog-ok"
-                text: i18nd("dpkg-unlocker","Accept")
+                text: i18nd("dpkg-unlocker","Apply")
                 focus:true
                 font.pointSize: 10
                 Keys.onReturnPressed: dialogApplyBtn.clicked()
