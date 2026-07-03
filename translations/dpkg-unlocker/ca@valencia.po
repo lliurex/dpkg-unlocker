@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-02 12:05+0200\n"
-"PO-Revision-Date: 2026-07-02 12:05+0200\n"
+"POT-Creation-Date: 2026-07-03 09:44+0200\n"
+"PO-Revision-Date: 2026-07-03 09:45+0200\n"
 "Last-Translator: Pilar Embid Giner <embid_mar@gva.es>\n"
 "Language-Team: LliureX\n"
 "Language: ca\n"
@@ -19,12 +19,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: dpkgunlocker-gui/dpkg-unlocker-gui:14
+#: dpkgunlocker-gui/dpkg-unlocker-gui:24
 msgid "Dpkg-Unlocker is now running. Wait a moment and try again."
 msgstr ""
 "Dpkg-Unlocker està en execució. Espereu un moment i torneu-ho a provar."
 
-#: dpkgunlocker-gui/dpkg-unlocker-gui:24
+#: dpkgunlocker-gui/dpkg-unlocker-gui:41
 msgid "You need administration privileges to run this application."
 msgstr ""
 "Necessiteu privilegis d'administració per a executar aquesta aplicació."
@@ -234,7 +234,7 @@ msgid "Restoration of services has finished with errors"
 msgstr "El procés de restauració dels serveis ha finalitzat amb errors"
 
 #: dpkgunlocker-gui/rsrc/Loading.qml:46
-msgid "Loading.Wait a moment..."
+msgid "Loading. Wait a moment..."
 msgstr "S'està carregant. Espereu un moment..."
 
 #: dpkgunlocker-gui/rsrc/UnlockDialog.qml:103

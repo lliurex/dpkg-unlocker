@@ -1,15 +1,29 @@
 #! /usr/bin/python3
 import sys
 import os
+import psutil
 import argparse
 
 from dpkgunlockercli import DpkgUnlockerCli
 
 def isDpkgUnlockerRunning():
 
-	if os.path.exists('/var/run/dpkgUnlocker.lock'):
-		print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
-		sys.exit(1)
+	lockToken="/var/run/dpkgUnlocker.lock"
+	if os.path.exists(lockToken):
+		try:
+			with open(lockToken,'r') as fd:
+				unlockerPid=fd.readline().strip()
+
+			if unlockerPid:
+				if psutil.pid_exists(int(unlockerPid)):
+					print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
+					sys.exit(1)
+
+			os.remove(lockToken)	
+
+		except (ValueError,OSError):
+			print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
+			sys.exit(1)		
 
 #def isDpkgUnlockedRunning
 

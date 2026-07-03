@@ -43,7 +43,7 @@ Rectangle{
 
             Text{
                 id:loadtext
-                text:i18nd("dpkg-unlocker","Loading.Wait a moment...")
+                text:i18nd("dpkg-unlocker","Loading. Wait a moment...")
                 font.pointSize: 10
                 Layout.alignment:Qt.AlignHCenter
             }
