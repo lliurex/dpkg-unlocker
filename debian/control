@@ -21,7 +21,7 @@ Description:Dpkg-Unlocker. Core Library package
 
 Package: dpkgunlocker-cli
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-dpkgunlocker (= ${binary:Version}), python3-clint
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}, python3-dpkgunlocker (= ${binary:Version})
 Description:Dpkg-Unlocker. CLI tool
   Provides a version for terminal (dpkg-unlocked-cli) of dpkg-unlocker
 
