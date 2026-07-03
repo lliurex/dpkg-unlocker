@@ -2,11 +2,9 @@
 
 from PySide6.QtCore import QObject,Signal,Slot,QThread,Property,QTimer,Qt,QModelIndex
 import os
-import threading
 import signal
-import copy
 import time
-import pwd
+
 from . import ServicesModel
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 

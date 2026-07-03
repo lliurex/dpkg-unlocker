@@ -196,7 +196,7 @@ RowLayout{
         dialogVisible:mainStackBridge.showDialog
         btnAcceptVisible:optionsLayout.currentIndex!==3?false:true
         btnDiscardText:optionsLayout.currentIndex!==3?i18nd("dpkg-unlocker","Apply"):i18nd("dpkg-unlocker","Discard")
-        btnDiscardIcon:optionsLayout.currentIndex!==3?"dialog-ok":"dialog-discard"
+        btnDiscardIcon:optionsLayout.currentIndex!==3?"dialog-ok":"delete"
 
         Connections{
             target:unlockDialog
