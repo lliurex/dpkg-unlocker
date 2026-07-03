@@ -1,3 +1,10 @@
+dpkg-unlocker (0.14.10) jammy; urgency=medium
+
+  * Refactorized code
+  * Migrated cli from python3-clint to argparser
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 03 Jul 2026 12:49:34 +0200
+
 dpkg-unlocker (0.14.9) jammy; urgency=medium
 
   * Fixed clint imports in cli
