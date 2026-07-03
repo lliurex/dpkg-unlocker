@@ -1,97 +1,78 @@
-import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.kirigami 2.16 as Kirigami
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
+import org.kde.plasma.core 2.1 as PlasmaCore
+import org.kde.kirigami 2.16 as Kirigami
 
 
 Rectangle{
     color:"transparent"
-    Text{ 
-        text:i18nd("dpkg-unlocker","Services Information")
-        font.family: "Quattrocento Sans Bold"
-        font.pointSize: 16
-    }
 
-    GridLayout{
-        id:generalLayout
-        rows:2
-        flow: GridLayout.TopToBottom
-        rowSpacing:10
-        anchors.left:parent.left
-        width:parent.width-10
-        height:parent.height-25
-        enabled:true
-        Kirigami.InlineMessage {
-            id: messageLabel
-            visible:serviceStackBridge.showServiceStatusMesage[0]
-            text:getMessageText(serviceStackBridge.showServiceStatusMesage[1])
-            type:getMessageType(serviceStackBridge.showServiceStatusMesage[2])
-            Layout.minimumWidth:555
-            Layout.fillWidth:true
-            Layout.topMargin: 40
+    ColumnLayout{
+        id: mainContent
+        anchors.fill:parent
+        anchors.rightMargin:5
+        anchors.bottomMargin:10
+        spacing:10
+
+
+        Text{ 
+            text:i18nd("dpkg-unlocker","Services Information")
+            font.pointSize: 16
         }
 
-        RowLayout{
-           id: optionsGrid
-           Layout.topMargin: messageLabel.visible?0:50
+        Kirigami.InlineMessage {
+            id: messageLabel
+            visible:serviceStackBridge.showServiceStatusMesage.show
+            text:getMessageText(serviceStackBridge.showServiceStatusMesage.msgCode)
+            type:getMessageType(serviceStackBridge.showServiceStatusMesage.type)
+            Layout.fillWidth:true
+        }
 
-           ServicesList{
-                id:servicesList
-                Layout.fillHeight:true
-                Layout.fillWidth:true
-                servicesModel:serviceStackBridge.servicesModel
-            }
+        ServicesList{
+            id:servicesList
+            Layout.fillHeight:true
+            Layout.fillWidth:true
+            servicesModel:serviceStackBridge.servicesModel
         }
     }
 
     function getMessageText(code){
 
-        var msg="";
         switch (code){
             case 0:
-                msg=i18nd("dpkg-unlocker","All processes seem correct. Nothing to do");
-                break;
+                return i18nd("dpkg-unlocker","All processes seem correct. Nothing to do")
             case 5:
-                msg=i18nd("dpkg-unlocker","Unlocking process finished successfully");
-                break;
+                return i18nd("dpkg-unlocker","Unlocking process finished successfully")
             case 11:
-                msg=i18nd("dpkg-unlocker","Some process are running. Wait a moment");
-                break;
+                return i18nd("dpkg-unlocker","Some process are running. Wait a moment")
              case 12:
-                msg=i18nd("dpkg-unlocker","Detected some blocked process");
-                break;
+                return i18nd("dpkg-unlocker","Detected some blocked process")
             case -6:
-                msg=i18nd("dpkg-unlocker","Error fixing the system");
-                break;
+                return i18nd("dpkg-unlocker","Error fixing the system")
             case -7:
-                msg=i18nd("dpkg-unlocker","Error removing Apt lock file");
-                break;
+                return i18nd("dpkg-unlocker","Error removing Apt lock file")
             case -8:
-                msg=i18nd("dpkg-unlocker","Error removing Dpg lock file");
-                break;
+                return i18nd("dpkg-unlocker","Error removing Dpg lock file")
             case -9:
-                msg=i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file");
-                break;
-           
+                return i18nd("dpkg-unlocker","Error removing Lliurex-Up lock file")
             default:
-                break;
+                return ""
         }
-        return msg;
-
     }
 
     function getMessageType(type){
 
         switch (type){
-            case "Info":
-                return Kirigami.MessageType.Information
-            case "Success":
+            case 0:
                 return Kirigami.MessageType.Positive
-            case "Error":
+            case 1:
                 return Kirigami.MessageType.Error
-            case "Warning":
+            case 2:
                 return Kirigami.MessageType.Warning
+            case 3:
+            default:
+                return Kirigami.MessageType.Information
         }
 
     } 

@@ -1,99 +1,81 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import QtQml.Models 2.8
 import org.kde.plasma.components 2.0 as Components
+import org.kde.kirigami 2.16 as Kirigami
 
-
-Components.ListItem{
-
+ItemDelegate {
     id: listServiceItem
+
     property string serviceId
     property int statusCode
+    hoverEnabled: false
+    height: 85
 
-    enabled:true
+    background: Rectangle {
+        color:"transparent"
+    }
 
-    Item{
-        id: menuItem
-        height:visible?70:0
-        width:parent.width-serviceLockedIcon.width-serviceErrorIcon.width
+    contentItem: RowLayout {
+        id: mainRowLayout
+        spacing: 10
+        
         Image {
             id:serviceLockedIcon
-            source:{
-                if (statusCode==0){
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/padlock_open.svg"
-                }else{
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/padlock_closed.svg"
-                }
-
-            }
-            anchors.left:parent.left
-            anchors.verticalCenter:parent.verticalCenter
+            source: statusCode===0?"padlock_open":"padlock_closed"
+            sourceSize.width: 64
+            sourceSize.height: 64
+            Layout.alignment: Qt.AlignVCenter
+            cache: false
+            mipmap: true
+            smooth: true
+            fillMode: Image.PreserveAspectFit
 
         }
 
         Column{
             id: serviceText
-            width:parent.width-serviceErrorIcon.width
-            anchors.left:serviceLockedIcon.right
-            anchors.leftMargin:5
-            anchors.verticalCenter:parent.verticalCenter
+            Layout.fillWidth:true
+            Layout.alignment: Qt.AlignVCenter
             spacing:5
 
             Text{
                 id:serviceName
                 text:serviceId
-                font.family: "Quattrocento Sans Bold"
                 font.pointSize: 11
             }
             Text{
                 id:serviceDescription
                 text:getText(statusCode)
-                font.family: "Quattrocento Sans Bold"
                 font.pointSize: 10
             }
         }
-        Image {
+        Kirigami.Icon {
             id:serviceErrorIcon
-            source:{
-                if (statusCode==2){
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/error.svg"
-                }else{
-                    "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/ok.svg"
-                }
-
-            }
-            anchors.left:serviceText.right
-            anchors.rightMargin:5
-            anchors.verticalCenter:parent.verticalCenter
-
+            source:statusCode===2?"data-error":"data-success"
+            Layout.preferredWidth: 32
+            Layout.preferredHeight: 32
+            Layout.alignment: Qt.AlignVCenter
         }
-
-
     }
 
     function getText(statusCode){
 
-        var msg=""
         switch(statusCode){
             case 0:
-                msg=i18nd("dpkg-unlocker","Unlocked")
-                break;
+               return i18nd("dpkg-unlocker","Unlocked")
             case 1:
-                msg=i18nd("dpkg-unlocker","Locked: Currently executing")
-                break;
+               return i18nd("dpkg-unlocker","Locked: Currently executing")
             case 2:
-                msg=i18nd("dpkg-unlocker","Locked: Not process found")
-                break;
+               return i18nd("dpkg-unlocker","Locked: Not process found")
             case 3:
-                msg=i18nd("dpkg-unlocker","Locked: Apt currently executing")
-                break;
+               return i18nd("dpkg-unlocker","Locked: Apt currently executing")
             case 4:
-                msg=i18nd("dpkg-unlocker","Locked: Apt daemon currently executing")
-                break;
+               return i18nd("dpkg-unlocker","Locked: Apt daemon currently executing")
             default:
-                break;
+               return " "
         }
-        return msg
     }
 
 }

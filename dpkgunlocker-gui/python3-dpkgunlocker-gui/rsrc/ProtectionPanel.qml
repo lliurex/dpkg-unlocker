@@ -1,40 +1,36 @@
-import org.kde.plasma.core 2.1 as PlasmaCore
-import org.kde.kirigami 2.16 as Kirigami
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.core 2.1 as PlasmaCore
+import org.kde.kirigami 2.16 as Kirigami
 
 
 Rectangle{
     color:"transparent"
-    Text{ 
-        text:i18nd("dpkg-unlocker","System metapackage protection")
-        font.family: "Quattrocento Sans Bold"
-        font.pointSize: 16
-    }
 
-    GridLayout{
-        id:generalLayout
-        rows:2
-        flow: GridLayout.TopToBottom
-        rowSpacing:10
-        anchors.left:parent.left
-        width:parent.width-10
-        enabled:true
+    ColumnLayout{
+        id: mainContent
+        anchors.fill:parent
+        anchors.rightMargin:5
+        anchors.bottomMargin:10
+        spacing:10
+
+        Text{ 
+            text:i18nd("dpkg-unlocker","System metapackage protection")
+            font.pointSize: 16
+        }
+
         Kirigami.InlineMessage {
             id: messageLabel
-            visible:protectionStackBridge.showProtectionStatusMessage[0]
-            text:getMessageText(protectionStackBridge.showProtectionStatusMessage[1])
-            type:getMessageType(protectionStackBridge.showProtectionStatusMessage[2])
-            Layout.minimumWidth:555
+            visible:protectionStackBridge.showProtectionStatusMessage.show
+            text:getMessageText(protectionStackBridge.showProtectionStatusMessage.msgCode)
+            type:getMessageType(protectionStackBridge.showProtectionStatusMessage.type)
             Layout.fillWidth:true
-            Layout.topMargin: 40
         }
 
         RowLayout{
             id: optionsGrid
-            Layout.topMargin: messageLabel.visible?0:50
 
             PC3.CheckBox {
                 id:disableProtectionCb
@@ -49,48 +45,45 @@ Rectangle{
                 }
 
                 Layout.alignment:Qt.AlignLeft
-                Layout.bottomMargin:15
             }
+        }
+
+        Item{
+            Layout.fillHeight:true
         }
     }
 
     function getMessageText(code){
 
-        var msg=""
         switch (code){
             case 6:
-                msg=i18nd("dpkg-unlocker","System metapackage protection is enabled");
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection is enabled")
             case 7:
-                msg=i18nd("dpkg-unlocker","System metapackage protection is disable");
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection is disable")
             case 8:
-                msg=i18nd("dpkg-unlocker","System metapackage protection change successfully")
-                break;
+                return i18nd("dpkg-unlocker","System metapackage protection change successfully")
             case -10:
-                msg=i18nd("dpkg-unlocker","Error activating system metapackage protection");
-                break;
+                return i18nd("dpkg-unlocker","Error activating system metapackage protection")
             case -11:
-                msg=i18nd("dpkg-unlocker","Error disabling system metapackage protection");
-                break;
+                return i18nd("dpkg-unlocker","Error disabling system metapackage protection")
             default:
-                break;
+                return ""
         }
-        return msg;
 
     }
 
     function getMessageType(type){
 
         switch (type){
-            case "Info":
-                return Kirigami.MessageType.Information
-            case "Success":
+            case 0:
                 return Kirigami.MessageType.Positive
-            case "Error":
+            case 1:
                 return Kirigami.MessageType.Error
-            case "Warning":
+            case 2:
                 return Kirigami.MessageType.Warning
+            case 3:
+            default:
+                return Kirigami.MessageType.Information
         }
 
     } 

@@ -56,7 +56,7 @@ class ServicesModel(QtCore.QAbstractListModel):
 			row = index.row()
 			if param in ["statusCode"]:
 				self._entries[row][param]=value
-				self.dataChanged.emit(index,index)
+				self.dataChanged.emit(index,index,[ServicesModel.StatusCodeRole])
 				return True
 			else:
 				return False

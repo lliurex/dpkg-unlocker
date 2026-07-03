@@ -3,13 +3,23 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
 import org.kde.plasma.components 3.0 as PC3
+import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Dialog {
     id: customDialog
+
     property alias dialogTitle:customDialog.title
     property alias dialogVisible:customDialog.visible
-    property alias dialogMsg:dialogText.text
+    property alias dialogMsg: dialogText.text
+
+    property alias btnAcceptVisible:dialogApplyBtn.visible
+    property alias btnAcceptText:dialogApplyBtn.text
+
+    property alias btnDiscardText:dialogDiscardBtn.text
+    property alias btnDiscardIcon:dialogDiscardBtn.icon.name
+
+
     signal dialogApplyClicked
     signal discardDialogClicked
     signal cancelDialogClicked
@@ -32,25 +42,35 @@ Dialog {
     contentItem: Rectangle {
         color: "#ebeced"
         implicitWidth: 550
-        implicitHeight: 105
-        anchors.topMargin:5
+        implicitHeight: 150
+        anchors.topMargin:20
         anchors.leftMargin:5
+        anchors.rightMargin:10
 
-        Image{
-            id:dialogIcon
-            source:"/usr/share/icons/breeze/status/64/dialog-warning.svg"
 
-        }
-        
-        Text {
-            id:dialogText
-            text:dialogMsg
-            font.family: "Quattrocento Sans Bold"
-            font.pointSize: 10
-            anchors.left:dialogIcon.right
-            anchors.verticalCenter:dialogIcon.verticalCenter
-            anchors.leftMargin:10
-        
+        RowLayout {
+            id: contentLayout
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: 0
+            spacing: 15
+
+            PlasmaCore.IconItem {
+                id:dialogIcon
+                source:"dialog-warning"
+                width: 64
+                height: 64
+
+            }
+            
+            Text {
+                id:dialogText
+                text:dialogMsg
+                font.pointSize: 10
+                Layout.preferredWidth:parent.widht-30
+                wrapMode: Text.WordWrap        
+            }
         }
       
         PC3.Button {
@@ -59,16 +79,9 @@ Dialog {
             icon.name:"dialog-ok"
             text: i18nd("dpkg-unlocker","Apply")
             focus:true
-            font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
             anchors.bottom:parent.bottom
-            anchors.right:{
-                if (protectionStackBridge.showPendingChangesDialog){
-                    dialogDiscardBtn.left
-                }else{
-                    dialogCancelBtn.left
-                }
-            }
+            anchors.right:dialogDiscardBtn.left
             anchors.rightMargin:10
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogApplyBtn.clicked()
@@ -85,17 +98,9 @@ Dialog {
             icon.name:"delete"
             text: i18nd("dpkg-unlocker","Discard")
             focus:true
-            font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
             anchors.bottom:parent.bottom
-            anchors.right:{
-                if (protectionStackBridge.showPendingChangesDialog){
-                    dialogCancelBtn.left
-                }else{
-                    dialogApplyBtn.left
-                }
-            }
-            visible:protectionStackBridge.showPendingChangesDialog
+            anchors.right:dialogCancelBtn.left
             anchors.rightMargin:10
             anchors.bottomMargin:5
             Keys.onReturnPressed: dialogDiscardBtn.clicked()
@@ -112,7 +117,6 @@ Dialog {
             icon.name:"dialog-cancel"
             text: i18nd("dpkg-unlocker","Cancel")
             focus:true
-            font.family: "Quattrocento Sans Bold"
             font.pointSize: 10
             anchors.bottom:parent.bottom
             anchors.right:parent.right
