@@ -5,40 +5,49 @@ import QtQuick.Layouts
 
 Rectangle{
     visible: true
+    color:"transparent"
 
-    GridLayout{
-        id: loadGrid
-        rows: 2
-        flow: GridLayout.TopToBottom
-        anchors.centerIn:parent
+    ColumnLayout{
+        id: loadRoot
+        anchors.centerIn: parent
+        width: parent.width * 0.9
+        spacing: 15
 
-        RowLayout{
-            Layout.fillWidth: true
+        ColumnLayout{
             Layout.alignment:Qt.AlignHCenter
+            spacing:10
 
-            Rectangle{
-                color:"transparent"
-                width:30
-                height:30
-                
-                AnimatedImage{
-                    source: "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/loading.gif"
-                    transform: Scale {xScale:0.45;yScale:0.45}
+           Image{
+                id:spinnerImage
+                source: "loading.png"
+                Layout.preferredWidth: 24
+                Layout.preferredHeight: 24
+                Layout.alignment: Qt.AlignHCenter
+                fillMode: Image.PreserveAspectFit
+                smooth:false
+                antialiasing:false
+
+                rotation:0
+            }
+            
+            Timer{
+                id:rotationTimer
+                running:(spinnerImage!==null && loadRoot!==null) && spinnerImage.visible && loadRoot.visible
+                repeat:true
+                interval:100
+
+                onTriggered:{
+                    spinnerImage.rotation=(spinnerImage.rotation+330)%360
                 }
             }
-        }
-
-        RowLayout{
-            Layout.fillWidth: true
-            Layout.alignment:Qt.AlignHCenter
 
             Text{
                 id:loadtext
-                text:i18nd("lliurex-access-control", "Loading. Wait a moment...")
-                font.family: "Quattrocento Sans Bold"
+                text:i18nd("dpkg-unlocker","Loading. Wait a moment...")
                 font.pointSize: 10
                 Layout.alignment:Qt.AlignHCenter
             }
         }
     }
+
 }

@@ -2,19 +2,20 @@
 
 from PySide6.QtCore import QObject,Signal,Slot,QThread,Property,QTimer,Qt,QModelIndex
 import os
-import threading
 import signal
-import copy
 import time
-import pwd
+
 from . import ServicesModel
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class GatherInfo(QThread):
 
-	def __init__(self,*args):
+	infoGathered=Signal()
 
-		QThread.__init__(self)
+	def __init__(self,manager):
+
+		super().__init__()
+		self.manager=manager
 	
 	#def __init__
 		
@@ -22,7 +23,8 @@ class GatherInfo(QThread):
 	def run(self,*args):
 		
 		time.sleep(1)
-		Bridge.unlockerManager.loadInfo()
+		self.manager.loadInfo()
+		self.infoGathered.emit()
 
 	#def run
 
@@ -38,44 +40,144 @@ class Bridge(QObject):
 	APT_UNLOCK_COMMAND_ERROR=-7
 	DPKG_UNLOCK_COMMAND_ERROR=-8
 	LLXUP_UNLOCK_COMMAND_ERROR=-9
+
+	WARNING_CODE=11
+	SUCCESS_CODE=0
+	ERROR_CODE=12
+
+	isThereALockChanged=Signal()
+	areLiveProcessChanged=Signal()
+	showServiceStatusMesageChanged=Signal()
+	runningUnlockCommandChanged=Signal()
+
+	PROCESSTOKENS=[
+		("removeLlxupLock", "tokenLlxupProcess"),
+		("removeDpkgLock", "tokenDpkgProcess"),
+		("removeAptLock", "tokenAptProcess"),
+		("fixingSystem","tokenFixingProcess")
+	]	
+
 		
 	def __init__(self):
 
-		QObject.__init__(self)
+		super().__init__()
 		self.core=Core.Core.get_core()
-		Bridge.unlockerManager=self.core.unlockerManager
+		self.unlockerManager=self.core.unlockerManager
 		self._servicesModel=ServicesModel.ServicesModel()
-		self._showServiceStatusMesage=[False,"","Success"]
+		self._showServiceStatusMesage={"show":False,"msgCode":"","type":""}
 		self._isThereALock=False
 		self._areLiveProcess=False
-		self.runningUnlockCommand=False
+		self._runningUnlockCommand=False
+		self.gatherInfoT=None
 
 	#def __init__
 
+	@Property(bool,notify=isThereALockChanged)
+	def isThereALock(self):
+
+		return self._isThereALock
+
+	#def isThereALock
+
+	@isThereALock.setter
+	def isThereALock(self,isThereALock):
+
+		if self._isThereALock!=isThereALock:
+			self._isThereALock=isThereALock
+			self.isThereALockChanged.emit()
+
+	#def isThereALock
+
+	@Property(bool,notify=areLiveProcessChanged)
+	def areLiveProcess(self):
+
+		return self._areLiveProcess
+
+	#def areLiveProcess
+
+	@areLiveProcess.setter
+	def areLiveProcess(self,areLiveProcess):
+
+		if self._areLiveProcess!=areLiveProcess:
+			self._areLiveProcess=areLiveProcess
+			self.areLiveProcessChanged.emit()
+
+	#def areLiveProcess
+	
+	@Property(dict,notify=showServiceStatusMesageChanged)
+	def showServiceStatusMesage(self):
+
+		return self._showServiceStatusMesage
+
+	#def showServiceStatusMesage
+
+	@showServiceStatusMesage.setter
+	def showServiceStatusMesage(self,showServiceStatusMesage):
+
+		if self._showServiceStatusMesage!=showServiceStatusMesage:
+			self._showServiceStatusMesage=showServiceStatusMesage
+			self.showServiceStatusMesageChanged.emit()
+
+	#def _setShowServiceStatusMesage
+
+	@Property(bool,notify=runningUnlockCommandChanged)
+	def runningUnlockCommand(self):
+
+		return self._runningUnlockCommand
+
+	#def runningUnlockCommand
+
+	@runningUnlockCommand.setter
+	def runningUnlockCommand(self,runningUnlockCommand):
+
+		if self._runningUnlockCommand!=runningUnlockCommand:
+			self._runningUnlockCommand=runningUnlockCommand
+			self.runningUnlockCommandChanged.emit()
+
+	#def runningUnlockCommand
+
+	@Property(QObject,constant=True)
+	def servicesModel(self):
+		
+		return self._servicesModel
+
+	#def servicesModel
+
 	def loadConfig(self):		
 
-		isThereALock=Bridge.unlockerManager.isThereALock
-		self.areLiveProcess=Bridge.unlockerManager.areLiveProcess
-
-		if isThereALock and not self.areLiveProcess:
-			self.isThereALock=True
-			self._updateServiceStatusMessage(12)
-		elif isThereALock and self.areLiveProcess:
-			self._updateServiceStatusMessage(11)
-		else:
-			self._updateServiceStatusMessage(0)
-		
+		self._checkLockInfo()
 		self._updateServicesModel()
 
 	#def loadConfig
 
 	def initWatcher(self):
 
-		self.statusServicesRunningTimer=QTimer(None)
+		self.statusServicesRunningTimer=QTimer(self)
 		self.statusServicesRunningTimer.timeout.connect(self._updateServicesStatus)
 		self.statusServicesRunningTimer.start(5000)
 
 	#def initWatcher
+
+	def _checkLockInfo(self):
+
+		self.isThereALock=self.unlockerManager.isThereALock
+		self.areLiveProcess=self.unlockerManager.areLiveProcess
+
+		if self.isThereALock:
+			if not self.areLiveProcess:
+				code=Bridge.ERROR_CODE
+				type=self.unlockerManager.KIRIGAMI_MSG_ERROR
+			else:
+				code=Bridge.WARNING_CODE
+				type=self.unlockerManager.KIRIGAMI_MSG_WARNING
+		else:
+			code=Bridge.SUCCESS_CODE
+			type=self.unlockerManager.KIRIGAMI_MSG_OK
+
+		self.showServiceStatusMesage={"show":True,"msgCode":code,"type":type}
+
+
+	#def _checkLockInfo
 
 	def _updateServicesStatus(self):
 
@@ -87,117 +189,58 @@ class Bridge(QObject):
 
 	def _gatherInfoThread(self):
 		
-		self.gatherInfo=GatherInfo()
-		self.gatherInfo.start()
-		self.gatherInfo.finished.connect(self._updateServicesInfo)
+		if self.gatherInfoT is not None and self.gatherInfoT.isRunning():
+			return
+
+		self.gatherInfoT=GatherInfo(self.unlockerManager)
+		self.gatherInfoT.start()
+		self.gatherInfoT.infoGathered.connect(self._updateServicesInfo)
 	
 	#def _gatherInfoThread
 
 	def _updateServicesInfo(self):
 
 		if not self.runningUnlockCommand:
-			isThereALock=Bridge.unlockerManager.isThereALock
-			self.areLiveProcess=Bridge.unlockerManager.areLiveProcess
-			if isThereALock and not self.areLiveProcess:
-				self.isThereALock=True
-				self._updateServiceStatusMessage(12)
-			elif isThereALock and self.areLiveProcess:
-				self.isThereALock=False
-				self._updateServiceStatusMessage(11)
-			else:
-				self.isThereALock=False
-				self._updateServiceStatusMessage(0)
-			
+			self._checkLockInfo()
+
 			self.core.protectionStack.updateProtectionInfo()
 
-			updatedInfo=Bridge.unlockerManager.servicesData
-			for i in range(len(updatedInfo)):
+			updatedInfo=self.unlockerManager.servicesData
+			for i,infoItem in enumerate(updatedInfo):
 				index=self._servicesModel.index(i)
-				self._servicesModel.setData(index,'statusCode',updatedInfo[i]["statusCode"])
+				self._servicesModel.setData(index,'statusCode',infoItem["statusCode"])
 
 			if not self.core.mainStack.endProcess:
 				if not self.core.restoreStack.runningRestoreCommand:
 					self.core.mainStack.endProcess=True
 					self.core.mainStack.endCurrentCommand=True
-					Bridge.unlockerManager.writeLogTerminal()
-					Bridge.unlockerManager.writeLog("Final Services Status: %s"%(str(updatedInfo)))
+					self.unlockerManager.writeLogTerminal()
+					self.unlockerManager.writeLog(f"Final Services Status: {updatedInfo}")
 
 		self.core.mainStack.isWorked=False
 
 	#def _updateServicesInfo
 
-	def _updateServiceStatusMessage(self,code):
-
-		infoCode=[11]
-		successCode=[0,5]
-		errorCode=[12]
-
-		if code in infoCode:
-			self.showServiceStatusMesage=[True,code,"Warning"]
-		elif code in successCode:
-			self.showServiceStatusMesage=[True,code,"Success"]
-		elif code in errorCode:
-			self.showServiceStatusMesage=[True,code,"Error"]
-
-	#def _updateServiceStatusMessage
-
-	def _getIsThereALock(self):
-
-		return self._isThereALock
-
-	#def _getIsThereALock
-
-	def _setIsThereALock(self,isThereALock):
-
-		if self._isThereALock!=isThereALock:
-			self._isThereALock=isThereALock
-			self.on_isThereALock.emit()
-
-	#def _setIsThereALock
-
-	def _getAreLiveProcess(self):
-
-		return self._areLiveProcess
-
-	#def _getAreLiveProcess
-
-	def _setAreLiveProcess(self,areLiveProcess):
-
-		if self._areLiveProcess!=areLiveProcess:
-			self._areLiveProcess=areLiveProcess
-			self.on_areLiveProcess.emit()
-
-	#def _setAreLiveProcess
-
-	def _getShowServiceStatusMesage(self):
-
-		return self._showServiceStatusMesage
-
-	#def _getShowServiceStatusMesage
-
-	def _setShowServiceStatusMesage(self,showServiceStatusMesage):
-
-		if self._showServiceStatusMesage!=showServiceStatusMesage:
-			self._showServiceStatusMesage=showServiceStatusMesage
-			self.on_showServiceStatusMesage.emit()
-
-	#def _setShowServiceStatusMesage
-
-	def _getServicesModel(self):
-		
-		return self._servicesModel
-
-	#def _getServicesModel
-
 	def _updateServicesModel(self):
 
 		ret=self._servicesModel.clear()
-		servicesEntries=Bridge.unlockerManager.servicesData
+		servicesEntries=self.unlockerManager.servicesData
 		for item in servicesEntries:
 			self._servicesModel.appendRow(item["serviceId"],item["statusCode"])
 		self.core.mainStack.isWorked=False
 
 	#def _updateServicesModel
+
+	def stopServices(self):
+
+		if hasattr(self,'statusServicesRunningTimer'):
+			self.statusServicesRunningTimer.stop()
+
+		if self.gatherInfoT is not None and self.gatherInfoT.isRunning():
+			self.gatherInfoT.requestInterruption()
+			self.gatherInfoT.wait()
+
+	#def stopServices
 
 	@Slot()
 	def launchUnlockProcess(self):
@@ -209,11 +252,12 @@ class Bridge(QObject):
 		self.statusServicesRunningTimer.stop()
 		self.core.mainStack.endProcess=False
 		self.core.mainStack.isWorked=True
-		self.showServiceStatusMesage=[False,"","Success"]
-		Bridge.unlockerManager.initUnlockerProcesses()
-		Bridge.unlockerManager.getUnlockerCommand()
-		Bridge.unlockerManager.writeLog("Services Status Error: %s"%(str(Bridge.unlockerManager.servicesData)))
-		self.unlockerProcessRunningTimer=QTimer(None)
+		self.showServiceStatusMesage={"show":False,"msgCode":"","type":""}
+		self.core.mainStack.showProgressBar=True
+		self.unlockerManager.initUnlockerProcesses()
+		self.unlockerManager.getUnlockerCommand()
+		self.unlockerManager.writeLog(f"Services Status Error: {self.unlockerManager.servicesData}")
+		self.unlockerProcessRunningTimer=QTimer(self)
 		self.unlockerProcessRunningTimer.timeout.connect(self._updateUnlockerProcessStatus)
 		self.unlockerProcessRunningTimer.start(100)
 
@@ -221,137 +265,126 @@ class Bridge(QObject):
 
 	def _updateUnlockerProcessStatus(self):
 
-		error=False
-
-		if not Bridge.unlockerManager.removeLlxupLockLaunched:
-			if "Lliurex-Up" in Bridge.unlockerManager.unlockInfo["unlockCmd"]:
+		if not self.unlockerManager.removeLlxupLockLaunched:
+			if "Lliurex-Up" in self.unlockerManager.unlockInfo["unlockCmd"]:
 				self.core.mainStack.feedBackCode=Bridge.LLXUP_UNLOCK_COMMAND_RUNNING
-				Bridge.unlockerManager.removeLlxupLockLaunched=True
-				self.core.mainStack.currentCommand=Bridge.unlockerManager.execCommand("Lliurex-Up","remove")
+				self.unlockerManager.removeLlxupLockLaunched=True
+				self.core.mainStack.currentCommand=self.unlockerManager.execCommand("Lliurex-Up","remove")
 				self.core.mainStack.endCurrentCommand=True
 				self.llxupLockCheck=True
-				Bridge.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
+				self.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
 
 			else:
-				Bridge.unlockerManager.removeLlxupLockDone=True
+				self.unlockerManager.removeLlxupLockDone=True
 				self.llxupLockCheck=False
 				self.llxupLockResult=True
 
-		if Bridge.unlockerManager.removeLlxupLockDone:
-			if self.llxupLockCheck:
-				self.llxupLockResult=Bridge.unlockerManager.checkProcess("Lliurex-Up")
+		if not self.unlockerManager.removeLlxupLockDone:
+			return self._checkProcessToken()
 
-			if self.llxupLockResult:
-				if not Bridge.unlockerManager.removeDpkgLockLaunched:
-					if "Dpkg" in Bridge.unlockerManager.unlockInfo["unlockCmd"]:
-						self.core.mainStack.feedBackCode=Bridge.DPKG_UNLOCK_COMMAND_RUNNING
-						Bridge.unlockerManager.removeDpkgLockLaunched=True
-						self.core.mainStack.currentCommand=Bridge.unlockerManager.execCommand("Dpkg","remove")
-						self.core.mainStack.endCurrentCommand=True
-						self.dpkgLockCheck=True
-						Bridge.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
-					else:
-						Bridge.unlockerManager.removeDpkgLockDone=True
-						self.dpkgLockCheck=False
-						self.dpkgResult=True
+		if self.llxupLockCheck:
+			self.llxupLockResult=self.unlockerManager.checkProcess("Lliurex-Up")
+			self.llxupLockCheck=False
 
-				if Bridge.unlockerManager.removeDpkgLockDone:
-					if self.dpkgLockCheck:
-						self.dpkgResult=Bridge.unlockerManager.checkProcess("Dpkg")
+		if not self.llxupLockResult:
+			return self._endProcessWithErrors(Bridge.LLXUP_UNLOCK_COMMAND_ERROR)
 
-					if self.dpkgResult:
-						if not Bridge.unlockerManager.removeAptLockLaunched:
-							if "Apt" in Bridge.unlockerManager.unlockInfo["unlockCmd"]:
-								self.core.mainStack.feedBackCode=Bridge.DPKG_UNLOCK_COMMAND_RUNNING
-								Bridge.unlockerManager.removeAptLockLaunched=True
-								self.core.mainStack.currentCommand=Bridge.unlockerManager.execCommand("Apt","remove")
-								self.core.mainStack.endCurrentCommand=True
-								self.aptLockCheck=True
-								Bridge.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
-							else:
-								Bridge.unlockerManager.removeAptLockDone=True
-								self.aptLockCheck=False
-								self.aptResult=True	
-
-						if Bridge.unlockerManager.removeAptLockDone:
-							if self.aptLockCheck:
-								self.aptResult=Bridge.unlockerManager.checkProcess("Apt")
-
-							if self.aptResult:
-								if not Bridge.unlockerManager.fixingSystemLaunched:
-									if Bridge.unlockerManager.unlockInfo["commonCmd"]!="":
-										self.core.mainStack.feedBackCode=Bridge.FIXING_UNLOCK_COMMAND_RUNNING
-										Bridge.unlockerManager.fixingSystemLaunched=True
-										self.core.mainStack.currentCommand=Bridge.unlockerManager.execCommand("Fixing","fixing")
-										self.core.mainStack.endCurrentCommand=True
-										self.fixingLockCheck=True
-										Bridge.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
-									else:
-										Bridge.unlockerManager.fixingSystemDone=True
-										self.fixingLockCheck=False
-										self.fixingResult=True
-
-								if Bridge.unlockerManager.fixingSystemDone:
-									if self.fixingLockCheck:
-										self.fixingResult=Bridge.unlockerManager.checkProcess("Fixing")
-									if self.fixingResult:
-										self.unlockerProcessRunningTimer.stop()
-										self.runningUnlockCommand=False
-										self._gatherInfoThread()
-
-									else:
-										error=True
-										code=Bridge.FIXING_UNLOCK_COMMAND_ERROR
-							else:
-								error=True
-								code=Bridge.APT_UNLOCK_COMMAND_ERROR			
-					else:
-						error=True	
-						code=Bridge.DPKG_UNLOCK_COMMAND_ERROR								
+		if not self.unlockerManager.removeDpkgLockLaunched:
+			if "Dpkg" in self.unlockerManager.unlockInfo["unlockCmd"]:
+				self.core.mainStack.feedBackCode=Bridge.DPKG_UNLOCK_COMMAND_RUNNING
+				self.unlockerManager.removeDpkgLockLaunched=True
+				self.core.mainStack.currentCommand=self.unlockerManager.execCommand("Dpkg","remove")
+				self.core.mainStack.endCurrentCommand=True
+				self.dpkgLockCheck=True
+				self.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
 			else:
-				error=True
-				code=Bridge.LLXUP_UNLOCK_COMMAND_ERROR
+				self.unlockerManager.removeDpkgLockDone=True
+				self.dpkgLockCheck=False
+				self.dpkgResult=True
 
-			if error:
-				self.runningUnlockCommand=False
-				self.showServiceStatusMesage=[True,code,"Error"]
-				self.unlockerProcessRunningTimer.stop()
-				Bridge.unlockerManager.writeProcessLog(code)
-				self._gatherInfoThread()
+		if not self.unlockerManager.removeDpkgLockDone:
+			return self._checkProcessToken()
 
-		if Bridge.unlockerManager.removeLlxupLockLaunched:
-			if not Bridge.unlockerManager.removeLlxupLockDone:
-				if not os.path.exists(Bridge.unlockerManager.tokenLlxupProcess[1]):
-					Bridge.unlockerManager.removeLlxupLockDone=True
+		if self.dpkgLockCheck:
+			self.dpkgResult=self.unlockerManager.checkProcess("Dpkg")
+			self.dpkgLockCheck=False
 
-		if Bridge.unlockerManager.removeDpkgLockLaunched:
-			if not Bridge.unlockerManager.removeDpkgLockDone:
-				if not os.path.exists(Bridge.unlockerManager.tokenDpkgProcess[1]):
-					Bridge.unlockerManager.removeDpkgLockDone=True
+		if not self.dpkgResult:
+			return self._endProcessWithErrors(Bridge.DPKG_UNLOCK_COMMAND_ERROR)
 
-		if Bridge.unlockerManager.removeAptLockLaunched:
-			if not Bridge.unlockerManager.removeAptLockDone:
-				if not os.path.exists(Bridge.unlockerManager.tokenAptProcess[1]):
-					Bridge.unlockerManager.removeAptLockDone=True
+		if not self.unlockerManager.removeAptLockLaunched:
+			if "Apt" in self.unlockerManager.unlockInfo["unlockCmd"]:
+				self.core.mainStack.feedBackCode=Bridge.DPKG_UNLOCK_COMMAND_RUNNING
+				self.unlockerManager.removeAptLockLaunched=True
+				self.core.mainStack.currentCommand=self.unlockerManager.execCommand("Apt","remove")
+				self.core.mainStack.endCurrentCommand=True
+				self.aptLockCheck=True
+				self.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
+			else:
+				self.unlockerManager.removeAptLockDone=True
+				self.aptLockCheck=False
+				self.aptResult=True	
 
-		if Bridge.unlockerManager.fixingSystemLaunched:
-			if not Bridge.unlockerManager.fixingSystemDone:
-				if not os.path.exists(Bridge.unlockerManager.tokenFixingProcess[1]):
-					Bridge.unlockerManager.fixingSystemDone=True
+		if not self.unlockerManager.removeAptLockDone:
+			return self._checkProcessToken()
+
+		if self.aptLockCheck:
+			self.aptResult=self.unlockerManager.checkProcess("Apt")
+			self.aptLockCheck=False
+
+		if not self.aptResult:
+			return self._endProcessWithErrors(Bridge.APT_UNLOCK_COMMAND_ERROR)
+
+		if not self.unlockerManager.fixingSystemLaunched:
+			if self.unlockerManager.unlockInfo["commonCmd"]!="":
+				self.core.mainStack.feedBackCode=Bridge.FIXING_UNLOCK_COMMAND_RUNNING
+				self.unlockerManager.fixingSystemLaunched=True
+				self.core.mainStack.currentCommand=self.unlockerManager.execCommand("Fixing","fixing")
+				self.core.mainStack.endCurrentCommand=True
+				self.fixingLockCheck=True
+				self.unlockerManager.writeProcessLog(self.core.mainStack.feedBackCode)
+			else:
+				self.unlockerManager.fixingSystemDone=True
+				self.fixingLockCheck=False
+				self.fixingResult=True
+
+		if not self.unlockerManager.fixingSystemDone:
+			return self._checkProcessToken()
+
+		if self.fixingLockCheck:
+			self.fixingResult=self.unlockerManager.checkProcess("Fixing")
+			self.fixingLockCheck=False
+
+		if not self.fixingResult:
+			self._endProcessWithErrors(Bridge.FIXING_UNLOCK_COMMAND_ERROR)
+		
+		self.unlockerProcessRunningTimer.stop()
+		self.runningUnlockCommand=False
+		self.core.mainStack.showProgressBar=False
+		self._gatherInfoThread()
 
 	#def _updateUnlockerProcessStatus
 
-	on_isThereALock=Signal()
-	isThereALock=Property(bool,_getIsThereALock,_setIsThereALock,notify=on_isThereALock)
+	def _endProcessWithErrors(self,code):
 
-	on_areLiveProcess=Signal()
-	areLiveProcess=Property(bool,_getAreLiveProcess,_setAreLiveProcess,notify=on_areLiveProcess)
+		self.runningUnlockCommand=False
+		self.showServiceStatusMesage={"show":True,"msgCode":code,"type":self.unlockerManager.KIRIGAMI_MSG_ERROR}
+		self.unlockerProcessRunningTimer.stop()
+		self.unlockerManager.writeProcessLog(code)
+		self.core.mainStack.showProgressBar=False
+		self._gatherInfoThread()
 
-	on_showServiceStatusMesage=Signal()
-	showServiceStatusMesage=Property('QVariantList',_getShowServiceStatusMesage,_setShowServiceStatusMesage,notify=on_showServiceStatusMesage)
+	#def _endProcessWithErrors
 
-	servicesModel=Property(QObject,_getServicesModel,constant=True)
+	def _checkProcessToken(self):
 
+		for prefix, token in self.PROCESSTOKENS:
+			if getattr(self.unlockerManager, f"{prefix}Launched") and not getattr(self.unlockerManager, f"{prefix}Done"):
+				tmpToken=getattr(self.unlockerManager,token)
+				if not os.path.exists(tmpToken):
+					setattr(self.unlockerManager, f"{prefix}Done", True)
+
+	#def _checkProcessToken
 
 #class Bridge
 from . import Core

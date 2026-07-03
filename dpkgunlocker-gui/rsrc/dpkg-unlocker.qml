@@ -1,9 +1,8 @@
-import org.kde.plasma.core as PlasmaCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
-import QtQuick.Dialogs
+import org.kde.plasma.core as PlasmaCore
 
 ApplicationWindow {
 
@@ -23,63 +22,82 @@ ApplicationWindow {
     }
     onClosing:(close)=> {
         close.accepted=closing;
-        mainStackBridge.closeApplication()
-        delay(100, function() {
-            if (mainStackBridge.closeGui){
-                closing=true,
-                timer.stop(),           
-                mainWindow.close();
-            }else{
-                closing=false;
-            }
-        })
+
+        if (!closing) {
+            mainStackBridge.closeApplication();
+            closeTimer.start();
+        }
         
+    }
+
+    Timer {
+        id: closeTimer
+        interval: 100
+        repeat: true
+        onTriggered: {
+            if (mainStackBridge.closeGui) {
+                stop();
+                mainWindow.closing = true;
+                mainWindow.close();
+            }
+        }
     }
     
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.margins: margin
-        Layout.minimumWidth:785
-        Layout.preferredWidth:785
+        Layout.minimumWidth:800
         Layout.minimumHeight:550
 
-        RowLayout {
-            id: bannerBox
-            Layout.alignment:Qt.AlignTop
-            
-            Rectangle{
-                color: "#000000"
-                Layout.minimumWidth:mainLayout.width
-                Layout.preferredWidth:mainLayout.width
-                Layout.fillWidth:true
-                Layout.minimumHeight:120
-                Layout.maximumHeight:120
-                Image{
-                    id:banner
-                    source: "/usr/lib/python3/dist-packages/dpkgunlockergui/rsrc/banner.png"
-                    anchors.centerIn:parent
-                }
+        Rectangle{
+            color: "#000000"
+            Layout.fillWidth:true
+            Layout.preferredHeight: 120
+            Image{
+                id:banner
+                source: "banner.png"
+                anchors.centerIn:parent
+                fillMode: Image.PreserveAspectFit  
             }
         }
 
         StackView {
             id: mainView
-            property int currentView:mainStackBridge.currentStack
-            Layout.minimumWidth:785
-            Layout.preferredWidth: 785
-            Layout.minimumHeight:430
-            Layout.preferredHeight:430
-            Layout.alignment:Qt.AlignHCenter|Qt.AlignVCenter
-            Layout.leftMargin:0
-            Layout.fillWidth:true
+            Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredHeight:430
 
+            property int currentView:mainStackBridge.currentStack
+            
             initialItem:loadingView
 
             onCurrentViewChanged:{
-                mainView.clear()
-                mainView.push(applicationOptionView)
+                switch(currentView){
+                    case 0:
+                        mainView.replace(loadingView)
+                        break;
+                    case 1:
+                        mainView.replace(applicationOptionView)
+                        break;
+                }
+            }
+
+            replaceEnter: Transition {
+                NumberAnimation {
+                    property: "opacity"
+                    from: 0
+                    to: 1
+                    duration: 60
+                }
+            }
+            
+            replaceExit: Transition {
+                NumberAnimation { 
+                    property: "opacity"
+                    from: 1
+                    to: 0
+                    duration: 60
+                }
             }
         }
          
@@ -99,18 +117,5 @@ ApplicationWindow {
         }
 
     }
-
-    Timer{
-        id:timer
-    }
-
-    function delay(delayTime,cb){
-        timer.interval=delayTime;
-        timer.repeat=true;
-        timer.triggered.connect(cb);
-        timer.start()
-    }
-
-
 }
 

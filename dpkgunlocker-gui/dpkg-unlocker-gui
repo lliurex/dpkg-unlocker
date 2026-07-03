@@ -1,42 +1,65 @@
 #!/usr/bin/python3
 
+import sys
+import os
+import subprocess
+import psutil
+import gettext
+
+gettext.textdomain("dpkg-unlocker")
+_ = gettext.gettext
+
+
+def isDpkgUnlockerRunning():
+
+	lockToken="/var/run/dpkgUnlocker.lock"
+	if os.path.exists(lockToken):
+		try:
+			with open(lockToken,'r') as fd:
+				unlockerPid=fd.readline().strip()
+
+			if unlockerPid:
+				if psutil.pid_exists(int(unlockerPid)):
+					print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
+					msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
+					try:
+						subprocess.run(["kdialog","--title","Dpkg-Unlocker","--icon","dpkg-unlocker-gui","--sorry",msg],timeout=10)
+					except Exception as e:
+						pass
+					sys.exit(1)
+
+			os.remove(lockToken)	
+
+		except (ValueError,OSError):
+			print("  [Dpkg-Unlocker-Gui: Dpkg-Unlocker is now running. Wait a moment and try again")
+			sys.exit(1)		
+
+#def isDpkgUnlockedRunning
+
+if os.geteuid() != 0:
+	print("  [Dpkg-Unlocker-Gui]: No administration privileges")
+	msg=_("You need administration privileges to run this application.")
+	try:
+		subprocess.run(["kdialog","--title","Dpkg-Unlocker","--icon","dpkg-unlocker-gui","--sorry",msg],timeout=10)
+	except Exception as e:
+		pass
+	sys.exit(1)
+
+isDpkgUnlockerRunning()
+
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QUrl
 from PySide6.QtGui import QIcon
 from PySide6.QtQml import QQmlApplicationEngine
 
-import sys
-import os
-import gettext
-gettext.textdomain("dpkg-unlocker")
-_ = gettext.gettext
-
-
-if os.path.exists('/var/run/dpkgUnlocker.lock'):
-	print ("  [Dpkg-Unlocker-Gui]: Dpkg-Unlocker is now running ")
-	msg=_("Dpkg-Unlocker is now running. Wait a moment and try again.")
-	cmd="kdialog --title 'Dpkg-Unlocker' --icon 'dpkg-unlocker-gui' --sorry '%s'"%(msg)
-	os.system(cmd)
-	sys.exit(1)
-
-else:
-	try:
-		print("  [Dpkg-Unlocker-Gui]: Checking root")
-		f=open("/var/run/DpkgUnlocker.token","w")
-		f.close()
-		os.remove("/var/run/DpkgUnlocker.token")
-
-	except:
-		print("  [Dpkg-Unlocker-Gui]: No administration privileges")
-		msg=_("You need administration privileges to run this application.")
-		cmd='kdialog --title "Dpkg-Unlocker" --icon "dpkg-unlocker-gui" --sorry "%s"'%(msg)
-		
-		print(cmd)
-		os.system(cmd)
-		sys.exit(1)
-
-
 from dpkgunlockergui.Core import Core
+
+if os.geteuid()==0:
+	os.environ["XDG_CURRENT_DESKTOP"]="KDE"
+
+icons_paths=["/usr/share/icons","/usr/local/share/icons"]
+QIcon.setThemeName("breeze")
+
 c=Core.get_core()
 
 app = QApplication()
@@ -60,7 +83,8 @@ engine.load(url)
 if not engine.rootObjects():
 	sys.exit(-1)
 
-engine.quit.connect(QApplication.quit)
+engine.quit.connect(app.quit)
+app.aboutToQuit.connect(serviceStackBridge.stopServices)
 ret=app.exec()
 del engine
 del app

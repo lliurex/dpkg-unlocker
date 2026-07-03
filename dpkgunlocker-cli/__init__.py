@@ -11,7 +11,7 @@ signal.signal(signal.SIGINT,signal.SIG_IGN)
 
 class DpkgUnlockerCli(object):
 
-	def __init__(self,app):
+	def __init__(self):
 
 		self.dpkgUnlockerCore=DpkgUnlockerManager.DpkgUnlockerManager()
 		self.dpkgUnlockerCore.checkingLocks()
@@ -25,26 +25,26 @@ class DpkgUnlockerCli(object):
 
 		if clean==None:
 			msgLog="Dpkg-Unlocker-Cli. Action: showInfo"
-			self.writeLog(msgLog)
+			self._writeLog(msgLog)
 
-		msgLog="Initial services status: %s"%self.dpkgUnlockerCore.lockeds
-		self.writeLog(msgLog)
+		msgLog=f"Initial services status: {self.dpkgUnlockerCore.lockeds}"
+		self._writeLog(msgLog)
 
-		msgUp=self.getMsgStatus(self.dpkgUnlockerCore.lockeds["Lliurex-Up"])
-		msgDpkg=self.getMsgStatus(self.dpkgUnlockerCore.lockeds["Dpkg"])		
-		msgApt=self.getMsgStatus(self.dpkgUnlockerCore.lockeds["Apt"])		
+		msgUp=self._getMsgStatus(self.dpkgUnlockerCore.lockeds["Lliurex-Up"])
+		msgDpkg=self._getMsgStatus(self.dpkgUnlockerCore.lockeds["Dpkg"])		
+		msgApt=self._getMsgStatus(self.dpkgUnlockerCore.lockeds["Apt"])		
 		
 		if clean==None:
 			self.dpkgUnlockerCore.cleanLockToken()
 			
 		print ("  [Dpkg-Unlocker-Cli]: Current services information availabled:")
-		print ("    - Lliurex-Up: " + msgUp)
-		print ("    - Dpkg: " + msgDpkg)
-		print ("    - Apt: " + msgApt)
+		print (f"    - Lliurex-Up: {msgUp}")
+		print (f"    - Dpkg: {msgDpkg}")
+		print (f"    - Apt: {msgApt}")
 
 	#def showServices
 
-	def getMsgStatus(self,code):
+	def _getMsgStatus(self,code):
 
 		if code==0:
 			msg="Unlocked"
@@ -59,331 +59,269 @@ class DpkgUnlockerCli(object):
 
 		return msg
 
-	#def getMsgStatus		
+	#def _getMsgStatus		
 	
 	def unlock(self,mode,kill):
 
 		self.unlockInfo=self.dpkgUnlockerCore.getUnlockerCommand(kill)
-		msgLog="Dpkg-Unlocker-Cli. Action: unlock. Mode of execution: Unnattended: "+ str(mode) + "; Kill: "+str(kill)
-		self.writeLog(msgLog)
+		msgLog=f"Dpkg-Unlocker-Cli. Action: unlock. Mode of execution: Unnattended: {mode}; Kill: {kill}"
+		self._writeLog(msgLog)
 		self.showServices(False)
-		result=True
 		
-		if len(self.unlockInfo["unlockCmd"])>0:
-
-			if self.unlockInfo["liveProcess"]==0 or kill:
-				if not mode:
-					response=input('  [Dpkg-Unlocker-Cli]: Do you want to execute the unlocking process (yes/no)): ')
-				else:
-					response='yes'
-				if response.startswith('y'):
-					if kill:
-						result=self.killProcess()
-					if result:
-						result=self.unlockProcess(kill)
-						if result:
-							msgLog="Unlocking process finished successfully"
-							self.writeLog(msgLog)
-							self.dpkgUnlockerCore.cleanLockToken()
-							print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-							return 0
-						else:
-							self.dpkgUnlockerCore.cleanLockToken()
-							return 1
-					else:
-						self.dpkgUnlockerCore.cleanLockToken()
-						return 1
-				else:
-					msgLog="Unlocking process cancelled"
-					self.writeLog(msgLog)
-					self.dpkgUnlockerCore.cleanLockToken()
-					print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-					return 0
-			else:
-				msgLog="Some process are running. Wait a moment and try again"
-				self.writeLog(msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-				return 2
-		else:
+		if len(self.unlockInfo["unlockCmd"])==0:
 			msgLog="All processes seem correct. Nothing to do"
-			self.writeLog(msgLog)
-			self.dpkgUnlockerCore.cleanLockToken()
-			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-			return 0
+			return self._sendFeedBack(msgLog,0)
 
-	#def unlock					
+		if self.unlockInfo["liveProcess"]!=0 and not kill:
+			msgLog="Some process are running. Wait a moment and try again"
+			return self._sendFeedBack(msgLog,2)
 
-	def killProcess(self):
+		response="yes" if mode else input('  [Dpkg-Unlocker-Cli]: Do you want to execute the unlocking process (yes/no)): ')
+
+		if not response.startswith('y'):
+			msgLog="Unlocking process cancelled"
+			return self._sendFeedBack(msgLog,0)
+
+		if kill and not self._killProcess():
+			return self._sendFeedBack(None,1)
+
+		if not self._unlockProcess(kill):
+			return self._sendFeedBack(None,1)
+
+		msgLog="Unlocking process finished successfully"
+		
+		return self._sendFeedBack(msgLog,0)
+					
+
+	def _killProcess(self):
 	
-		print ("  [Dpkg-Unlocker-Cli]: Killing the blocked processes...")
+		print("  [Dpkg-Unlocker-Cli]: Killing the blocked processes...")
 
 		killerCommands=self.dpkgUnlockerCore.getKillerCommand()
 
-		if len(killerCommands)>0:
-			for item in killerCommands:
-				msgLog="Killing process: "+ item
-				self.writeLog(msgLog)
-				print ("  [Dpkg-Unlocker-Cli]: "+ msgLog)
-				p=subprocess.Popen(killerCommands[item],shell=True,stderr=subprocess.PIPE)
-				output=p.communicate()
-				error=self.readErrorOutput(output[1])
-				if error["result"]:
-					msgLog="Killing process. Error killing " + item +": "+str(error["content"])
-					print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-					self.writeLog(msgLog)
-					return False
-		else:
+		if len(killerCommands)==0:
 			msgLog="Killing process. Nothing to do"
-			print ("  [Dpkg-Unlocker-Cli]: "+ msgLog)
-			self.writeLog(msgLog)
+			self._sendFeedBack(msgLog,None)
+			return True
+
+		for item,command in killerCommands.items():
+			msgLog=f"Killing process: {item}"
+			self._sendFeedBack(msgLog,None)
+			p=subprocess.Popen(command,shell=True,stderr=subprocess.PIPE)
+			_,perror=p.communicate()
+			error=self._readErrorOutput(perror)
+			if error["result"]:
+				msgLog=f"Killing process. Error killing {item}: {error['content']}"
+				self._sendFeedBack(msgLog,None)
+				return False
+
 		return True
 
 	#def killeProcess
 
-	def unlockProcess(self,kill):
+	def _unlockProcess(self,kill):
 
-		if len(self.unlockInfo["unlockCmd"])>0:
-			for command in self.unlockInfo["unlockCmd"]:
-				msgLog="Unlocking process. Removing "+command + " lock file"
-				self.writeLog(msgLog)
-				print ("  [Dpkg-Unlocker-Cli]: " +msgLog)
-				p=subprocess.Popen(self.unlockInfo["unlockCmd"][command],shell=True,stderr=subprocess.PIPE)
-				output=p.communicate()
-				error=self.readErrorOutput(output[1])
-				if error["result"]:
-					msgLog="Unlocking process. Error removing "+command + " lock file: " + str(error["content"])
-					print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-					self.writeLog(msgLog)
-					return False
-
-			msgLog="Unlocking proces. Fixing the system"
-			self.writeLog(msgLog)
-			print ("  [Dpkg-Unlocker-Cli]: "+ msgLog)
-			p=subprocess.Popen(self.unlockInfo["commonCmd"],shell=True,stderr=subprocess.PIPE)
-			output=p.communicate()
-			error=self.readErrorOutput(output[1])
-			if error["result"]:
-				msgLog="Unlocking proces. Error fixing the system: "+str(error["content"])
-				print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-				self.writeLog(msgLog)
-				return False
-		else:
+		if not self.unlockInfo["unlockCmd"]:
 			msgLog="Unlocking process.Nothing to do"
-			self.writeLog(msgLog)
-			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
+			self._sendFeedBack(msgLog,None)
+			return True
+
+		for command,cmdScript in self.unlockInfo["unlockCmd"].items():
+			msgLog=f"Unlocking process. Removing {command} lock file"
+			self._sendFeedBack(msgLog,None)
+			p=subprocess.Popen(cmdScript,shell=True,stderr=subprocess.PIPE)
+			_,perror=p.communicate()
+			error=self._readErrorOutput(perror)
+			
+			if error["result"]:
+				msgLog=f"Unlocking process. Error removing {command} lock file: {error['content']}"
+				self._sendFeedBack(msgLog,None)
+				return False
+
+		msgLog="Unlocking proces. Fixing the system"
+		self._sendFeedBack(msgLog,None)
+		p=subprocess.Popen(self.unlockInfo["commonCmd"],shell=True,stderr=subprocess.PIPE)
+		_,perror=p.communicate()
+		error=self._readErrorOutput(perror)
 		
-		return True
+		if error["result"]:
+			msgLog=f"Unlocking proces. Error fixing the system: {error['content']}"
+			self._sendFeedBack(msgLog,None)
+			return False
+		
+		return True	
 
-	#def unlockProcess				
+	#def _unlockProcess				
 
-	def readErrorOutput(self,output):
+	def _readErrorOutput(self,output):
 
-		readError={}
-		cont=0
-		if type(output) is bytes:
-			output=output.decode()
-		lines=output.split('\n')
-		readError["content"]=output
-		for line in lines:
-			if "E: " in line:
-				cont=cont+1
+		if isinstance(output,bytes):
+			output=output.decode(errors="ignore")
 
-		if cont>0:
-			readError["result"]=True
-		else:
-			readError["result"]=False
+		hasError=any("E: " in line for line in output.split("\n"))
 
-		return readError
+		return {
+			"content":output,
+			"result":hasError
+		}
 
-	#def readErrorOutput			
+	#def _readErrorOutput			
 
 	def handlerSignal(self,signal,frame):
 
 		msgLog="Cancel process with Ctrl+C signal"
-		self.dpkgUnlockerCore.cleanLockToken()
-		self.writeLog(msgLog)
-		print("\n  [Dpkg-Unlocker-Cli]: "+msgLog)
-		sys.exit(0)
-
+		sys.exit(self._sendFeedBack(msgLog,0))
+		
 	#def handlerSignal
 
 	def showProtection(self,clean=None):
 
 		self.currentProtectionStatus=self.dpkgUnlockerCore.checkMetaProtection()
-		msgHead=""
-
-		if clean==None:
+		if clean is None:
 			msgLog="Dpkg-Unlocker-Cli. Action: showProtection"
-			self.writeLog(msgLog)
+			self._writeLog(msgLog)
 
 		msgProtection="System metapackage protection"
+		isEnabled=self.currentProtectionStatus
+		msgHead="WARNING " if not isEnabled else ""
+		msgStatus="is enabled" if isEnabled else "is disabled"
 
-		if not self.currentProtectionStatus:
-			msgStatus="is disabled"
-			msgHead="WARNING "
-		else:
-			msgStatus="is enabled"
-
-		if clean==None:
+		if clean is None:
 			self.dpkgUnlockerCore.cleanLockToken()
 		
-		print ("  [Dpkg-Unlocker-Cli]: Current configuration: %s%s %s"%(msgHead,msgProtection,msgStatus))
+		print (f"  [Dpkg-Unlocker-Cli]: Current configuration: {msgHead}{msgProtection} {msgStatus}")
 		
-		self.writeLog("Inital status: %s enabled: %s"%(msgProtection,str(self.currentProtectionStatus)))
+		self._writeLog(f"Inital status: {msgProtection} enabled: {isEnabled}")
 
 	#def showProtection
 
 	def disableProtection(self,mode):
 
-		msgLog="Dpkg-Unlocker-Cli. Action: disableProtection.Mode of execution: Unnattended: %s"%(str(mode))
-		self.writeLog(msgLog)
+		msgLog=f"Dpkg-Unlocker-Cli. Action: disableProtection.Mode of execution: Unnattended: {mode}"
+		self._writeLog(msgLog)
 		self.showProtection(False)
 
 		if not self.currentProtectionStatus:
 			msgLog="System metapackage protection is already disable. Nothing to do"
-			self.writeLog(msgLog)
-			print("  [Dpkg-Unlocker-Cli]: %s"%msgLog)
-			self.dpkgUnlockerCore.cleanLockToken()
-			return 0
-		else:
-			print("  [Dpkg-Unlocker-Cli]: WARNING Disabling system metapackage protection can cause certain applications to be uninstalled automatically and cause system inconsistencies")
-			if not mode:
-				response=input("  [Dpkg-Unlocker-Cli]: Do you want to disable system metapackage protection?(yes/no)")
-			else:
-				response='yes'
+			return self._sendFeedBack(msgLog,0)
+		
+		print("  [Dpkg-Unlocker-Cli]: WARNING Disabling system metapackage protection can cause certain applications to be uninstalled automatically and cause system inconsistencies")
+		
+		response="yes" if mode else input('  [Dpkg-Unlocker-Cli]: Do you want to disable system metapackage protection?(yes/no)')
 
-			if response.startswith('y'):
-				result=self.dpkgUnlockerCore.changeMetaProtectionStatus(False)
-				msgLog="Disable system metapackage protection result: %s"%str(result)
-				self.writeLog(msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				if result[0]:
-					print ("  [Dpkg-Unlocker-Cli]: System metapackage protecion is now disable")
-					return 0
-				else:
-					print("   [Dpkg-Unlocker-Cli]: Error disabling system metapackage protection. Details: %s"%str(result[1]))
-					return 1
-			else:
-				msgLog="Action cancelled"
-				print("  [Dpkg-Unlocker-Cli]: %s"%msgLog)
-				self.writeLog(msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				return 0
+		if not response.startswith('y'):
+			msgLog="Action cancelled"
+			return self._sendFeedBack(msgLog,0)
+
+		result=self.dpkgUnlockerCore.changeMetaProtectionStatus(False)
+		msgLog=f"Disable system metapackage protection result: {result}"
+		self._writeLog(msgLog)
+
+		if result[0]:
+			msgLog= "System metapackage protecion is now disable"
+			return self._sendFeedBack(msgLog,0)
+		
+		msgLog="Error disabling system metapackage protection. Details: {result[1]}"
+		return self._sendFeedBack(msgLog,1)
+				
 
 	#def disableProtection
 
 	def enableProtection(self,mode):
 
-		msgLog="Dpkg-Unlocker-Cli. Action: enable Protection.Mode of execution: Unnattended: %s"%(str(mode))
-		self.writeLog(msgLog)
+		msgLog=f"Dpkg-Unlocker-Cli. Action: enable Protection.Mode of execution: Unnattended: {mode}"
+		self._writeLog(msgLog)
 		self.showProtection(False)
 		
 		if self.currentProtectionStatus:
 			msgLog="System metapackage protection is already enable. Nothing to do"
-			self.writeLog(msgLog)
-			print ("  [Dpkg-Unlocker-Cli]: %s"%msgLog)
-			self.dpkgUnlockerCore.cleanLockToken()
-			return 0
-		else:
-			if not mode:
-				response=input("  [Dpkg-Unlocker-Cli]: Do you want to enable system metapackage protection?(yes/no)")
-			else:
-				response='yes'
+			return self._sendFeedBack(msgLog,0)
 
-			if response.startswith('y'):
-				result=self.dpkgUnlockerCore.changeMetaProtectionStatus(True)
-				msgLog="Enable system metapackage protection result: %s"%str(result)
-				self.writeLog(msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				if result[0]:
-					print ("  [Dpkg-Unlocker-Cli]: System metapackage protecion is now enable")
-					return 0
-				else:
-					print("   [Dpkg-Unlocker-Cli: Error enabling system metapackage protection. Details: %s"%str(result[1]))
-					return 1
-			else:
-				msgLog="Action cancelled"
-				print("  [Dpkg-Unlocker-Cli]: %s"%msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				self.writeLog(msgLog)
-				return 0
+		response="yes" if mode else input('  [Dpkg-Unlocker-Cli]: Do you want to enable system metapackage protection?(yes/no)')
+
+		if not response.startswith('y'):
+			msgLog="Action cancelled"
+			return self._sendFeedBack(msgLog,0)
+
+		result=self.dpkgUnlockerCore.changeMetaProtectionStatus(True)
+		msgLog=f"Enable system metapackage protection result: {result}"
+		self._writeLog(msgLog)
+
+		if result[0]:
+			msgLog="System metapackage protecion is now enable"
+			return self._sendFeedBack(msgLog,0)
+
+		msgLog=f"Error enabling system metapackage protection. Details: {result[1]}"
+		return self._sendFeedBack(msgLog,1)
 
 	#def enableProtection
 
 	def restore(self,mode):
 
 		self.unlockInfo=self.dpkgUnlockerCore.getUnlockerCommand(False)
-		msgLog="Dpkg-Unlocker-Cli. Action: restore. Mode of execution: Unnattended: "+ str(mode)
-		self.writeLog(msgLog)
+		msgLog=f"Dpkg-Unlocker-Cli. Action: restore. Mode of execution: Unnattended: {mode}"
+		self._writeLog(msgLog)
 		self.showServices(False)
-		result=True
 		
-		if len(self.unlockInfo["unlockCmd"])==0:
-
-			if self.unlockInfo["liveProcess"]==0:
-				if not mode:
-					response=input('  [Dpkg-Unlocker-Cli]: Do you want to execute the services restore process (yes/no)): ')
-				else:
-					response='yes'
-				if response.startswith('y'):
-					result=self.restoreProcess()
-					if result:
-						msgLog="Restore process finished successfully"
-						self.writeLog(msgLog)
-						self.dpkgUnlockerCore.cleanLockToken()
-						print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-						return 0
-					else:
-						self.dpkgUnlockerCore.cleanLockToken()
-						return 1
-				else:
-					msgLog="Restoring process cancelled"
-					self.writeLog(msgLog)
-					self.dpkgUnlockerCore.cleanLockToken()
-					print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-					return 0
-			else:
-				msgLog="Some process are running. Wait a moment and try again"
-				self.writeLog(msgLog)
-				self.dpkgUnlockerCore.cleanLockToken()
-				print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-				return 2
-		else:
+		if len(self.unlockInfo["unlockCmd"])!=0:
 			msgLog="Some processes seem locked. Unable to launch the services restore process"
-			self.writeLog(msgLog)
-			self.dpkgUnlockerCore.cleanLockToken()
-			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-			return 0
+			return self._sendFeedBack(msgLog,0)
+	
+		if self.unlockInfo["liveProcess"]!=0:
+			msgLog="Some process are running. Wait a moment and try again"
+			return self._sendFeedBack(msgLog,2)
 
+		response="yes" if mode else input('  [Dpkg-Unlocker-Cli]: Do you want to execute the services restore process (yes/no)): ')
+
+		if not response.startswith('y'):
+			msgLog="Restoring process cancelled"
+			return self._sendFeedBack(msgLog,0)
+
+		result=self._restoreProcess()
+		if result[0]:
+			msgLog="Restore process finished successfully"
+			return self._sendFeedBack(msgLog,0)
+
+		msgLog=f"Restoring process. Error: {result[1]}"
+		return self._sendFeedBack(msgLog,1)
+		
 	#def restore
 
-	def restoreProcess(self):
+	def _restoreProcess(self):
 
 		command=self.dpkgUnlockerCore.getRestoreCommand()
 		msgLog="Restoring services"
-		self.writeLog(msgLog)
-		print ("  [Dpkg-Unlocker-Cli]: " +msgLog)
+		self._sendFeedBack(msgLog,None)
+
 		p=subprocess.Popen(command,shell=True,stderr=subprocess.PIPE)
-		output=p.communicate()
-		error=self.readErrorOutput(output[1])
+		_,perror=p.communicate()
+		error=self._readErrorOutput(perror)
 		if error["result"]:
-			msgLog="Restoring process. Error: " + str(error["content"])
-			print ("  [Dpkg-Unlocker-Cli]: "+msgLog)
-			self.writeLog(msgLog)
-			return False
+			return [False,error["content"]]
 
-		return True
+		return [True,""]
 
-	#def restoreProcess
+	#def _restoreProcess
 
-	def writeLog(self,msg):
+	def _sendFeedBack(self,message,returnCode):
+
+		if message:
+			self._writeLog(message)
+			print(f"  [Dpkg-Unlocker-Cli]: {message}")
+
+		if returnCode is not None:
+			self.dpkgUnlockerCore.cleanLockToken()
+			return returnCode
+
+	#def _sendFeedBack
+
+	def _writeLog(self,msg):
 
 		syslog.openlog("DpkgUnlocker")
 		syslog.syslog(msg)
 																
 		return
 
-	#def writeLog	
+	#def _writeLog	
 
 #def DpkgUnlockerCli	

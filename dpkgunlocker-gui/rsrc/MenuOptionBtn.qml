@@ -2,58 +2,30 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-
 Item {
-	id:menuItem
-	Layout.preferredWidth: 200
-	Layout.preferredHeight: 35
+    id: menuItem
+    Layout.preferredWidth: 220
+    Layout.preferredHeight: 35
 
-	property alias optionIcon:menuOptionIcon.source
-	property alias optionText:menuOptionText.text
-	signal menuOptionClicked()
+    property string optionIcon: ""
+    property alias optionText: control.text
+    property alias optionPointSize:control.font.pointSize
 
-	Rectangle{
-		id:menuOption
-		width:210
-		height:35
-		color:"transparent"
-		border.color:"transparent"
+    signal menuOptionClicked()
 
-		Row{
-			spacing:5
-			anchors.verticalCenter:menuOption.verticalCenter
-			leftPadding:5
-            
-            Image{
-              id:menuOptionIcon
-              source:optionIcon
-            }
+    ItemDelegate {
+        id: control
+        anchors.fill: parent
 
-            Text {
-              id:menuOptionText
-              text:optionText
-              anchors.verticalCenter:menuOptionIcon.verticalCenter
+        icon.name: menuItem.optionIcon
+        icon.width: 24
+        icon.height: 24
+        icon.color: "black"
 
-
-            }  
+        background: Rectangle {
+            color: control.hovered ? "#add8e6" : "transparent"
         }
 
-        MouseArea {
-        	id: mouseAreaOption
-          	anchors.fill: parent
-            hoverEnabled:true
-
-            onEntered: {
-              menuOption.color="#add8e6"
-            }
-            onExited: {
-              menuOption.color="transparent"
-            }
-            onClicked: {
-            	menuOptionClicked()
-            }
-       }   
-   }
+        onClicked: menuItem.menuOptionClicked()
+    }
 }
-
-
