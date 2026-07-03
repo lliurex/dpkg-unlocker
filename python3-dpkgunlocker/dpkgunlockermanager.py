@@ -23,12 +23,10 @@ class DpkgUnlockerManager(object):
 	#def __init__	
 
 	def createLockToken(self):
-
 		if not os.path.exists(self.lockTokenPath):
-			f=open(self.lockTokenPath,'w')
-			upPid=os.getpid()
-			f.write(str(upPid))
-			f.close()
+			with open(self.lockTokenPath,'w') as fd:
+				upPid=os.getpid()
+				fd.write(str(upPid))
 			
 	#def createLockToken
 
@@ -46,24 +44,24 @@ class DpkgUnlockerManager(object):
 		 1: Lliurex-Up is running
 		 2: Lliurex-Up is locked for previous failed process
 		 ''' 
+		if not os.path.exists(self.lliurexUpLockTokenPath):
+			return 0
 
-		if os.path.exists(self.lliurexUpLockTokenPath):
-			f=open(self.lliurexUpLockTokenPath,'r')
-			upPid=f.readline().split('\n')[0]
-			if upPid !="":
+		try:
+			with open(self.lliurexUpLockTokenPath,'r') as fd:
+				upPid=fd.readline().strip()
+
+			if upPid:
 				self.upPid=int(upPid)
-				checkPid=psutil.pid_exists(self.upPid)
-				if checkPid:
-					code=1
-				else:
-					code=2
-			else:
-				code=1
-		else:
-			code=0
+				if psutil.pid_exists(self.upPid):
+					return 1
+				return 2
+			
+			return 2
 
-		return code	
-
+		except (ValueError,OSError):
+			return 2
+		
 	#def isLliurexUpLocked
 	
 	def isAptLocked(self):
@@ -74,37 +72,28 @@ class DpkgUnlockerManager(object):
 		 2: Apt is locked for previous failed process
 		 4: Apt Daemon is locked
 		 ''' 
-		checkLock=False
+
 		lsofData=self.checkAptdLock(self.aptLockTokenPath)
 
-		if len(lsofData)>0:
+		if lsofData:
 			self.aptApdRun=self.findProcess("aptd")
-			if self.aptApdRun!=None:
-				for item in lsofData:
-					if item==self.aptApdRun[0]["pid"]:
-						code=4
-						break
-					else:
-						checkLock=True	
-			else:
-				checkLock=True
-		else:
-			checkLock=True
+			if self.aptApdRun is not None:
+				aptApdRun=self.aptApdRun[0]["pid"]
+				if aptApdRun in lsofData:
+					return 4
+		try:
+			with open(self.aptLockTokenPath, 'w') as fd:
+				fcntl.lockf(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
+				return 0
 
-		if checkLock:
-			f= open(self.aptLockTokenPath, 'w')
-			try:
-				fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
-				code=0
-					
-			except IOError:
-				self.aptRun=self.findProcess("apt-get")
-				if self.aptRun!=None:
-					code =1
-				else:
-					code=2
+		except FileNotFoundError:
+			return 0
 
-		return code	
+		except OSError:
+			self.aptRun=self.findProcess("apt-get")
+			if self.aptRun is not None:
+				return 1
+			return 2
 
 	#def isAptLocked
 		
@@ -118,122 +107,103 @@ class DpkgUnlockerManager(object):
 		 4: Apt Daemon is running
 
 		 ''' 
-		checkLock=False
 		lsofData=self.checkAptdLock(self.dpkgLockTokenPath)
 
-		if len(lsofData)>0:
+		if lsofData:
 			self.dpkgApdRun=self.findProcess("aptd")
-			if self.dpkgApdRun!=None:
-				for item in lsofData:
-					if item==self.dpkgApdRun[0]["pid"]:
-						code=4
-						break
-					else:
-						checkLock=True
-			else:
-				checkLock=True
-		else:
-			checkLock=True
+			if self.dpkgApdRun is not None:
+				dpkgApdRun=self.dpkgApdRun[0]["pid"]
+				if dpkgApdRun in lsofData:
+					return 4
 
-		if checkLock:
-			f= open(self.dpkgLockTokenPath, 'w')
-			try:
-				fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
-				code=0
+		try:
+			with open(self.dpkgLockTokenPath, 'w') as fd:
+				fcntl.lockf(fd, fcntl.LOCK_EX|fcntl.LOCK_NB)
+				return 0
+
+		except FileNotFoundError:
+			return 0
+
+		except OSError:
+			self.dpkgRun=self.findProcess("dpkg")
+			if self.dpkgApdRun is not None:
+				return 1
+
+			self.aptRun=self.findProcess("apt-get")
+			if self.aptRun is not None:
+				return 3
+
+			return 2
 				
-			except IOError:
-				self.dpkgRun=self.findProcess("dpkg")
-				if self.dpkgRun!=None:
-					code =1
-				else:
-					self.aptRun=self.findProcess("apt-get")
-					if self.aptRun!=None:
-						code=3
-					else:
-						code=2	
-
-		return code		
-			
 	#def isAptLocked			
 
 	def getProcessList(self,arg=None):
 		
-		self.processList=[]
+		self.processList = []
 		
-		p=subprocess.Popen(["ps","aux"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-		output=p.communicate()[0]
-		if type(output) is bytes:
-			output=output.decode()
-
-		lst=output.split("\n")
-		lst.pop(0)
-		
-		for item in lst:
-			processedLine=item.split(" ")
-			tmp_list=[]
-			
-			if len(processedLine) >= 10:
-				for object in processedLine:
-					if object!="":
-						tmp_list.append(object)
-				processedLine=tmp_list
+		for proc in psutil.process_iter(['username', 'pid', 'cpu_percent', 'memory_percent', 'status', 'create_time', 'cmdline']):
+			try:
+				info = proc.info
+				cmdline_list = info['cmdline'] or []
+				cmd_string = " ".join(cmdline_list)
 				
-				process={}
-				process["user"]=processedLine[0]
-				process["pid"]=processedLine[1]
-				process["cpu"]=processedLine[2]
-				process["mem"]=processedLine[3]
-				process["vsz"]=processedLine[4]
-				process["rss"]=processedLine[5]
-				process["tty"]=processedLine[6]
-				process["stat"]=processedLine[7]
-				process["start"]=processedLine[8]
-				process["time"]=processedLine[9]
-				cmd=""
-				for line in processedLine[10:]:
-					if cmd!="":
-						cmd+=" "
-					cmd+=line
-				
-				if arg=="aptd":
-					if arg in cmd:
-						process["command"]=cmd.split(" ")[1]
-					else:		
-						process["command"]=cmd.split(" ")[0]
+				if not cmd_string:
+					continue
+					
+				if arg == "aptd" and arg in cmd_string:
+					command = cmdline_list[1] if len(cmdline_list) > 1 else cmdline_list[0]
 				else:
-					process["command"]=cmd.split(" ")[0]
+					command = cmdline_list[0] if cmdline_list else ""
+					
+				process = {
+					"user": info['username'],
+					"pid": str(info['pid']),
+					"cpu": str(info['cpu_percent']),
+					"mem": f"{info['memory_percent']:.1f}" if info['memory_percent'] else "0.0",
+					"vsz": str(proc.memory_info().vms // 1024) if proc.is_running() else "0", 
+					"rss": str(proc.memory_info().rss // 1024) if proc.is_running() else "0", 
+					"tty": "?",
+					"stat": info['status'],
+					"start": str(info['create_time']),
+					"time": "0:00",
+					"command": command
+				}
+				
 				self.processList.append(process)
-
+			
+			except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+				continue
+	
 	#def getProcessList			
 
 	def findProcess(self,filter):
 		
 		self.getProcessList(filter)
-		retList=[]
-		for process in self.processList:
-			if filter in process["command"]:
-				retList.append(process)
-					
-		if len(retList)>0:
-			return retList
-		else:
-			return None
+		
+		retList=[
+			process for process in self.processList
+			if filter in process["command"]
+		]
+
+		return retList if retList else None			
 
 	#def findProcess	
 
 	def checkAptdLock(self,lockfile):
 
-		cmd="lsof -t "+lockfile
-		p=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
-		output=p.communicate()[0]
+		cmd=["lsof", "-t", lockfile]
 
-		if type(output) is bytes:
-			output=output.decode()
+		try:
+			result=subprocess.run(cmd,capture_output=True,text=True,check=False)
+			output=result.stdout.strip()
 
-		lsofData=output.split("\n")
-		del lsofData[-1]
+			if output:
+				return output.splitlines()
 
-		return lsofData
+		except FileNotFoundError:
+			pass
+
+		return []
 
 	#def checkAptdLock	
 
@@ -247,90 +217,62 @@ class DpkgUnlockerManager(object):
 	
 	#def checkingLocks
 
-	def getUnlockerCommand(self,kill=None):
+	def getUnlockerCommand(self, kill=None):
 
-		unlockInfo={}
-		unlockerCommands={}
-		commonCommand=""
+	    unlockerCommands = {}
+	    commonCommand = ""
+	    cont = 0
+	    liveProcess = 0
 
-		cont=0
-		removeUp=False
-		removeDpkg=False
-		removeApt=False
-		liveProcess=0
+	    services = {
+	        "Lliurex-Up": self.lliurexUpLockTokenPath,
+	        "Dpkg": self.dpkgLockTokenPath,
+	        "Apt": self.aptLockTokenPath
+	    }
 
-		if self.lockeds["Lliurex-Up"]!=0:
-			if kill:
-				removeUp=True
-			else:
-				if self.lockeds["Lliurex-Up"]==2:
-					removeUp=True
-				else:
-					liveProcess+=1
-		
-		if removeUp:
-			cmd="rm -f "+self.lliurexUpLockTokenPath
-			unlockerCommands["Lliurex-Up"]=cmd
-			cont+=1
+	    for name, path in services.items():
+	        status = self.lockeds.get(name, 0)
+	        if status != 0:
+	            if kill or status == 2:
+	                unlockerCommands[name] = f"rm -f {path}"
+	                cont += 1
+	            else:
+	                liveProcess += 1
 
-		if self.lockeds["Dpkg"]!=0:
-			if kill:
-				removeDpkg=True
-			else:
-				if self.lockeds["Dpkg"]==2:
-					removeDpkg=True
-				else:
-					liveProcess+=1
-	
-		if removeDpkg:
-			cmd="rm -f " +self.dpkgLockTokenPath
-			unlockerCommands["Dpkg"]=cmd
-			cont+=1
+	    if cont > 0 and liveProcess == 0:
+	        commonCommand = (
+	            "LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive dpkg --configure -a; "
+	            "LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get update; "
+	            "LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get install -f -y "
+	            "--allow-downgrades --allow-remove-essential --allow-change-held-packages"
+	        )
 
-		if self.lockeds["Apt"]!=0:
-			if kill:
-				removeApt=True
-			else:
-				if self.lockeds["Apt"]==2:
-					removeApt=True
-				else:
-					liveProcess+=1
+	    return {
+	        "unlockCmd": unlockerCommands,
+	        "commonCmd": commonCommand,
+	        "liveProcess": liveProcess
+	    }
 
-		if removeApt:
-			cmd="rm -f " + self.aptLockTokenPath	
-			unlockerCommands["Apt"]=cmd
-			cont+=1
-
-		if cont>0:
-			if liveProcess==0:
-				cmd="LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive dpkg --configure -a; LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get update; LANG=C LANGUAGE=en DEBIAN_FRONTEND=noninteractive apt-get install -f -y --allow-downgrades --allow-remove-essential --allow-change-held-packages"
-				commonCommand=cmd
-
-		unlockInfo["unlockCmd"]=unlockerCommands
-		unlockInfo["commonCmd"]=commonCommand
-		unlockInfo["liveProcess"]=liveProcess		
-
-		return unlockInfo
-
-	#def getUnlockedCommand
+	#def getUnlockerCommand
 
 	def getKillerCommand(self):
 
-		killerCommands={}
+		killerCommands = {}
 
-		if self.lockeds["Lliurex-Up"]==1:
-			killerCommands["Lliurex-Up"]="kill -9 "+ str(self.upPid)
+		if self.lockeds.get("Lliurex-Up") == 1 and hasattr(self, 'upPid') and self.upPid:
+			killerCommands["Lliurex-Up"] = f"kill -9 {self.upPid}"
 
-		if self.lockeds["Dpkg"]==1:
-			killerCommands["Dpkg"]="kill -9 "+str(self.dpkgRun[0]["pid"])
-		elif self.lockeds["Dpkg"]==3:
-			killerCommands["Apt"]="kill -9 "+str(self.aptRun[0]["pid"])
-				
-		if self.lockeds["Apt"]==1:
-			killerCommands["Apt"]="kill -9 " + str(self.aptRun[0]["pid"]) 
+		dpkg_status = self.lockeds.get("Dpkg", 0)
+		if dpkg_status == 1 and getattr(self, 'dpkgRun', None):
+			killerCommands["Dpkg"] = f"kill -9 {self.dpkgRun[0]['pid']}"
+		elif dpkg_status == 3 and getattr(self, 'aptRun', None):
+			killerCommands["Apt"] = f"kill -9 {self.aptRun[0]['pid']}"
+
+		if self.lockeds.get("Apt", 0) == 1 and getattr(self, 'aptRun', None):
+			killerCommands["Apt"] = f"kill -9 {self.aptRun[0]['pid']}"
 
 		return killerCommands
-
+	
 	#def getKillerCommand
 
 	def checkMetaProtection(self):
