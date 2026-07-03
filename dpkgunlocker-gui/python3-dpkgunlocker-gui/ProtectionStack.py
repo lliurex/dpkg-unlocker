@@ -16,30 +16,115 @@ class Bridge(QObject):
 	META_PROTECTION_CHANGE_SUCCESS=8
 	META_PROTECTION_ENABLED_ERROR=-10
 	META_PROTECTION_DISABLED_ERROR=-11
-	
+
+	metaProtectionEnabledChanged=Signal()
+	showProtectionStatusMessageChanged=Signal()
+	isProtectionChangeChanged=Signal()
+	showPendingChangesDialogChanged=Signal()
+	showProtectionOptionChanged=Signal()
+
 	def __init__(self):
 
-		QObject.__init__(self)
+		super().__init__()
 		self.core=Core.Core.get_core()
-		Bridge.unlockerManager=self.core.unlockerManager
+		self.unlockerManager=self.core.unlockerManager
 		self._metaProtectionEnabled=True
-		self._showProtectionStatusMessage=[False,"","Success"]
+		self._showProtectionStatusMessage={"show":False,"msgCode":"","type":""}
 		self._isProtectionChange=False
 		self._showPendingChangesDialog=False
 		self._showProtectionOption=False
 
-
 	#def __init__
+
+	@Property(int,notify=metaProtectionEnabledChanged)
+	def metaProtectionEnabled(self):
+
+		return self._metaProtectionEnabled
+
+	#def metaProtectionEnabled
+
+	@metaProtectionEnabled.setter
+	def metaProtectionEnabled(self,metaProtectionEnabled):
+
+		if self._metaProtectionEnabled!=metaProtectionEnabled:
+			self._metaProtectionEnabled=metaProtectionEnabled
+			self.metaProtectionEnabledChanged.emit()
+
+	#def metaProtectionEnabled
+
+	@Property('QVariant',notify=showProtectionStatusMessageChanged)
+	def showProtectionStatusMessage(self):
+
+		return self._showProtectionStatusMessage
+
+	#def showServiceStatusMesage
+
+	@showProtectionStatusMessage.setter
+	def showProtectionStatusMessage(self,showProtectionStatusMessage):
+
+		if self._showProtectionStatusMessage!=showProtectionStatusMessage:
+			self._showProtectionStatusMessage=showProtectionStatusMessage
+			self.showProtectionStatusMessageChanged.emit()
+
+	#def showProtectionStatusMessage
+
+	@Property(bool,notify=isProtectionChangeChanged)
+	def isProtectionChange(self):
+
+		return self._isProtectionChange
+
+	#def isProtectionChange
+
+	@isProtectionChange.setter
+	def isProtectionChange(self,isProtectionChange):
+
+		if self._isProtectionChange!=isProtectionChange:
+			self._isProtectionChange=isProtectionChange
+			self.isProtectionChangeChanged.emit()
+	
+	#def isProtectionChange
+
+	@Property(bool,notify=showPendingChangesDialogChanged)
+	def showPendingChangesDialog(self):
+
+		return self._showPendingChangesDialog
+
+	#def showPendingChangesDialog
+
+	@showPendingChangesDialog.setter
+	def showPendingChangesDialog(self,showPendingChangesDialog):
+
+		if self._showPendingChangesDialog!=showPendingChangesDialog:
+			self._showPendingChangesDialog=showPendingChangesDialog
+			self.showPendingChangesDialogChanged.emit()
+	
+	#def showPendingChangesDialog
+
+	@Property(bool,notify=showProtectionOptionChanged)
+	def showProtectionOption(self):
+
+		return self._showProtectionOption
+
+	#def showProtectionOption
+
+	@showProtectionOption.setter
+	def showProtectionOption(self,showProtectionOption):
+
+		if self._showProtectionOption!=showProtectionOption:
+			self._showProtectionOption=showProtectionOption
+			self.showProtectionOptionChanged.emit()
+
+	#def showProtectionOption
 
 	def loadConfig(self):		
 
-		self.metaProtectionEnabled=Bridge.unlockerManager.metaProtectionEnabled
-		self.showProtectionOption=Bridge.unlockerManager.showProtectionOption()
+		self.metaProtectionEnabled=self.unlockerManager.metaProtectionEnabled
+		self.showProtectionOption=self.unlockerManager.showProtectionOption()
 
 		if self.metaProtectionEnabled:
-			self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_ENABLED,"Success"]
+			self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_ENABLED,"type":self.unlockerManager.KIRIGAMI_MSG_OK}
 		else:
-			self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_DISABLED,"Warning"]
+			self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_DISABLED,"type":self.unlockerManager.KIRIGAMI_MSG_WARNING}
 
 		self._copyCurrentProtectionStatus()
 	
@@ -48,85 +133,15 @@ class Bridge(QObject):
 	def updateProtectionInfo(self):
 
 		if not self.isProtectionChange:
-			self.metaProtectionEnabled=Bridge.unlockerManager.metaProtectionEnabled
+			self.metaProtectionEnabled=self.unlockerManager.metaProtectionEnabled
 			if self.metaProtectionEnabled:
-				self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_ENABLED,"Success"]
+				self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_ENABLED,"type":self.unlockerManager.KIRIGAMI_MSG_OK}
 			else:
-				self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_DISABLED,"Warning"]
+				self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_DISABLED,"type":self.unlockerManager.KIRIGAMI_MSG_WARNING}
 
 			self._copyCurrentProtectionStatus()
 
 	#def updateProtection Info
-
-	def _getMetaProtectionEnabled(self):
-
-		return self._metaProtectionEnabled
-
-	#def _getFeedBackCode
-
-	def _setMetaProtectionEnabled(self,metaProtectionEnabled):
-
-		if self._metaProtectionEnabled!=metaProtectionEnabled:
-			self._metaProtectionEnabled=metaProtectionEnabled
-			self.on_metaProtectionEnabled.emit()
-
-	#def _setMetaProtectionEnabled
-
-	def _getShowProtectionStatusMessage(self):
-
-		return self._showProtectionStatusMessage
-
-	#def _getShowServiceStatusMesage
-
-	def _setShowProtectionStatusMessage(self,showProtectionStatusMessage):
-
-		if self._showProtectionStatusMessage!=showProtectionStatusMessage:
-			self._showProtectionStatusMessage=showProtectionStatusMessage
-			self.on_showProtectionStatusMessage.emit()
-
-	#def _setShowProtectionStatusMessage
-
-	def _getIsProtectionChange(self):
-
-		return self._isProtectionChange
-
-	#def _getIsProtectionChange
-
-	def _setIsProtectionChange(self,isProtectionChange):
-
-		if self._isProtectionChange!=isProtectionChange:
-			self._isProtectionChange=isProtectionChange
-			self.on_isProtectionChange.emit()
-	
-	#def _setIsProtectionChange
-
-	def _getShowPendingChangesDialog(self):
-
-		return self._showPendingChangesDialog
-
-	#def _getShowPendingChangesDialog
-
-	def _setShowPendingChangesDialog(self,showPendingChangesDialog):
-
-		if self._showPendingChangesDialog!=showPendingChangesDialog:
-			self._showPendingChangesDialog=showPendingChangesDialog
-			self.on_showPendingChangesDialog.emit()
-	
-	#def _setShowPendingChangesDialog
-
-	def _getShowProtectionOption(self):
-
-		return self._showProtectionOption
-
-	#def _getShowProtectionOption
-
-	def _setShowProtectionOption(self,showProtectionOption):
-
-		if self._showProtectionOption!=showProtectionOption:
-			self._showProtectionOption=showProtectionOption
-			self.on_showProtectionOption.emit()
-
-	#def _setShowProtectionOption
 
 	def _copyCurrentProtectionStatus(self):
 
@@ -138,12 +153,12 @@ class Bridge(QObject):
 	@Slot(bool)
 	def getProtectionChange(self,change):
 		
+		self.metaProtectionEnabled=change
+		
 		if self.currentMetaProtectionStatus!=change:
-			self.metaProtectionEnabled=change
-			self.showProtectionStatusMessage=[False,"","Success"]
+			self.showProtectionStatusMessage={"show":False,"msgCode":"","type":""}
 			self.isProtectionChange=True
 		else:
-			self.metaProtectionEnabled=self.currentMetaProtectionStatus
 			self.showProtectionStatusMessage=self.currentMessage
 			self.isProtectionChange=False
 
@@ -158,16 +173,16 @@ class Bridge(QObject):
 		self.isProtectionChange=False
 		self.showPendingChangesDialog=False
 
-		result=Bridge.unlockerManager.changeMetaProtectionStatus(self.metaProtectionEnabled)
+		result=self.unlockerManager.changeMetaProtectionStatus(self.metaProtectionEnabled)
 		if result:
-			self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_CHANGE_SUCCESS,"Success"]
+			self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_CHANGE_SUCCESS,"type":self.unlockerManager.KIRIGAMI_MSG_OK}
 			self.currentMessage=copy.deepcopy(self.showProtectionStatusMessage)
 			self.core.mainStack.closeGui=True
 		else:
 			if self.metaProtectionEnabled:
-				self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_DISABLED_ERROR,"Error"]
+				self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_DISABLED_ERROR,"type":self.unlockerManager.KIRIGAMI_MSG_ERROR}
 			else:
-				self.showProtectionStatusMessage=[True,Bridge.META_PROTECTION_ENABLED_ERROR,"Error"]
+				self.showProtectionStatusMessage={"show":True,"msgCode":Bridge.META_PROTECTION_ENABLED_ERROR,"type":self.unlockerManager.KIRIGAMI_MSG_ERROR}
 			self.core.mainStack.closeGui=False
 			self.core.mainStack.moveToStack=""
 
@@ -175,9 +190,9 @@ class Bridge(QObject):
 			self.core.mainStack.currentOptionsStack=self.core.mainStack.moveToStack
 			self.core.mainStack.moveToStack=""
 		
-		Bridge.unlockerManager.getMetaProtectionStatus()	
+		self.unlockerManager.getMetaProtectionStatus()	
 		self._copyCurrentProtectionStatus()
-		Bridge.unlockerManager.writeLog("Final System Metapackage Protecion. Enabled: %s"%(str(self.metaProtectionEnabled)))
+		self.unlockerManager.writeLog(f"Final System Metapackage Protecion. Enabled: {self.metaProtectionEnabled}")
 		
 		self.core.mainStack.isWorked=False	
 		self.core.mainStack.runningUnlockCommand=False
@@ -199,20 +214,6 @@ class Bridge(QObject):
 
 	#def discardChangeProtectionStatus
 
-	on_metaProtectionEnabled=Signal()
-	metaProtectionEnabled=Property(int,_getMetaProtectionEnabled,_setMetaProtectionEnabled,notify=on_metaProtectionEnabled)
-	
-	on_showProtectionStatusMessage=Signal()
-	showProtectionStatusMessage=Property('QVariantList',_getShowProtectionStatusMessage,_setShowProtectionStatusMessage,notify=on_showProtectionStatusMessage)
-
-	on_isProtectionChange=Signal()
-	isProtectionChange=Property(bool,_getIsProtectionChange,_setIsProtectionChange,notify=on_isProtectionChange)
-
-	on_showPendingChangesDialog=Signal()
-	showPendingChangesDialog=Property(bool,_getShowPendingChangesDialog,_setShowPendingChangesDialog,notify=on_showPendingChangesDialog)
-	
-	on_showProtectionOption=Signal()
-	showProtectionOption=Property(bool,_getShowProtectionOption,_setShowProtectionOption,notify=on_showProtectionOption)
 	
 #class Bridge
 
