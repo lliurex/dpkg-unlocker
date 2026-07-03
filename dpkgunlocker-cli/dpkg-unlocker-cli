@@ -8,7 +8,7 @@ from dpkgunlockercli import DpkgUnlockerCli
 def isDpkgUnlockerRunning():
 
 	if os.path.exists('/var/run/dpkgUnlocker.lock'):
-		printf("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
+		print("  [Dpkg-Unlocker-Cli]: Dpkg-Unlocker is now running. Wait a moment and try again")
 		sys.exit(1)
 
 #def isDpkgUnlockedRunning
