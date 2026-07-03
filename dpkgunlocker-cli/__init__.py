@@ -90,7 +90,7 @@ class DpkgUnlockerCli(object):
 
 		msgLog="Unlocking process finished successfully"
 		
-		return self._sendFeedBack(msgLog,1)
+		return self._sendFeedBack(msgLog,0)
 					
 
 	def _killProcess(self):
