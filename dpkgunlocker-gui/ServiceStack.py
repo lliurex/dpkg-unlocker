@@ -50,6 +50,7 @@ class Bridge(QObject):
 	isThereALockChanged=Signal()
 	areLiveProcessChanged=Signal()
 	showServiceStatusMesageChanged=Signal()
+	runningUnlockCommandChanged=Signal()
 
 	PROCESSTOKENS=[
 		("removeLlxupLock", "tokenLlxupProcess"),
@@ -68,7 +69,7 @@ class Bridge(QObject):
 		self._showServiceStatusMesage={"show":False,"msgCode":"","type":""}
 		self._isThereALock=False
 		self._areLiveProcess=False
-		self.runningUnlockCommand=False
+		self._runningUnlockCommand=False
 		self.gatherInfoT=None
 
 	#def __init__
@@ -120,6 +121,22 @@ class Bridge(QObject):
 			self.showServiceStatusMesageChanged.emit()
 
 	#def _setShowServiceStatusMesage
+
+	@Property(bool,notify=runningUnlockCommandChanged)
+	def runningUnlockCommand(self):
+
+		return self._runningUnlockCommand
+
+	#def runningUnlockCommand
+
+	@runningUnlockCommand.setter
+	def runningUnlockCommand(self,runningUnlockCommand):
+
+		if self._runningUnlockCommand!=runningUnlockCommand:
+			self._runningUnlockCommand=runningUnlockCommand
+			self.runningUnlockCommandChanged.emit()
+
+	#def runningUnlockCommand
 
 	@Property(QObject,constant=True)
 	def servicesModel(self):

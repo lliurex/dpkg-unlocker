@@ -160,57 +160,8 @@ RowLayout{
                 focus:true
                 display:AbstractButton.TextBesideIcon
                 icon.name:"dialog-ok"
-                text:{
-                    switch(optionsLayout.currentIndex){
-                        case 0:
-                            i18nd("dpkg-unlocker","Unlock")
-                            break;
-                        case 1:
-                            i18nd("dpkg-unlocker","Restore")
-                            break;
-                        case 3:
-                            i18nd("dpkg-unlocker","Apply")
-                            break;
-                        case 2:
-                            if (mainStackBridge.processLaunched=="Unlock"){
-                                i18nd("dpkg-unlocker","Unlock")
-                            }else{
-                                i18nd("dpkg-unlocker","Restore")
-                            }
-                            break;
-                        default:
-                            i18nd("dpkg-unlocker","Unlock")
-                            break
-                    }
-                }
-                enabled:{
-                    switch(optionsLayout.currentIndex){
-                        case 0:
-                            if (restoreStackBridge.runningRestoreCommand){
-                                false
-                            }else{
-                                serviceStackBridge.isThereALock
-                            }
-                            break;
-                        case 1:
-                            if (restoreStackBridge.runningRestoreCommand){
-                                false
-                            }else{
-                                if ((!serviceStackBridge.areLiveProcess)&&(!serviceStackBridge.isThereALock)){
-                                    true
-                                }else{
-                                    false
-                                }
-                            }
-                            break;
-                        case 3:
-                            protectionStackBridge.isProtectionChange
-                            break
-                        default:
-                            false
-                            break;
-                    }
-                }
+                text:getLabel(optionsLayout.currentIndex)
+                enabled:getStatus(optionsLayout.currentIndex)
                 Keys.onReturnPressed: unlockBtn.clicked()
                 Keys.onEnterPressed: unlockBtn.clicked()
                 onClicked:{
@@ -269,9 +220,7 @@ RowLayout{
                         break;
                     case 3:
                          protectionStackBridge.discardChangeProtectionStatus()
-
                 }
-               
             }
 
             function onCancelDialogClicked(){
@@ -290,13 +239,13 @@ RowLayout{
     }
 
     Timer{
-        id:timer
+        id:processTimer
         interval:100
         repeat:true
         onTriggered:{
             if (mainStackBridge.endProcess){
                 protectionOption.enabled=true
-                timer.stop()
+                processTimer.stop()
             }else{
                 if (mainStackBridge.endCurrentCommand){
                     mainStackBridge.getNewCommand()
@@ -308,7 +257,55 @@ RowLayout{
     }
 
     function applyChanges(){
-        timer.restart()
+        processTimer.restart()
+    }
+
+    function getLabel(code){
+
+        switch(code){
+            case 0:
+                return i18nd("dpkg-unlocker","Unlock")
+            case 1:
+                return i18nd("dpkg-unlocker","Restore")
+            case 3:
+                return i18nd("dpkg-unlocker","Apply")
+            case 2:
+                if (mainStackBridge.processLaunched=="Unlock"){
+                    return i18nd("dpkg-unlocker","Unlock")
+                }else{
+                    return i18nd("dpkg-unlocker","Restore")
+                }
+            default:
+                return i18nd("dpkg-unlocker","Unlock")
+        }
+
+    }
+
+    function getStatus(code){
+
+        switch(code){
+            case 0:
+                if (serviceStackBridge.runningUnlockCommand || restoreStackBridge.runningRestoreCommand){
+                    return false
+                }else{
+                    return serviceStackBridge.isThereALock
+                }
+            case 1:
+                if (serviceStackBridge.runningUnlockCommand || restoreStackBridge.runningRestoreCommand){
+                    return false
+                }else{
+                    if ((!serviceStackBridge.areLiveProcess)&&(!serviceStackBridge.isThereALock)){
+                        return true
+                    }else{
+                        return false
+                    }
+                }
+            case 3:
+                return protectionStackBridge.isProtectionChange
+            default:
+                return false
+        }
+    
     }
  
     function getFeedBackText(code){

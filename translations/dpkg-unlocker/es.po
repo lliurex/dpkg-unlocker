@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 09:44+0200\n"
-"PO-Revision-Date: 2026-07-03 09:44+0200\n"
+"POT-Creation-Date: 2026-07-03 10:40+0200\n"
+"PO-Revision-Date: 2026-07-03 10:40+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -48,32 +48,15 @@ msgstr "Protección del metapaquete"
 msgid "Help"
 msgstr "Ayuda"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:166
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:176
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:182
-msgid "Unlock"
-msgstr "Desbloquear"
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:169
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:178
-msgid "Restore"
-msgstr "Restaurar"
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:172
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
-#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:76
-msgid "Apply"
-msgstr "Aplicar"
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:179
 msgid "Do you want to run the unlock process?"
 msgstr "¿Desea ejecutar el proceso de desbloqueo?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:231
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:182
 msgid "Do you want to run the services restore process?"
 msgstr "¿Desea ejecutar el proceso de restauración de los servicios?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:235
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:186
 msgid ""
 "Do you want to disable system metapackage protection?\n"
 "Disabling this protection can cause certain applications to be uninstalled\n"
@@ -83,31 +66,48 @@ msgstr ""
 "Desactivar esta protección puede provocar que ciertas aplicaciones sean\n"
 "desinstaladas de forma automática y causar inconsistencias en el sistema"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:237
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:188
 msgid "Do you want to enable system metapackage protection?"
 msgstr "¿Desea activar la protección del metapaquete del sistema?"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:198
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:271
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:76
+msgid "Apply"
+msgstr "Aplicar"
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:198
 msgid "Discard"
 msgstr "Descartar"
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:318
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:267
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:274
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:279
+msgid "Unlock"
+msgstr "Desbloquear"
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:269
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:276
+msgid "Restore"
+msgstr "Restaurar"
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:315
 msgid "Removing Lliurex-Up lock file..."
 msgstr "Eliminando el fichero de bloqueo de Lliurex-Up..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:321
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:318
 msgid "Removing Dpkg lock file..."
 msgstr "Eliminando el fichero de bloqueo de Dpkg..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:324
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:321
 msgid "Removing Apt lock file..."
 msgstr "Eliminado el fichero de bloqueo de Apt..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:327
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:324
 msgid "Fixing the system..."
 msgstr "Estabilizando el sistema..."
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:330
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:327
 msgid "Restoring the services..."
 msgstr "Restaurando los servicios..."
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 09:44+0200\n"
+"POT-Creation-Date: 2026-07-03 10:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -45,63 +45,63 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:166
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:176
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:182
-msgid "Unlock"
-msgstr ""
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:169
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:178
-msgid "Restore"
-msgstr ""
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:172
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
-#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:76
-msgid "Apply"
-msgstr ""
-
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:228
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:179
 msgid "Do you want to run the unlock process?"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:231
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:182
 msgid "Do you want to run the services restore process?"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:235
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:186
 msgid ""
 "Do you want to disable system metapackage protection?\n"
 "Disabling this protection can cause certain applications to be uninstalled\n"
 "automatically and cause system inconsistencies"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:237
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:188
 msgid "Do you want to enable system metapackage protection?"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:247
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:198
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:271
+#: dpkgunlocker-gui/rsrc/UnlockDialog.qml:76
+msgid "Apply"
+msgstr ""
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:198
 msgid "Discard"
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:318
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:267
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:274
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:279
+msgid "Unlock"
+msgstr ""
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:269
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:276
+msgid "Restore"
+msgstr ""
+
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:315
 msgid "Removing Lliurex-Up lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:321
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:318
 msgid "Removing Dpkg lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:324
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:321
 msgid "Removing Apt lock file..."
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:327
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:324
 msgid "Fixing the system..."
 msgstr ""
 
-#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:330
+#: dpkgunlocker-gui/rsrc/ApplicationOptions.qml:327
 msgid "Restoring the services..."
 msgstr ""
 
