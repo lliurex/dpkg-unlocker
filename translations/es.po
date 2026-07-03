@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-03 12:14+0200\n"
-"PO-Revision-Date: 2026-07-03 12:14+0200\n"
+"POT-Creation-Date: 2026-07-03 12:37+0200\n"
+"PO-Revision-Date: 2026-07-03 12:37+0200\n"
 "Last-Translator: lliurex <lliurex@gva.es>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -83,12 +83,12 @@ msgstr "¿Desea activar la protección del metapaquete del sistema?"
 
 #: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:211
 #: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:284
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:80
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:75
 msgid "Apply"
 msgstr "Aplicar"
 
 #: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/ApplicationOptions.qml:211
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:99
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:90
 msgid "Discard"
 msgstr "Descartar"
 
@@ -236,6 +236,6 @@ msgstr "El proceso de restauración de los servicios ha finalizado con errores"
 msgid "Loading. Wait a moment..."
 msgstr "Cargando. Espere un momento..."
 
-#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:118
+#: dpkgunlocker-gui/python3-dpkgunlocker-gui/rsrc/UnlockDialog.qml:105
 msgid "Cancel"
 msgstr "Cancelar"
