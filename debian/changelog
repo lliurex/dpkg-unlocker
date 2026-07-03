@@ -1,3 +1,10 @@
+dpkg-unlocker (0.15.12) noble; urgency=medium
+
+  * Refactorized code
+  * Migrated cli from python3-clint to argparser
+
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 03 Jul 2026 12:57:36 +0200
+
 dpkg-unlocker (0.15.11) noble; urgency=medium
 
   * Fixed custom dialog template
