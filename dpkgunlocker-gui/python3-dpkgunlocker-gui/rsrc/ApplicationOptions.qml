@@ -9,7 +9,7 @@ RowLayout{
     spacing:10
 
     Rectangle{
-        width:225
+        width:220
         Layout.fillHeight:true
         border.color: palette.mid
 
@@ -21,14 +21,14 @@ RowLayout{
             MenuOptionBtn {
                 id:servicesOption
                 optionText:i18nd("dpkg-unlocker","Services")
-                optionIcon:"run-build"
+                optionIcon:"actions/24/run-build.svg"
                 onMenuOptionClicked:mainStackBridge.manageTransitions(0)
             }
 
             MenuOptionBtn {
                 id:restoreOption
                 optionText:i18nd("dpkg-unlocker","Restore services")
-                optionIcon:"tools"
+                optionIcon:"actions/24/tools.svg"
                 enabled:restoreStackBridge.runningRestoreCommand || (!serviceStackBridge.areLiveProcess && !serviceStackBridge.isThereALock)
                 onMenuOptionClicked:mainStackBridge.manageTransitions(1)
             }
@@ -36,7 +36,7 @@ RowLayout{
             MenuOptionBtn {
                 id:detailsOption
                 optionText:i18nd("dpkg-unlocker","Details process")
-                optionIcon:"utilities-terminal"
+                optionIcon:"apps/24/utilities-terminal.svg"
                 visible:mainStackBridge.enableKonsole
                 onMenuOptionClicked:mainStackBridge.manageTransitions(2)
             }
@@ -44,7 +44,7 @@ RowLayout{
             MenuOptionBtn {
                 id:protectionOption
                 optionText:i18nd("dpkg-unlocker","Metapackage protection")
-                optionIcon:"security-high"
+                optionIcon:"status/24/security-high.svg"
                 visible:protectionStackBridge.showProtectionOption
                 onMenuOptionClicked:mainStackBridge.manageTransitions(3)
             }
@@ -53,7 +53,7 @@ RowLayout{
             MenuOptionBtn {
                 id:helpOption
                 optionText:i18nd("dpkg-unlocker","Help")
-                optionIcon:"help-contents"
+                optionIcon:"actions/24/help-contents.svg"
                 onMenuOptionClicked:mainStackBridge.openHelp()
             }
 
