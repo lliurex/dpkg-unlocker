@@ -126,7 +126,7 @@ class DpkgUnlockerManager(object):
 
 		except OSError:
 			self.dpkgRun=self.findProcess("dpkg")
-			if self.dpkgApdRun is not None:
+			if self.dpkgRun is not None:
 				return 1
 
 			self.aptRun=self.findProcess("apt-get")
