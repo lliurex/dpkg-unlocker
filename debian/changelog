@@ -1,3 +1,9 @@
+dpkg-unlocker (0.15.13) noble; urgency=medium
+
+  * Fixed typo
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Fri, 10 Jul 2026 08:43:06 +0200
+
 dpkg-unlocker (0.15.12) noble; urgency=medium
 
   * Refactorized code
